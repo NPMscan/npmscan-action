@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/NPMscan/npmscan-action/main/logo.png" width="120" alt="npmscan logo">
+  <img src="https://npmscan.com/npmscan.icon.darkmode.jpg" width="120" alt="npmscan logo">
 </p>
 
 # NPMscan Dependency Check
