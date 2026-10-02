@@ -2,8 +2,9 @@ name: npmscan Dependency Check
 description: Scans package.json / lockfile changes in a pull request with npmscan.com and flags vulnerable or risky packages.
 author: npmscan
 branding:
-  icon: shield
+  icon: search
   color: red
+
 
 inputs:
   file:
