@@ -34,3 +34,61 @@ runs:
         FAIL_ON: ${{ inputs.fail-on-flagged }}
       run: |
         set -euo pipefail
+
+        if [ -z "$PR" ]; then
+          echo "::error::npmscan-action only runs on pull_request events"; exit 1
+        fi
+        if [ ! -d .git ]; then
+          echo "::error::Run actions/checkout before npmscan/npmscan-action"; exit 1
+        fi
+        if [ ! -f "$FILE" ]; then
+          echo "::notice::$FILE not found in this PR — nothing to scan"; exit 0
+        fi
+
+        WORK="$RUNNER_TEMP/npmscan"
+        mkdir -p "$WORK"
+
+        # Before = file on the base branch (empty manifest if the PR adds it)
+        git fetch --no-tags --depth=1 origin "$BASE_SHA"
+        git show "$BASE_SHA:$FILE" > "$WORK/before.txt" 2>/dev/null || echo '{}' > "$WORK/before.txt"
+        cp "$FILE" "$WORK/after.txt"
+
+        if cmp -s "$WORK/before.txt" "$WORK/after.txt"; then
+          echo "::notice::$FILE unchanged in this PR — nothing to scan"; exit 0
+        fi
+
+        jq -n --rawfile before "$WORK/before.txt" --rawfile after "$WORK/after.txt" \
+          '{before: $before, after: $after}' \
+          | curl -sS --fail-with-body --retry 2 --retry-delay 30 --max-time 300 \
+              -X POST https://npmscan.com/api/analysis/dependency-diff \
+              -H 'Content-Type: application/json' \
+              -H 'User-Agent: npmscan-action/1' \
+              --data-binary @- > "$WORK/result.json" \
+          || { echo "::error::npmscan API call failed: $(cat "$WORK/result.json" 2>/dev/null)"; exit 1; }
+
+        FLAGGED=$(jq '.flaggedCount // 0' "$WORK/result.json")
+        echo "flagged-count=$FLAGGED" >> "$GITHUB_OUTPUT"
+
+        {
+          echo "<!-- npmscan-action -->"
+          echo "## 🛡️ npmscan dependency check"
+          echo
+          jq -r .summary "$WORK/result.json"
+          echo
+          jq -r '[(.added + .changed)[] | select(.isVulnerable or .installScriptIntroduced or .sourceIntegrityChanged)]
+            | if length == 0 then "✅ No risky packages found." else
+                "| Package | Version | Severity | New install script | Source changed |\n|---|---|---|---|---|\n" +
+                (map("| [\(.name)](\(.npmscanUrl)) | \(.beforeVersion // "new") → \(.afterVersion // "?") | \(.highestSeverity // "–") | \(if .installScriptIntroduced then "⚠️ yes" else "no" end) | \(if .sourceIntegrityChanged then "⚠️ yes" else "no" end) |") | join("\n"))
+              end' "$WORK/result.json"
+          echo
+          echo "<sub>Scanned \`$FILE\` with [npmscan.com](https://npmscan.com)</sub>"
+        } > "$WORK/comment.md"
+
+        cat "$WORK/comment.md" >> "$GITHUB_STEP_SUMMARY"
+
+        gh pr comment "$PR" --body-file "$WORK/comment.md" --edit-last --create-if-none \
+          || echo "::warning::Could not post PR comment (fork PRs get a read-only token) — see the job summary."
+
+        if [ "$FAIL_ON" = "true" ] && [ "$FLAGGED" -gt 0 ]; then
+          echo "::error::npmscan flagged $FLAGGED package(s)"; exit 1
+        fi
