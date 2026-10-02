@@ -1,0 +1,36 @@
+name: npmscan Dependency Check
+description: Scans package.json / lockfile changes in a pull request with npmscan.com and flags vulnerable or risky packages.
+author: npmscan
+branding:
+  icon: shield
+  color: red
+
+inputs:
+  file:
+    description: File to diff (package.json, package-lock.json, yarn.lock or pnpm-lock.yaml)
+    default: package-lock.json
+  fail-on-flagged:
+    description: Fail the check when any package is flagged
+    default: 'true'
+  github-token:
+    description: Token used to post the PR comment
+    default: ${{ github.token }}
+
+outputs:
+  flagged-count:
+    description: Number of packages npmscan flagged
+    value: ${{ steps.scan.outputs.flagged-count }}
+
+runs:
+  using: composite
+  steps:
+    - id: scan
+      shell: bash
+      env:
+        FILE: ${{ inputs.file }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        PR: ${{ github.event.pull_request.number }}
+        GH_TOKEN: ${{ inputs.github-token }}
+        FAIL_ON: ${{ inputs.fail-on-flagged }}
+      run: |
+        set -euo pipefail
