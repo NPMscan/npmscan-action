@@ -1,4 +1,8 @@
-# npmscan Dependency Check
+<p align="center">
+  <img src="https://raw.githubusercontent.com/NPMscan/npmscan-action/main/logo.png" width="120" alt="npmscan logo">
+</p>
+
+# NPMscan Dependency Check
 
 Flags vulnerable packages, newly added install scripts, and changed package
 sources whenever a pull request changes `package.json` or a lockfile.
