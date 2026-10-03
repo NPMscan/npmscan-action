@@ -249,7 +249,7 @@ new_repo package.json '{"dependencies":{"ms":"2.1.3"}}'
 head_commit
 run_scan FAKE_RESPONSE="$FIX/clean.json"
 assert_eq "$CODE" 0 "exit code"
-assert_eq "$(cat "$LOG/curl.calls" 2>/dev/null | wc -l | tr -d ' ')" 0 "API calls"
+assert_eq "$([ -f "$LOG/curl.calls" ] && wc -l < "$LOG/curl.calls" | tr -d ' ' || echo 0)" 0 "API calls"
 assert_not_contains "$GHLOG" "-X POST"
 assert_not_contains "$OUTPUT" "flagged-count"
 
