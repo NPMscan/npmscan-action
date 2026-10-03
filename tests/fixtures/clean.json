@@ -1,0 +1,40 @@
+{
+  "summary": "Compared package.json snapshots: 0 added, 0 removed, 1 changed.",
+  "beforeFormat": "package.json",
+  "afterFormat": "package.json",
+  "comparisonNote": null,
+  "added": [],
+  "removed": [],
+  "changed": [
+    {
+      "name": "ms",
+      "actualName": null,
+      "npmscanUrl": "https://npmscan.com/package/ms",
+      "beforeVersion": "2.1.3",
+      "afterVersion": "2.1.2",
+      "coexistingVersions": null,
+      "changeType": "downgrade",
+      "hasInstallScript": false,
+      "installScriptIntroduced": false,
+      "installScriptKeys": [],
+      "installScriptKeysIntroduced": [],
+      "sourceIntegrityChanged": null,
+      "resolvedUrl": null,
+      "integrity": null,
+      "isVulnerable": false,
+      "highestSeverity": null,
+      "vulnerabilities": [],
+      "vulnerabilityDelta": "still-clean",
+      "resolutionNote": null
+    }
+  ],
+  "totalAdded": 0,
+  "totalRemoved": 0,
+  "totalChanged": 1,
+  "flaggedCount": 0,
+  "truncated": false,
+  "truncationNote": null,
+  "enrichmentNote": null,
+  "projectLifecycleChanges": null,
+  "overridesChanges": null
+}

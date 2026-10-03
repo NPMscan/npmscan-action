@@ -1,0 +1,7 @@
+{
+  "name": "npmscan-action-e2e",
+  "private": true,
+  "dependencies": {
+    "lodash": "4.17.21"
+  }
+}

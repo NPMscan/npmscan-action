@@ -1,0 +1,72 @@
+{
+  "summary": "Compared npm-lock snapshots: 1 added, 0 removed, 1 changed — 2 flagged for a newly introduced install script, source/integrity change, override change, and/or vulnerability.",
+  "beforeFormat": "npm-lock",
+  "afterFormat": "npm-lock",
+  "comparisonNote": null,
+  "added": [
+    {
+      "name": "esbuild",
+      "actualName": null,
+      "npmscanUrl": "https://npmscan.com/package/esbuild",
+      "beforeVersion": null,
+      "afterVersion": "0.19.0",
+      "coexistingVersions": null,
+      "changeType": null,
+      "hasInstallScript": true,
+      "installScriptIntroduced": null,
+      "installScriptKeys": null,
+      "installScriptKeysIntroduced": null,
+      "sourceIntegrityChanged": null,
+      "resolvedUrl": "https://registry.npmjs.org/esbuild/-/esbuild-0.19.0.tgz",
+      "integrity": "sha512-xx",
+      "isVulnerable": true,
+      "highestSeverity": "MODERATE",
+      "vulnerabilities": [
+        {
+          "id": "GHSA-67mh-4wv8-2f99",
+          "summary": "esbuild enables any website to send any requests to the development server and read the response",
+          "severity": "MODERATE",
+          "aliases": [],
+          "publishedAt": "2025-02-10T17:48:07Z",
+          "fixedVersion": "0.25.0",
+          "npmscanUrl": "https://npmscan.com/vulnerability/GHSA-67mh-4wv8-2f99"
+        }
+      ],
+      "vulnerabilityDelta": null,
+      "resolutionNote": null
+    }
+  ],
+  "removed": [],
+  "changed": [
+    {
+      "name": "ms",
+      "actualName": null,
+      "npmscanUrl": "https://npmscan.com/package/ms",
+      "beforeVersion": "2.1.3",
+      "afterVersion": "2.1.3",
+      "coexistingVersions": null,
+      "changeType": "unresolved",
+      "hasInstallScript": false,
+      "installScriptIntroduced": false,
+      "installScriptKeys": null,
+      "installScriptKeysIntroduced": null,
+      "sourceIntegrityChanged": true,
+      "resolvedUrl": "https://evil.example.com/ms-2.1.3.tgz",
+      "integrity": "sha512-AAAA",
+      "isVulnerable": false,
+      "highestSeverity": null,
+      "vulnerabilities": [],
+      "vulnerabilityDelta": "still-clean",
+      "resolutionNote": null
+    }
+  ],
+  "totalAdded": 1,
+  "totalRemoved": 0,
+  "totalChanged": 1,
+  "flaggedCount": 2,
+  "truncated": false,
+  "truncationNote": null,
+  "enrichmentNote": null,
+  "projectLifecycleChanges": null,
+  "overridesChanges": null
+}

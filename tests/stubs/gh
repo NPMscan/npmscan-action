@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+# Stub gh: serves $GH_COMMENTS for comment listing, records writes in $STUB_LOG,
+# and fails writes with a 403 when GH_FAIL_WRITE=1.
+echo "gh $*" >> "$STUB_LOG/gh.log"
+if [ "$2" = --paginate ]; then
+  if [ -n "${GH_COMMENTS:-}" ]; then printf '%s' "$GH_COMMENTS"; else echo '[]'; fi
+  exit 0
+fi
+body=$(cat)
+if [ "${GH_FAIL_WRITE:-}" = 1 ]; then
+  echo "gh: Resource not accessible by integration (HTTP 403)" >&2
+  exit 1
+fi
+printf '%s' "$body" > "$STUB_LOG/comment.json"

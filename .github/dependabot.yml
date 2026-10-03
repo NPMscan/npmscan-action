@@ -1,0 +1,8 @@
+version: 2
+updates:
+  # Keeps workflow actions current. These PRs also run the e2e job in
+  # test.yml, which checks the action can comment on Dependabot PRs.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

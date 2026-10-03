@@ -1,0 +1,68 @@
+name: test
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: tests/run.sh
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: shellcheck scripts/scan.sh tests/run.sh tests/stubs/*
+      - name: actionlint
+        run: |
+          bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/v1.7.12/scripts/download-actionlint.bash) 1.7.12
+          ./actionlint -color
+
+  # Runs the action itself against the live npmscan.com API. On Dependabot PRs
+  # (see .github/dependabot.yml) this also proves the PR comment works when the
+  # job grants pull-requests: write explicitly.
+  e2e:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Introduce a vulnerable dependency
+        run: |
+          jq '.dependencies.lodash = "4.17.15"' tests/e2e/package.json > "$RUNNER_TEMP/package.json"
+          mv "$RUNNER_TEMP/package.json" tests/e2e/package.json
+      - id: scan
+        uses: ./
+        with:
+          file: tests/e2e/package.json
+          mode: warn
+      - name: Check the result and the PR comment
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FLAGGED: ${{ steps.scan.outputs.flagged-count }}
+          PR: ${{ github.event.pull_request.number }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          if [ "${FLAGGED:-0}" -lt 1 ]; then
+            echo "::error::Expected lodash@4.17.15 to be flagged, got flagged-count='$FLAGGED'"; exit 1
+          fi
+          if [ "$HEAD_REPO" != "$GITHUB_REPOSITORY" ]; then
+            echo "Fork PR: read-only token, no comment expected"; exit 0
+          fi
+          if ! gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$PR/comments" --jq '.[].body' \
+              | grep -qF '<!-- npmscan-action:tests/e2e/package.json -->'; then
+            echo "::error::The PR comment was not posted (actor: $GITHUB_ACTOR)"; exit 1
+          fi
+          echo "PR comment posted (actor: $GITHUB_ACTOR)"

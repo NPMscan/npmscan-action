@@ -5,13 +5,30 @@ branding:
   icon: search
   color: red
 
-
 inputs:
   file:
-    description: File to diff (package.json, package-lock.json, yarn.lock or pnpm-lock.yaml)
+    description: Dependency file to diff (package.json, package-lock.json, npm-shrinkwrap.json, yarn.lock or pnpm-lock.yaml), relative to the repository root
     default: package-lock.json
+  files:
+    description: Several dependency files to diff, one per line or comma-separated (e.g. for monorepos). Overrides `file` when set.
+    default: ''
+  mode:
+    description: "`block` fails the check on findings that meet the fail-on-* thresholds; `warn` only reports them"
+    default: block
+  fail-on-severity:
+    description: Lowest vulnerability severity that blocks — low, moderate, high, critical, or none to never block on vulnerabilities
+    default: low
+  fail-on-install-script:
+    description: Block when a dependency gains an install script, a new dependency has one, or a root lifecycle script (preinstall/install/postinstall/prepare) is added or changed
+    default: 'true'
+  fail-on-source-change:
+    description: Block when a lockfile entry's tarball URL or integrity hash changes, or an override/resolution is added or changed
+    default: 'true'
+  fail-on-error:
+    description: Fail the check when the scan itself cannot run (npmscan API unreachable, file too large). When false, errors are reported as warnings.
+    default: 'false'
   fail-on-flagged:
-    description: Fail the check when any package is flagged
+    description: "Deprecated — use `mode`. Setting this to false is the same as `mode: warn`."
     default: 'true'
   github-token:
     description: Token used to post the PR comment
@@ -19,8 +36,14 @@ inputs:
 
 outputs:
   flagged-count:
-    description: Number of packages npmscan flagged
+    description: Number of findings npmscan flagged across all scanned files (empty if nothing was scanned)
     value: ${{ steps.scan.outputs.flagged-count }}
+  blocking-count:
+    description: "Number of findings that meet the fail-on-* thresholds (they fail the check in `mode: block`)"
+    value: ${{ steps.scan.outputs.blocking-count }}
+  error-count:
+    description: Number of files that could not be scanned
+    value: ${{ steps.scan.outputs.error-count }}
 
 runs:
   using: composite
@@ -28,68 +51,17 @@ runs:
     - id: scan
       shell: bash
       env:
-        FILE: ${{ inputs.file }}
-        BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        PR: ${{ github.event.pull_request.number }}
+        INPUT_FILE: ${{ inputs.file }}
+        INPUT_FILES: ${{ inputs.files }}
+        INPUT_MODE: ${{ inputs.mode }}
+        INPUT_FAIL_ON_SEVERITY: ${{ inputs.fail-on-severity }}
+        INPUT_FAIL_ON_INSTALL_SCRIPT: ${{ inputs.fail-on-install-script }}
+        INPUT_FAIL_ON_SOURCE_CHANGE: ${{ inputs.fail-on-source-change }}
+        INPUT_FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
+        INPUT_FAIL_ON_FLAGGED: ${{ inputs.fail-on-flagged }}
         GH_TOKEN: ${{ inputs.github-token }}
-        FAIL_ON: ${{ inputs.fail-on-flagged }}
-      run: |
-        set -euo pipefail
-
-        if [ -z "$PR" ]; then
-          echo "::error::npmscan-action only runs on pull_request events"; exit 1
-        fi
-        if [ ! -d .git ]; then
-          echo "::error::Run actions/checkout before npmscan/npmscan-action"; exit 1
-        fi
-        if [ ! -f "$FILE" ]; then
-          echo "::notice::$FILE not found in this PR — nothing to scan"; exit 0
-        fi
-
-        WORK="$RUNNER_TEMP/npmscan"
-        mkdir -p "$WORK"
-
-        # Before = file on the base branch (empty manifest if the PR adds it)
-        git fetch --no-tags --depth=1 origin "$BASE_SHA"
-        git show "$BASE_SHA:$FILE" > "$WORK/before.txt" 2>/dev/null || echo '{}' > "$WORK/before.txt"
-        cp "$FILE" "$WORK/after.txt"
-
-        if cmp -s "$WORK/before.txt" "$WORK/after.txt"; then
-          echo "::notice::$FILE unchanged in this PR — nothing to scan"; exit 0
-        fi
-
-        jq -n --rawfile before "$WORK/before.txt" --rawfile after "$WORK/after.txt" \
-          '{before: $before, after: $after}' \
-          | curl -sS --fail-with-body --retry 2 --retry-delay 30 --max-time 300 \
-              -X POST https://npmscan.com/api/analysis/dependency-diff \
-              -H 'Content-Type: application/json' \
-              -H 'User-Agent: npmscan-action/1' \
-              --data-binary @- > "$WORK/result.json" \
-          || { echo "::error::npmscan API call failed: $(cat "$WORK/result.json" 2>/dev/null)"; exit 1; }
-
-        FLAGGED=$(jq '.flaggedCount // 0' "$WORK/result.json")
-        echo "flagged-count=$FLAGGED" >> "$GITHUB_OUTPUT"
-
-        {
-          echo "<!-- npmscan-action -->"
-          echo "## 🛡️ npmscan dependency check"
-          echo
-          jq -r .summary "$WORK/result.json"
-          echo
-          jq -r '[(.added + .changed)[] | select(.isVulnerable or .installScriptIntroduced or .sourceIntegrityChanged)]
-            | if length == 0 then "✅ No risky packages found." else
-                "| Package | Version | Severity | New install script | Source changed |\n|---|---|---|---|---|\n" +
-                (map("| [\(.name)](\(.npmscanUrl)) | \(.beforeVersion // "new") → \(.afterVersion // "?") | \(.highestSeverity // "–") | \(if .installScriptIntroduced then "⚠️ yes" else "no" end) | \(if .sourceIntegrityChanged then "⚠️ yes" else "no" end) |") | join("\n"))
-              end' "$WORK/result.json"
-          echo
-          echo "<sub>Scanned \`$FILE\` with [npmscan.com](https://npmscan.com)</sub>"
-        } > "$WORK/comment.md"
-
-        cat "$WORK/comment.md" >> "$GITHUB_STEP_SUMMARY"
-
-        gh pr comment "$PR" --body-file "$WORK/comment.md" --edit-last --create-if-none \
-          || echo "::warning::Could not post PR comment (fork PRs get a read-only token) — see the job summary."
-
-        if [ "$FAIL_ON" = "true" ] && [ "$FLAGGED" -gt 0 ]; then
-          echo "::error::npmscan flagged $FLAGGED package(s)"; exit 1
-        fi
+        PR: ${{ github.event.pull_request.number }}
+        BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+      run: bash "$GITHUB_ACTION_PATH/scripts/scan.sh"

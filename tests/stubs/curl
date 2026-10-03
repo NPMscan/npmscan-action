@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Stub curl: saves the request body, writes $FAKE_RESPONSE to the -o file and
+# prints $FAKE_CODE (default 200) like -w '%{http_code}'. FAKE_CODE=000 fails
+# like a network error.
+out=""
+while [ $# -gt 0 ]; do
+  if [ "$1" = -o ]; then out=$2; shift; fi
+  shift
+done
+cat > "$STUB_LOG/request.json"
+echo x >> "$STUB_LOG/curl.calls"
+if [ "${FAKE_CODE:-200}" = 000 ]; then
+  echo "curl: (7) Failed to connect to npmscan.com port 443" >&2
+  printf '000'
+  exit 7
+fi
+cp "${FAKE_RESPONSE:-/dev/null}" "$out"
+printf '%s' "${FAKE_CODE:-200}"
