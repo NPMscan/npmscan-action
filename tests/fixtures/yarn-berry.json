@@ -1,0 +1,111 @@
+{
+  "summary": "Compared yarn-lock snapshots: 0 added, 0 removed, 1 changed — 1 flagged for a newly introduced install script, source/integrity change, override change, and/or vulnerability.",
+  "beforeFormat": "yarn-lock",
+  "afterFormat": "yarn-lock",
+  "comparisonNote": null,
+  "added": [],
+  "removed": [],
+  "changed": [
+    {
+      "name": "lodash",
+      "actualName": null,
+      "npmscanUrl": "https://npmscan.com/package/lodash",
+      "beforeVersion": "4.17.21",
+      "afterVersion": "4.17.15",
+      "coexistingVersions": null,
+      "changeType": "downgrade",
+      "hasInstallScript": false,
+      "installScriptIntroduced": false,
+      "installScriptKeys": [],
+      "installScriptKeysIntroduced": [],
+      "sourceIntegrityChanged": false,
+      "resolvedUrl": null,
+      "integrity": "10c0/2ab9a3b5a7a1d4e9b9f1c2f0e8f5b9c34d1d71b0c9f3fae0a2ae39d6a6e3a4d7f7c5d2a3b1e0f9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4",
+      "isVulnerable": true,
+      "highestSeverity": "HIGH",
+      "vulnerabilities": [
+        {
+          "id": "GHSA-29mw-wpgm-hmr9",
+          "summary": "Regular Expression Denial of Service (ReDoS) in lodash",
+          "severity": "MODERATE",
+          "aliases": [
+            "CVE-2020-28500"
+          ],
+          "publishedAt": "2022-01-06T20:30:46Z",
+          "fixedVersion": "4.17.21",
+          "npmscanUrl": "https://npmscan.com/vulnerability/GHSA-29mw-wpgm-hmr9"
+        },
+        {
+          "id": "GHSA-35jh-r3h4-6jhm",
+          "summary": "Command Injection in lodash",
+          "severity": "HIGH",
+          "aliases": [
+            "CVE-2021-23337",
+            "CVE-2026-4800"
+          ],
+          "publishedAt": "2021-05-06T16:05:51Z",
+          "fixedVersion": "4.17.21",
+          "npmscanUrl": "https://npmscan.com/vulnerability/GHSA-35jh-r3h4-6jhm"
+        },
+        {
+          "id": "GHSA-f23m-r3pf-42rh",
+          "summary": "lodash vulnerable to Prototype Pollution via array path bypass in `_.unset` and `_.omit`",
+          "severity": "MODERATE",
+          "aliases": [
+            "CVE-2025-13465",
+            "CVE-2026-2950"
+          ],
+          "publishedAt": "2026-04-01T23:50:27Z",
+          "fixedVersion": "4.18.0",
+          "npmscanUrl": "https://npmscan.com/vulnerability/GHSA-f23m-r3pf-42rh"
+        },
+        {
+          "id": "GHSA-p6mc-m468-83gw",
+          "summary": "Prototype Pollution in lodash",
+          "severity": "HIGH",
+          "aliases": [
+            "CVE-2020-8203"
+          ],
+          "publishedAt": "2020-07-15T19:15:48Z",
+          "fixedVersion": "4.17.19",
+          "npmscanUrl": "https://npmscan.com/vulnerability/GHSA-p6mc-m468-83gw"
+        },
+        {
+          "id": "GHSA-r5fr-rjxr-66jc",
+          "summary": "lodash vulnerable to Code Injection via `_.template` imports key names",
+          "severity": "HIGH",
+          "aliases": [
+            "CVE-2021-23337",
+            "CVE-2026-4800"
+          ],
+          "publishedAt": "2026-04-01T23:51:12Z",
+          "fixedVersion": "4.18.0",
+          "npmscanUrl": "https://npmscan.com/vulnerability/GHSA-r5fr-rjxr-66jc"
+        },
+        {
+          "id": "GHSA-xxjr-mmjv-4gpg",
+          "summary": "Lodash has Prototype Pollution Vulnerability in `_.unset` and `_.omit` functions",
+          "severity": "MODERATE",
+          "aliases": [
+            "CVE-2025-13465",
+            "CVE-2026-2950"
+          ],
+          "publishedAt": "2026-01-21T23:01:22Z",
+          "fixedVersion": "4.17.23",
+          "npmscanUrl": "https://npmscan.com/vulnerability/GHSA-xxjr-mmjv-4gpg"
+        }
+      ],
+      "vulnerabilityDelta": "still-vulnerable",
+      "resolutionNote": null
+    }
+  ],
+  "totalAdded": 0,
+  "totalRemoved": 0,
+  "totalChanged": 1,
+  "flaggedCount": 1,
+  "truncated": false,
+  "truncationNote": null,
+  "enrichmentNote": null,
+  "projectLifecycleChanges": null,
+  "overridesChanges": null
+}

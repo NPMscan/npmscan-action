@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Report a security vulnerability
+    url: https://github.com/NPMscan/npmscan-action/security/advisories/new
+    about: Please report security issues privately, not as a public issue.
+  - name: Documentation
+    url: https://npmscan.com/docs/github-action
+    about: Setup guide, every input and output, and troubleshooting.

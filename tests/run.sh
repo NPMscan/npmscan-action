@@ -82,6 +82,8 @@ assert_contains "$COMMENT" "❌ **1 finding blocks this PR.**"
 assert_contains "$COMMENT" '[`lodash`](https://npmscan.com/package/lodash)'
 assert_contains "$COMMENT" "HIGH · 6 advisories"
 assert_contains "$COMMENT" "<details><summary>Advisories</summary>"
+assert_contains "$COMMENT" '\_.unset  and  \_.omit' "advisory text is escaped so it can't turn into markdown"
+assert_contains "$COMMENT" '- …and 1 more for `lodash` on [npmscan.com](https://npmscan.com/package/lodash)'
 assert_contains "$OUT" "::error file=package.json,line=3,title=npmscan%3A lodash::lodash 4.17.21 → 4.17.15: HIGH vulnerability"
 assert_contains "$GHLOG" "-X POST repos/acme/app/issues/7/comments"
 assert_eq "$SUMMARY" "$COMMENT" "job summary matches comment"
@@ -129,7 +131,19 @@ assert_contains "$COMMENT" '⚠️ changed → `evil.example.com`'
 assert_contains "$OUT" "file=package-lock.json,line=5,title=npmscan%3A esbuild"
 assert_contains "$OUT" "file=package-lock.json,line=4,title=npmscan%3A ms"
 
+t "Yarn Berry lockfile upgrade is reported against the real API response"
+new_repo yarn.lock "$(cat "$FIX/yarn-berry-before.lock")"
+head_commit yarn.lock "$(cat "$FIX/yarn-berry-after.lock")"
+run_scan INPUT_FILE=yarn.lock FAKE_RESPONSE="$FIX/yarn-berry.json"
+assert_eq "$CODE" 1 "exit code"
+assert_contains "$OUTPUT" "flagged-count=1"
+assert_contains "$COMMENT" '| ❌ | [`lodash`](https://npmscan.com/package/lodash) | `4.17.21` → `4.17.15` | HIGH · 6 advisories | – | – |'
+assert_contains "$OUT" "::error file=yarn.lock,line=16,title=npmscan%3A lodash"
+assert_contains "$(jq -r .before "$LOG/request.json")" "__metadata:"
+
 t "install-script and source thresholds can be turned off"
+new_repo package-lock.json '{"lockfileVersion":3,"packages":{"node_modules/ms":{"version":"2.1.3"}}}'
+head_commit package-lock.json '{"lockfileVersion":3,"packages":{"node_modules/ms":{"version":"2.1.3","resolved":"https://evil.example.com/ms-2.1.3.tgz"},"node_modules/esbuild":{"version":"0.19.0","hasInstallScript":true}}}'
 run_scan INPUT_FILE=package-lock.json FAKE_RESPONSE="$FIX/install-and-source.json" \
   INPUT_FAIL_ON_INSTALL_SCRIPT=false INPUT_FAIL_ON_SOURCE_CHANGE=no INPUT_FAIL_ON_SEVERITY=high
 assert_eq "$CODE" 0 "exit code"

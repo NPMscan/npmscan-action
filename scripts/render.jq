@@ -14,7 +14,7 @@ def count($n; $one; $many): "\($n) \(if $n == 1 then $one else $many end)";
 # so strip what could break out of a table cell, code span or annotation.
 def clean($max): tostring | gsub("[\\x00-\\x1f`]"; " ") | if length > $max then .[0:$max] + "…" else . end;
 def code: clean(100) | if . == "" then "–" else "`" + gsub("\\|"; "\\|") + "`" end;
-def prose($max): clean($max) | gsub("@"; "@&#8203;") | gsub("\\|"; "\\|") | gsub("<"; "&lt;");
+def prose($max): clean($max) | gsub("(?<c>[\\\\*_~\\[\\]|])"; "\\\(.c)") | gsub("@"; "@&#8203;") | gsub("<"; "&lt;");
 def link($url; $text):
   if ($url | type) == "string" and ($url | test("^https://npmscan\\.com/[A-Za-z0-9@/._~%+-]*$"))
   then "[\($text)](\($url))" else $text end;
@@ -77,10 +77,13 @@ def advisories_block:
   [ .[] | select(.vuln and (.advisories | length) > 0) ][0:20]
   | if length == 0 then empty else
       "<details><summary>Advisories</summary>\n\n"
-      + ( map(. as $p | $p.advisories[0:5][]
-            | "- \("\($p.name)@\($p.after // "?")" | code) — \(link(.npmscanUrl; (.id // "advisory" | prose(40)))) "
-              + "**\(.severity // "UNKNOWN" | clean(20))** \(.summary // "" | prose(160))"
-              + (if .fixedVersion then " · fixed in \(.fixedVersion | code)" else "" end))
+      + ( map(. as $p
+            | ($p.advisories[0:5][]
+               | "- \("\($p.name)@\($p.after // "?")" | code) — \(link(.npmscanUrl; (.id // "advisory" | prose(40)))) "
+                 + "**\(.severity // "UNKNOWN" | clean(20))** \(.summary // "" | prose(160))"
+                 + (if .fixedVersion then " · fixed in \(.fixedVersion | code)" else "" end)),
+              (($p.advisories | length) - 5 | select(. > 0)
+               | "- …and \(.) more for \($p.name | code) on \(link($p.url; "npmscan.com"))"))
           | join("\n"))
       + "\n\n</details>"
     end;

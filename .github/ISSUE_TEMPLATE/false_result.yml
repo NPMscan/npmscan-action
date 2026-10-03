@@ -1,0 +1,51 @@
+name: False positive / false negative
+description: npmscan flagged something that's fine, or missed something it should have caught.
+labels: [detection]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Detection quality is the most important thing we work on, so these reports really help.
+        If the miss could be exploited on purpose, please use [private reporting](https://github.com/NPMscan/npmscan-action/security/advisories/new) instead.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What went wrong?
+      options:
+        - Flagged something that is fine (false positive)
+        - Missed something risky (false negative)
+    validations:
+      required: true
+  - type: dropdown
+    id: finding
+    attributes:
+      label: Which check?
+      options:
+        - Vulnerability
+        - Install script
+        - Source / integrity change
+        - Root lifecycle script
+        - Override / resolution
+        - Something else
+    validations:
+      required: true
+  - type: input
+    id: package
+    attributes:
+      label: Package and versions
+      placeholder: lodash 4.17.21 → 4.17.15
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is the result wrong?
+      description: Links to advisories, the package's source, or the lockfile diff help a lot.
+    validations:
+      required: true
+  - type: textarea
+    id: comment
+    attributes:
+      label: npmscan's PR comment
+      description: Paste the comment or the relevant table row.
+      render: markdown
