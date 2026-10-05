@@ -56,29 +56,11 @@ Want to try it before it blocks anything? Add `with: { mode: warn }`.
 
 ## What the PR comment looks like
 
-Real output for a PR that downgrades `lodash` to a vulnerable version (advisory list shortened):
+A real comment from a PR that downgrades `lodash` to a vulnerable version (here in `mode: warn`):
 
-> ## 🛡️ npmscan dependency check
->
-> ❌ **1 finding blocks this PR.**
->
-> ### `package.json`
->
-> 0 added · 0 removed · 1 changed · **1 flagged**
->
-> | | Package | Version | Vulnerabilities | Install scripts | Source / integrity |
-> |---|---|---|---|---|---|
-> | ❌ | [`lodash`](https://npmscan.com/package/lodash) | `4.17.21` → `4.17.15` | HIGH · 6 advisories | – | – |
->
-> <details><summary>Advisories</summary>
->
-> - `lodash@4.17.15` — [GHSA-35jh-r3h4-6jhm](https://npmscan.com/vulnerability/GHSA-35jh-r3h4-6jhm) **HIGH** Command Injection in lodash · fixed in `4.17.21`
-> - `lodash@4.17.15` — [GHSA-p6mc-m468-83gw](https://npmscan.com/vulnerability/GHSA-p6mc-m468-83gw) **HIGH** Prototype Pollution in lodash · fixed in `4.17.19`
-> - …and 4 more for `lodash` on [npmscan.com](https://npmscan.com/package/lodash)
->
-> </details>
->
-> <sub>`mode: block` · `fail-on-severity: low` · `fail-on-install-script: true` · `fail-on-source-change: true` · Scanned by [npmscan.com](https://npmscan.com)</sub>
+<p align="center">
+  <img src="https://raw.githubusercontent.com/NPMscan/npmscan-action/main/.github/assets/pr-comment.png" alt="npmscan PR comment flagging lodash 4.17.15 with a HIGH severity vulnerability" width="760">
+</p>
 
 The comment is edited in place on every push, and the same report goes to the job summary.
 
@@ -197,11 +179,11 @@ and findings still show up as annotations and still fail the check.
 requires immutable references, pin to the full commit SHA of a release instead:
 
 ```yaml
-      - uses: npmscan/npmscan-action@a2719f6a5f15d45912ea1f02a01934236a741a90 # v1.1.0
+      - uses: npmscan/npmscan-action@9345a37fdf1a21a8ee1e9d5832b58fc8766c02ca # v1.2.0
 ```
 
 Pick the SHA of the [latest release](https://github.com/NPMscan/npmscan-action/releases), or print it with
-`git ls-remote https://github.com/NPMscan/npmscan-action refs/tags/v1.1.0`. To keep a pinned SHA up to date,
+`git ls-remote https://github.com/NPMscan/npmscan-action refs/tags/v1.2.0`. To keep a pinned SHA up to date,
 let Dependabot do it:
 
 ```yaml
