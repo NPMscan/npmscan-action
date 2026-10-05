@@ -1,0 +1,55 @@
+name: Bug report
+description: The action crashed, posted something wrong, or didn't run when it should have.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting! Please check [Troubleshooting](https://npmscan.com/docs/github-action#troubleshooting) first.
+        **Security issues** go to [private reporting](https://github.com/NPMscan/npmscan-action/security/advisories/new), not here.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: workflow
+    attributes:
+      label: Workflow file
+      description: The npmscan job from your `.github/workflows/*.yml`.
+      render: yaml
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Step log
+      description: The npmscan step's log (click the failed check → the npmscan step). Remove anything private.
+      render: text
+  - type: input
+    id: run-url
+    attributes:
+      label: Link to the run or PR (if public)
+  - type: dropdown
+    id: package-manager
+    attributes:
+      label: Scanned file
+      options:
+        - package-lock.json
+        - npm-shrinkwrap.json
+        - yarn.lock (classic)
+        - yarn.lock (Berry)
+        - pnpm-lock.yaml
+        - package.json
+        - several files (files input)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Action version
+      description: What you have after `uses:` — e.g. `npmscan/npmscan-action@v1` or a commit SHA.
+    validations:
+      required: true
