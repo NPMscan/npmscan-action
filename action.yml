@@ -16,13 +16,13 @@ inputs:
     description: "`block` fails the check on findings that meet the fail-on-* thresholds; `warn` only reports them"
     default: block
   fail-on-severity:
-    description: Lowest vulnerability severity that blocks — low, moderate, high, critical, or none to never block on vulnerabilities
+    description: Lowest vulnerability severity that blocks — low, moderate, high, critical, or none to never block on vulnerabilities. Known malware blocks regardless.
     default: low
   fail-on-install-script:
-    description: Block when a dependency gains an install script, a new dependency has one, or a root lifecycle script (preinstall/install/postinstall/prepare) is added or changed
+    description: Block when a dependency gains a preinstall/install/postinstall script, a new dependency has one, or a root lifecycle script (preinstall/install/postinstall/prepare) is added or changed
     default: 'true'
   fail-on-source-change:
-    description: Block when a lockfile entry's tarball URL or integrity hash changes, or an override/resolution is added or changed
+    description: Block when a lockfile entry's tarball URL or integrity hash changes, its tarball is a different package or version than declared, or an override/resolution is added or changed
     default: 'true'
   fail-on-error:
     description: Fail the check when the scan itself cannot run (npmscan API unreachable, file too large). When false, errors are reported as warnings.

@@ -325,6 +325,49 @@ t "fork PR with a read-only token gets a fork hint"
 run_scan FAKE_RESPONSE="$FIX/clean.json" GH_FAIL_WRITE=1 HEAD_REPO=someone/app
 assert_contains "$OUT" "PRs from forks get a read-only token"
 
+t "a lockfile entry pointing at another package's tarball blocks as a source change"
+# Real API response: left-pad@1.3.0 added with resolved = minimist-0.0.8.tgz.
+# identityMismatch is true but sourceIntegrityChanged is null (nothing to
+# compare against for a new package), so before v1.3.0 this was only shown as
+# a left-pad vulnerability and passed with fail-on-severity: none.
+new_repo package-lock.json '{"lockfileVersion":3,"packages":{"node_modules/ms":{"version":"2.1.3"}}}'
+head_commit package-lock.json '{
+  "lockfileVersion": 3,
+  "packages": {
+    "node_modules/ms": {"version": "2.1.3"},
+    "node_modules/left-pad": {"version": "1.3.0", "resolved": "https://registry.npmjs.org/minimist/-/minimist-0.0.8.tgz"}
+  }
+}'
+run_scan INPUT_FILE=package-lock.json FAKE_RESPONSE="$FIX/identity-mismatch.json" INPUT_FAIL_ON_SEVERITY=none
+assert_eq "$CODE" 1 "exit code"
+assert_contains "$OUTPUT" "blocking-count=1"
+assert_contains "$COMMENT" '⚠️ tarball is `minimist@0.0.8`'
+assert_contains "$OUT" "lockfile tarball is minimist@0.0.8, not the declared version"
+run_scan INPUT_FILE=package-lock.json FAKE_RESPONSE="$FIX/identity-mismatch.json" INPUT_FAIL_ON_SEVERITY=none INPUT_FAIL_ON_SOURCE_CHANGE=false
+assert_eq "$CODE" 0 "fail-on-source-change: false turns it off"
+assert_contains "$OUTPUT" "flagged-count=1"
+
+t "known malware blocks regardless of fail-on-severity"
+# Real API response: ua-parser-js 0.7.28 -> 0.7.29, whose only advisory
+# (GHSA-pjwm-rvh2-c87w) is HIGH with isMalware: true.
+new_repo package-lock.json '{"lockfileVersion":3,"packages":{"node_modules/ua-parser-js":{"version":"0.7.28"}}}'
+head_commit package-lock.json '{
+  "lockfileVersion": 3,
+  "packages": {
+    "node_modules/ua-parser-js": {"version": "0.7.29"}
+  }
+}'
+run_scan INPUT_FILE=package-lock.json FAKE_RESPONSE="$FIX/malware.json" INPUT_FAIL_ON_SEVERITY=critical
+assert_eq "$CODE" 1 "exit code"
+assert_contains "$OUTPUT" "blocking-count=1"
+assert_contains "$COMMENT" "☠️ **malware** · HIGH · 1 advisory"
+assert_contains "$OUT" "::error file=package-lock.json,line=4,title=npmscan%3A ua-parser-js::ua-parser-js 0.7.28 → 0.7.29: known malware; HIGH vulnerability"
+run_scan INPUT_FILE=package-lock.json FAKE_RESPONSE="$FIX/malware.json" INPUT_FAIL_ON_SEVERITY=none
+assert_eq "$CODE" 1 "fail-on-severity: none still blocks malware"
+run_scan INPUT_FILE=package-lock.json FAKE_RESPONSE="$FIX/malware.json" INPUT_MODE=warn
+assert_eq "$CODE" 0 "mode: warn reports malware without failing"
+assert_contains "$OUTPUT" "blocking-count=1"
+
 t "invalid inputs fail fast"
 run_scan INPUT_MODE=enforce
 assert_eq "$CODE" 1 "bad mode"

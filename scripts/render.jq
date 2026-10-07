@@ -28,20 +28,31 @@ def package_findings($file):
   ((.added // []) + (.changed // []))[]
   | . as $p
   | ($p.isVulnerable == true) as $vuln
+  # Known malware (OSV MAL-* record or a GitHub advisory with CWE-506) blocks
+  # whatever fail-on-severity says: these advisories are often only HIGH, so
+  # a severity threshold alone let them through.
+  | ([ $p.vulnerabilities[]? | select(.isMalware == true) ] | length > 0) as $malware
   | ($p.installScriptIntroduced == true or ($p.beforeVersion == null and $p.hasInstallScript == true)) as $install
-  | ($p.sourceIntegrityChanged == true) as $source
-  | select($vuln or $install or $source)
+  # identityMismatch: the lockfile's tarball is a different package or version
+  # than the entry declares (and the server's vulnerability data describes the
+  # real tarball). sourceIntegrityChanged alone misses this for a newly added
+  # package (no before side) and for an upgrade swapped on the same registry.
+  | ($p.identityMismatch == true) as $identity
+  | ($p.sourceIntegrityChanged == true or $identity) as $source
+  | select($vuln or $malware or $install or $source)
   | ($p.highestSeverity // "UNKNOWN") as $severity
   | {
       file: $file, kind: "package", name: ($p.name // "?"), url: $p.npmscanUrl,
       before: $p.beforeVersion, after: $p.afterVersion,
-      vuln: $vuln, severity: $severity, advisories: ($p.vulnerabilities // []),
+      vuln: $vuln, malware: $malware, severity: $severity, advisories: ($p.vulnerabilities // []),
       install: $install,
       scripts: ((($p.installScriptKeysIntroduced // [])
                  + (if $p.beforeVersion == null then $p.installScriptKeys // [] else [] end)) | unique),
       source: $source, resolvedHost: ($p.resolvedUrl | host),
+      realTarball: (if $identity and ($p.tarballName | type) == "string"
+                    then "\($p.tarballName)@\($p.tarballVersion // "?")" else null end),
       risky: true,
-      blocking: (($vuln and ($severity | rank) >= threshold)
+      blocking: ($malware or ($vuln and ($severity | rank) >= threshold)
                  or ($install and $cfg.failInstall) or ($source and $cfg.failSource))
     };
 
@@ -59,13 +70,15 @@ def package_row:
   (.advisories | length) as $n
   | "| \(mark) | \(link(.url; (.name | code))) "
   + "| \(if .before == null then "new" else (.before | code) end) → \(.after // "?" | code) "
-  + "| \(if .vuln then (.severity | clean(20)) + (if $n > 0 then " · " + count($n; "advisory"; "advisories") else "" end) else "–" end) "
+  + "| \(if .vuln then (if .malware then "☠️ **malware** · " else "" end) + (.severity | clean(20)) + (if $n > 0 then " · " + count($n; "advisory"; "advisories") else "" end) else "–" end) "
   + "| \(if .install then
           (if (.scripts | length) > 0 then "⚠️ adds " + (.scripts | map(code) | join(", "))
            elif .before == null then "⚠️ new package with install scripts"
            else "⚠️ install script added" end)
         else "–" end) "
-  + "| \(if .source then "⚠️ changed" + (if .resolvedHost then " → " + (.resolvedHost | code) else "" end) else "–" end) |";
+  + "| \(if .realTarball then "⚠️ tarball is " + (.realTarball | code)
+        elif .source then "⚠️ changed" + (if .resolvedHost then " → " + (.resolvedHost | code) else "" end)
+        else "–" end) |";
 
 def change_row:
   "| \(mark) | \(.name | code) | \(.change) | "
@@ -80,6 +93,7 @@ def advisories_block:
       + ( map(. as $p
             | ($p.advisories[0:5][]
                | "- \("\($p.name)@\($p.after // "?")" | code) — \(link(.npmscanUrl; (.id // "advisory" | prose(40)))) "
+                 + (if .isMalware == true then "☠️ **malware** " else "" end)
                  + "**\(.severity // "UNKNOWN" | clean(20))** \(.summary // "" | prose(160))"
                  + (if .fixedVersion then " · fixed in \(.fixedVersion | code)" else "" end)),
               (($p.advisories | length) - 5 | select(. > 0)
@@ -121,9 +135,11 @@ def file_section:
 def annotation_message:
   if .kind == "package" then
     "\(.name) \(.before // "new") → \(.after // "?"): "
-    + ([ (if .vuln then "\(.severity) vulnerability (\(count(.advisories | length; "advisory"; "advisories")))" else empty end),
+    + ([ (if .malware then "known malware" else empty end),
+         (if .vuln then "\(.severity) vulnerability (\(count(.advisories | length; "advisory"; "advisories")))" else empty end),
          (if .install then "install script added" + (if (.scripts | length) > 0 then " (\(.scripts | join(", ")))" else "" end) else empty end),
-         (if .source then "tarball source/integrity changed" + (if .resolvedHost then " (now \(.resolvedHost))" else "" end) else empty end)
+         (if .realTarball then "lockfile tarball is \(.realTarball), not the declared version"
+          elif .source then "tarball source/integrity changed" + (if .resolvedHost then " (now \(.resolvedHost))" else "" end) else empty end)
        ] | join("; "))
   elif .kind == "script" then "Root \(.name) script \(.change): \(.value | plain)"
   else "Override for \(.name) \(.change): \(.value | plain)" end;

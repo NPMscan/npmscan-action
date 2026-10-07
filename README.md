@@ -24,9 +24,9 @@
 
 Every pull request that changes `package.json` or a lockfile is checked for:
 
-- **Known vulnerabilities** from OSV.dev and GitHub Advisories
+- **Known vulnerabilities and known malware** from OSV.dev and GitHub Advisories
 - **New install scripts**: a dependency that suddenly runs code on `npm install`, the usual sign of a hijacked package
-- **Repointed lockfile entries**: the same version now downloading a different tarball, or an upgrade that switches to an unknown server. CVE scanners don't check for this.
+- **Repointed lockfile entries**: the same version now downloading a different tarball, an entry whose tarball is actually a different package, or an upgrade that switches to an unknown server. CVE scanners don't check for this.
 - **Changes to your own install scripts and overrides**, which can run code or force a version without touching the dependency list
 
 npmscan posts one PR comment, marks each finding on its line in **Files changed**, and fails the check when something meets your thresholds.
@@ -68,14 +68,17 @@ The comment is edited in place on every push, and the same report goes to the jo
 
 | Finding | Blocks by default | To stop it blocking |
 |---|---|---|
+| Known malware (a malicious-package advisory) | always | only `mode: warn` |
 | Known vulnerability | any severity | `fail-on-severity: high` (or `critical`, `none`) |
-| A dependency gains an install script, or a new dependency has one | yes | `fail-on-install-script: false` |
+| A dependency gains a `preinstall` / `install` / `postinstall` script, or a new dependency has one | yes | `fail-on-install-script: false` |
 | Your own root `preinstall` / `install` / `postinstall` / `prepare` script is added or changed | yes | `fail-on-install-script: false` |
-| The same version now resolves to a different tarball URL or integrity hash, or an upgrade moves to a different host | yes | `fail-on-source-change: false` |
+| The same version now resolves to a different tarball URL or integrity hash, the tarball is a different package or version than the lockfile declares, or an upgrade moves to a different host | yes | `fail-on-source-change: false` |
 | An `overrides` / `resolutions` entry is added or changed | yes | `fail-on-source-change: false` |
 
 Findings below your thresholds are still reported. They just don't fail the check.
 Ordinary upgrades (new version, new tarball from the same registry) are not flagged as source changes.
+A dependency's `prepare` script is not counted: npm never runs it when the package is installed from the registry.
+Known malware blocks even with `fail-on-severity: none`: these advisories are often rated only HIGH, and no threshold should let one through.
 
 ## Why npmscan
 
@@ -91,9 +94,9 @@ Ordinary upgrades (new version, new tarball from the same registry) are not flag
 | `file` | `package-lock.json` | `package.json`, `package-lock.json`, `npm-shrinkwrap.json`, `yarn.lock` (classic or Berry) or `pnpm-lock.yaml`, relative to the repo root |
 | `files` | | Several files, one per line or comma-separated. Overrides `file`. |
 | `mode` | `block` | `block` fails the check on findings that meet the thresholds; `warn` only reports them |
-| `fail-on-severity` | `low` | Lowest severity that blocks: `low`, `moderate`, `high`, `critical`, or `none` |
+| `fail-on-severity` | `low` | Lowest severity that blocks: `low`, `moderate`, `high`, `critical`, or `none`. Known malware blocks regardless. |
 | `fail-on-install-script` | `true` | Block on new install scripts (see the table above) |
-| `fail-on-source-change` | `true` | Block on repointed tarballs and changed overrides |
+| `fail-on-source-change` | `true` | Block on repointed or swapped tarballs and changed overrides |
 | `fail-on-error` | `false` | Fail when the scan itself can't run (npmscan.com unreachable, file over 8 MB). By default this is a warning, so an outage never blocks your merges. |
 | `github-token` | `${{ github.token }}` | Token used to post the PR comment |
 | `fail-on-flagged` | `true` | Deprecated: `false` is the same as `mode: warn` |
