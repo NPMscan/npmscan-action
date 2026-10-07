@@ -182,11 +182,11 @@ and findings still show up as annotations and still fail the check.
 requires immutable references, pin to the full commit SHA of a release instead:
 
 ```yaml
-      - uses: npmscan/npmscan-action@9345a37fdf1a21a8ee1e9d5832b58fc8766c02ca # v1.2.0
+      - uses: npmscan/npmscan-action@de14168f65640a4ed1f0e82ad3ad8c80483d360d # v1.3.0
 ```
 
 Pick the SHA of the [latest release](https://github.com/NPMscan/npmscan-action/releases), or print it with
-`git ls-remote https://github.com/NPMscan/npmscan-action refs/tags/v1.2.0`. To keep a pinned SHA up to date,
+`git ls-remote https://github.com/NPMscan/npmscan-action refs/tags/v1.3.0`. To keep a pinned SHA up to date,
 let Dependabot do it:
 
 ```yaml
