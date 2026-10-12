@@ -20,6 +20,17 @@
   📖 <a href="https://npmscan.com/docs/github-action"><strong>Documentation</strong></a>
 </p>
 
+<p align="center">
+  Official integrations:
+  <a href="https://chatgpt.com/plugins/plugin_asdk_app_6a6a699e6f3481918d5e6034432894f2?q=npm"><strong>ChatGPT</strong></a>
+  ·
+  <a href="https://claude.ai/customize/skills/id/aa8fcafe-0bcd-41b6-9e07-6c7ebbb71153%40anthropic-plugin-directory"><strong>Claude</strong></a>
+</p>
+
+<p align="center">
+  Listed in ChatGPT and Anthropic's official Claude directory via the npmscan MCP integration.
+</p>
+
 ---
 
 Every pull request that changes `package.json` or a lockfile is checked for:
