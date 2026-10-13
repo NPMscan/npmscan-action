@@ -1,0 +1,52 @@
+wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,next_action,notes
+1,openapi-ts/openapi-typescript,pr_opened,primary,,pnpm-lock.yaml,https://github.com/openapi-ts/openapi-typescript/pull/2879,salemalem/openapi-typescript:ci/add-npmscan-warn-mode,,monitor_pr,
+1,typeorm/typeorm,pr_opened,primary,,pnpm-lock.yaml,https://github.com/typeorm/typeorm/pull/12965,salemalem/typeorm:ci/add-npmscan-warn-mode,,monitor_pr,
+1,medusajs/medusa,pr_opened,primary,,yarn.lock,https://github.com/medusajs/medusa/pull/17264,salemalem/medusa:ci/add-npmscan-warn-mode,,monitor_pr,
+2,ghostfolio/ghostfolio,pr_opened,primary,,package-lock.json,https://github.com/ghostfolio/ghostfolio/pull/8153,salemalem/ghostfolio:ci/add-npmscan-warn-mode,,monitor_pr,
+2,modelcontextprotocol/typescript-sdk,pr_opened,primary,,pnpm-lock.yaml,https://github.com/modelcontextprotocol/typescript-sdk/pull/3009,salemalem/typescript-sdk:ci/add-npmscan-warn-mode,,monitor_pr,
+2,VoltAgent/voltagent,pr_opened,primary,,pnpm-lock.yaml,https://github.com/VoltAgent/voltagent/pull/1449,salemalem/voltagent:ci/add-npmscan-warn-mode,,monitor_pr,
+3,sequelize/sequelize,pr_opened,primary,,yarn.lock,https://github.com/sequelize/sequelize/pull/18552,salemalem/sequelize:ci/add-npmscan-warn-mode,c08f9714e36d8967398e8139b74202059db81526,monitor_pr,
+3,maplibre/maplibre-gl-js,pr_opened,primary,,package-lock.json,https://github.com/maplibre/maplibre-gl-js/pull/8744,salemalem/maplibre-gl-js:ci/add-npmscan-warn-mode,be214de4d96289192190e198a553f852f39d7bac,monitor_pr,
+3,stenciljs/core,pr_opened,primary,,package-lock.json,https://github.com/stenciljs/core/pull/6953,salemalem/core:ci/add-npmscan-warn-mode,acd29011438be3646fbb38bcd0d0d2111b07afdf,monitor_pr,
+3,web3/web3.js,blocked_pr_creation,primary,,yarn.lock,,salemalem/web3.js:ci/add-npmscan-warn-mode,f78dff16e2e583d22b38cc2761561773c7f7a0df,replace_or_retry_later,GitHub rejected PR creation because the repository is archived and read-only
+4,lukeautry/tsoa,pr_opened,primary,,yarn.lock,https://github.com/lukeautry/tsoa/pull/1890,salemalem/tsoa:ci/add-npmscan-warn-mode,dfa9a38ab14cd3dee7e34163016d0f8183cb9096,monitor_pr,
+4,LuanRT/YouTube.js,pr_opened,primary,,package-lock.json,https://github.com/LuanRT/YouTube.js/pull/1296,salemalem/YouTube.js:ci/add-npmscan-warn-mode,e0f872e3dcd309c782cd8a3fdef306c7a8acef66,monitor_pr,
+4,Ironclad/rivet,pr_opened,primary,,yarn.lock,https://github.com/Ironclad/rivet/pull/551,salemalem/rivet:ci/add-npmscan-warn-mode,e0b1da0a3aaf4050d9380f8014615c16fa251b0a,monitor_pr,
+4,acacode/swagger-typescript-api,skipped_unsupported_lockfile,primary,,bun.lock,,,,revisit_after_support,Skipped because bun.lock is not officially supported yet
+5,codex-team/editor.js,pr_opened,primary,,yarn.lock,https://github.com/codex-team/editor.js/pull/3036,salemalem/editor.js:ci/add-npmscan-warn-mode,c1bce2a5e018407bffe50be27e5fbd0502dbf8bb,monitor_pr,
+5,dethcrypto/TypeChain,pr_opened,primary,,pnpm-lock.yaml,https://github.com/dethcrypto/TypeChain/pull/926,salemalem/TypeChain:ci/add-npmscan-warn-mode,5899b7e139677d5cb615ab40f38b36571d72d390,monitor_pr,
+5,isomorphic-git/isomorphic-git,pr_opened,primary,,package-lock.json,https://github.com/isomorphic-git/isomorphic-git/pull/2459,salemalem/isomorphic-git:ci/add-npmscan-warn-mode,f71edeee41e9ee70c0181d15170914aa6b5a2ddc,monitor_pr,
+6,tanstack/query,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/TanStack/query/pull/12005,salemalem/query:ci/add-npmscan-warn-mode,4a17712931e70e42a2d142a422500dc646fb9366,monitor_pr,
+6,TanStack/router,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/TanStack/router/pull/8707,salemalem/router:ci/add-npmscan-warn-mode,13ff921cc767e1abe2c670d9549d6dc0d6c449e8,monitor_pr,
+6,vitest-dev/vitest,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/vitest-dev/vitest/pull/11572,salemalem/vitest:ci/add-npmscan-warn-mode,a4edbd43aae096cea7204332afb2e0ab20b44eff,monitor_pr,
+6,nitrojs/nitro,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/nitrojs/nitro/pull/4774,salemalem/nitro:ci/add-npmscan-warn-mode,67312af936036ac3509b81e6da7d5f67a30fc13f,monitor_pr,
+6,h3js/h3,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/h3js/h3/pull/1597,salemalem/h3:ci/add-npmscan-warn-mode,88fc7bd71f6ca7554dcd9f997b1a3497433217d6,monitor_pr,
+6,faker-js/faker,pr_opened,primary,next,pnpm-lock.yaml,https://github.com/faker-js/faker/pull/4148,salemalem/faker:ci/add-npmscan-warn-mode,bf5c73eb83c1ed521ff4ea877dcdaf5a20fcf745,monitor_pr,
+6,react-hook-form/react-hook-form,pr_opened,primary,master,pnpm-lock.yaml,https://github.com/react-hook-form/react-hook-form/pull/13858,salemalem/react-hook-form:ci/add-npmscan-warn-mode,783bd6d694453539f2e42cebce93e514c9a800b8,monitor_pr,
+6,reduxjs/redux-toolkit,pr_opened,primary,master,pnpm-lock.yaml,https://github.com/reduxjs/redux-toolkit/pull/5471,salemalem/redux-toolkit:ci/add-npmscan-warn-mode,5853b8d13ec28626b060b457596b0a3c7382f93b,monitor_pr,
+6,tinyhttp/tinyhttp,pr_opened,primary,master,pnpm-lock.yaml,https://github.com/tinyhttp/tinyhttp/pull/526,salemalem/tinyhttp:ci/add-npmscan-warn-mode,fa39ed33171266421d8c06e5dbfc9f1d07a1d2a7,monitor_pr,
+6,nestjs/nest,pr_opened,primary,master,package-lock.json,https://github.com/nestjs/nest/pull/18138,salemalem/nest:ci/add-npmscan-warn-mode,4ac4501eb76b59400ca5f0eb8e74a1a91f986347,monitor_pr,
+6,date-fns/date-fns,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/date-fns/date-fns/pull/4367,salemalem/date-fns:ci/add-npmscan-warn-mode,b1ece35ccf97140fa9282f118b9d9ebf09632e27,monitor_pr,
+6,axios/axios,pr_opened,primary,v1.x,package-lock.json,https://github.com/axios/axios/pull/11316,salemalem/axios:ci/add-npmscan-warn-mode,98a812a2a3eaaa03dd0bbd359592baea49d036da,monitor_pr,
+6,colinhacks/zod,blocked_pr_creation,primary,main,pnpm-lock.yaml,,salemalem/zod:ci/add-npmscan-warn-mode,d1b02dd386cbba408076936a9f22ad7a769bd60e,replace_or_retry_later,GitHub CreatePullRequest permission error
+6,honojs/hono,blocked_pr_creation,primary,main,pnpm-lock.yaml,,salemalem/hono:ci/add-npmscan-warn-mode,c08b660e3c352be882b856d336cc321c3db3474b,replace_or_retry_later,GitHub CreatePullRequest permission error
+6,pmndrs/zustand,blocked_pr_creation,primary,main,pnpm-lock.yaml,,salemalem/zustand:ci/add-npmscan-warn-mode,9de2797b0b9919be08eb78748c4235e1998b6564,replace_or_retry_later,GitHub CreatePullRequest permission error
+6,tldraw/tldraw,blocked_pr_creation,primary,main,pnpm-lock.yaml,,salemalem/tldraw:ci/add-npmscan-warn-mode,76a6ffad3acae60fd673258de7e512823392787c,replace_or_retry_later,GitHub CreatePullRequest permission error
+7,vitejs/vite,candidate,primary,main,pnpm-lock.yaml,,,,fork_and_open_pr,High-visibility pnpm monorepo with no obvious dependency-review workflow
+7,puppeteer/puppeteer,candidate,primary,main,package-lock.json,,,,fork_and_open_pr,Three open good first issues when checked
+7,hoppscotch/hoppscotch,candidate,primary,main,pnpm-lock.yaml,,,,fork_and_open_pr,Two open good first issues when checked
+7,excalidraw/excalidraw,candidate,primary,master,yarn.lock,,,,fork_and_open_pr,Twenty-six open good first issues when checked
+7,supabase/supabase-js,candidate,primary,master,pnpm-lock.yaml,,,,fork_and_open_pr,SDK monorepo with clean pnpm workspace layout
+7,chartjs/Chart.js,candidate,primary,master,pnpm-lock.yaml,,,,fork_and_open_pr,High-visibility package with a simple lockfile story
+7,sveltejs/svelte,candidate,primary,main,pnpm-lock.yaml,,,,fork_and_open_pr,Visible pnpm monorepo with lean CI and release automation
+7,mui/material-ui,candidate,primary,master,pnpm-lock.yaml,,,,fork_and_open_pr,Large install base and clean pnpm workspace layout
+7,shadcn-ui/ui,candidate,primary,main,pnpm-lock.yaml,,,,fork_and_open_pr,Strong React and design-system visibility
+7,tailwindlabs/headlessui,candidate,primary,main,package-lock.json,,,,fork_and_open_pr,Simple root lockfile story
+7,BabylonJS/Babylon.js,candidate,primary,master,package-lock.json,,,,fork_and_open_pr,High visibility and a straightforward root lockfile check
+7,apollographql/apollo-client,candidate_backup,backup,main,package-lock.json,,,,use_if_primary_blocked,Large workflow surface but still viable
+7,storybookjs/storybook,candidate_backup,backup,next,yarn.lock,,,,use_if_primary_blocked,Five open good first issues when checked
+7,n8n-io/n8n,candidate_backup,backup,master,pnpm-lock.yaml,,,,use_if_primary_blocked,Very large workflow surface and heavier operational complexity
+7,fastify/fastify,candidate_low_confidence,backup,main,,,,,verify_lockfile_then_decide,Top-level lockfile needs one closer pass before opening a PR
+7,firecrawl/firecrawl,skipped_no_supported_lockfile,skip,main,,,,,ignore_for_now,No supported root lockfile found during inspection
+7,expressjs/express,skipped_no_supported_lockfile,skip,master,,,,,ignore_for_now,No supported root lockfile found during inspection
+7,pnpm/pnpm,deprioritized_overlap,skip,main,pnpm-lock.yaml,,,,revisit_only_if_needed,Already has audit and update-lockfile workflows so overlap is stronger
