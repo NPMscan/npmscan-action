@@ -58,3 +58,15 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 8,jaredwray/keyv,candidate_incident,secondary,main,pnpm-lock.yaml,,,,hold,Patient zero of ChainDrop 2026-08 (#2051); maintainer just recovered so approach gently or skip
 8,activepieces/activepieces,skipped_unsupported_lockfile,skip,main,bun.lock,,,,revisit_after_support,Has open project for compromised npm packages (#12417) but bun.lock and PRs need prior maintainer approval
 8,earendil-works/pi,deprioritized_overlap,skip,main,package-lock.json,,,,ignore_for_now,Already has npm-audit.yml; CONTRIBUTING bans LLM-written text
+9,trailhq/Trail-Code,candidate_warm_issue,primary,main,package-lock.json,,,,comment_on_issue_first,Open issue #429 (contributor) asks for Socket-style malicious-package blocking; 55 external PRs merged since Jul; latest lockfile diff parses (HTTP 200)
+9,czaydev/better-payment,candidate_warm_issue,primary,main,pnpm-lock.yaml,,,,comment_on_issue_first,Owner's help-wanted issue #156 on supply-chain CI (asks Dependabot + SHA pinning); replay of latest lockfile change flagged sprintf-js 1.0.3 GHSA-hp3w-g68c-fv3c (moderate)
+9,recharts/recharts,candidate_incident,primary,main,package-lock.json,,,,open_issue_first,Compromised axios@0.30.4 reached their tree via bundlewatch (#7193); lockfile parses
+9,web-infra-dev/rsdoctor,candidate_incident,primary,main,pnpm-lock.yaml,,,,open_issue_first,Malicious axios@1.14.1 pulled in by their own @rsdoctor/core (#1605); 76 external PRs merged since Jul; lockfile parses
+9,langchain-ai/langgraphjs,candidate_incident,primary,main,pnpm-lock.yaml,,,,open_issue_first,Blacklisted compromised axios (#2257); manages security overrides in pnpm-lock and auto-merges Dependabot; replay flagged real override changes; 80 external PRs merged since Jul
+9,BearStudio/start-ui-web,candidate_incident,secondary,main,pnpm-lock.yaml,,,,open_issue_first,Mini Shai-Hulud via TanStack deps (#745); only 8 external PRs merged since Jul
+9,usebruno/bruno,candidate_incident,secondary,main,package-lock.json,,,,open_issue_first,Pinned axios after the March compromise; 47k stars; lockfile parses
+9,asyncapi/generator,candidate_incident,backup,master,package-lock.json,,,,hold,Own packages published malicious via compromised next branch (#2184); AI policy allows AI with disclosure; weaker fit (publish-side compromise)
+9,8beeeaaat/touchdesigner-mcp,skipped_false_positive,skip,main,package-lock.json,,,,revisit_after_fix,npmscan reported a false identityMismatch on @scalar/json-magic (two coexisting versions in package-lock); do not pitch until fixed
+9,abhigyanpatwari/GitNexus,deprioritized_overlap,skip,main,package-lock.json,,,,ignore_for_now,Already runs dependency-review.yml
+9,databricks/app-templates,skipped_no_supported_lockfile,skip,main,,,,,ignore_for_now,No root lockfile (per-template); malicious @chat-template/auth flagged in #259
+9,antvis/G2,skipped_no_supported_lockfile,skip,v5,,,,,ignore_for_now,No root lockfile; own packages hit by Shai-Hulud
