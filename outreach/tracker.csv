@@ -32,17 +32,17 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 6,honojs/hono,blocked_pr_creation,primary,main,pnpm-lock.yaml,,salemalem/hono:ci/add-npmscan-warn-mode,c08b660e3c352be882b856d336cc321c3db3474b,replace_or_retry_later,GitHub CreatePullRequest permission error
 6,pmndrs/zustand,blocked_pr_creation,primary,main,pnpm-lock.yaml,,salemalem/zustand:ci/add-npmscan-warn-mode,9de2797b0b9919be08eb78748c4235e1998b6564,replace_or_retry_later,GitHub CreatePullRequest permission error
 6,tldraw/tldraw,blocked_pr_creation,primary,main,pnpm-lock.yaml,,salemalem/tldraw:ci/add-npmscan-warn-mode,76a6ffad3acae60fd673258de7e512823392787c,replace_or_retry_later,GitHub CreatePullRequest permission error
-7,vitejs/vite,candidate,primary,main,pnpm-lock.yaml,,,,fork_and_open_pr,High-visibility pnpm monorepo with no obvious dependency-review workflow
-7,puppeteer/puppeteer,candidate,primary,main,package-lock.json,,,,fork_and_open_pr,Three open good first issues when checked
-7,hoppscotch/hoppscotch,candidate,primary,main,pnpm-lock.yaml,,,,fork_and_open_pr,Two open good first issues when checked
-7,excalidraw/excalidraw,candidate,primary,master,yarn.lock,,,,fork_and_open_pr,Twenty-six open good first issues when checked
-7,supabase/supabase-js,candidate,primary,master,pnpm-lock.yaml,,,,fork_and_open_pr,SDK monorepo with clean pnpm workspace layout
-7,chartjs/Chart.js,candidate,primary,master,pnpm-lock.yaml,,,,fork_and_open_pr,High-visibility package with a simple lockfile story
-7,sveltejs/svelte,candidate,primary,main,pnpm-lock.yaml,,,,fork_and_open_pr,Visible pnpm monorepo with lean CI and release automation
-7,mui/material-ui,candidate,primary,master,pnpm-lock.yaml,,,,fork_and_open_pr,Large install base and clean pnpm workspace layout
-7,shadcn-ui/ui,candidate,primary,main,pnpm-lock.yaml,,,,fork_and_open_pr,Strong React and design-system visibility
-7,tailwindlabs/headlessui,candidate,primary,main,package-lock.json,,,,fork_and_open_pr,Simple root lockfile story
-7,BabylonJS/Babylon.js,candidate,primary,master,package-lock.json,,,,fork_and_open_pr,High visibility and a straightforward root lockfile check
+7,vitejs/vite,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/vitejs/vite/pull/23753,salemalem/vite:ci/add-npmscan-warn-mode,f21bf41e78684af5180e13e47393ed521f3d43b0,monitor_pr,High-visibility pnpm monorepo with no obvious dependency-review workflow
+7,puppeteer/puppeteer,pr_opened,primary,main,package-lock.json,https://github.com/puppeteer/puppeteer/pull/15580,salemalem/puppeteer:ci/add-npmscan-warn-mode,8378d8d043ffb5181865a282b99cb2d049bd7277,monitor_pr,Three open good first issues when checked
+7,hoppscotch/hoppscotch,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/hoppscotch/hoppscotch/pull/6717,salemalem/hoppscotch:ci/add-npmscan-warn-mode,555cf0c8f8045b77fc5baffd0a59a5c3ce8aa53f,monitor_pr,Two open good first issues when checked
+7,excalidraw/excalidraw,pr_opened,primary,master,yarn.lock,https://github.com/excalidraw/excalidraw/pull/12288,salemalem/excalidraw:ci/add-npmscan-warn-mode,ce2b14fd02cc1b2d613a06c3d24d70b46a13ea69,monitor_pr,Twenty-six open good first issues when checked
+7,supabase/supabase-js,pr_opened,primary,master,pnpm-lock.yaml,https://github.com/supabase/supabase-js/pull/2761,salemalem/supabase-js:ci/add-npmscan-warn-mode,623a840429ca936d1858307f437abc0132472435,monitor_pr,SDK monorepo with clean pnpm workspace layout
+7,chartjs/Chart.js,pr_opened,primary,master,pnpm-lock.yaml,https://github.com/chartjs/Chart.js/pull/12340,salemalem/Chart.js:ci/add-npmscan-warn-mode,c949c2429c0a310cd5b2b93ceea839d6e3d85053,monitor_pr,High-visibility package with a simple lockfile story
+7,sveltejs/svelte,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/sveltejs/svelte/pull/18991,salemalem/svelte:ci/add-npmscan-warn-mode,064079312ceb23aa0d6d369ebac56844060f927a,monitor_pr,Visible pnpm monorepo with lean CI and release automation
+7,mui/material-ui,pr_opened,primary,master,pnpm-lock.yaml,https://github.com/mui/material-ui/pull/49458,salemalem/material-ui:ci/add-npmscan-warn-mode,f5066872ddac466b68e86e67db786649bbe77ae4,monitor_pr,Large install base and clean pnpm workspace layout
+7,shadcn-ui/ui,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/shadcn-ui/ui/pull/12300,salemalem/ui:ci/add-npmscan-warn-mode,6f9d1c97f3c95f71a7be56bb5829bd8597431044,monitor_pr,Strong React and design-system visibility
+7,tailwindlabs/headlessui,pr_opened,primary,main,package-lock.json,https://github.com/tailwindlabs/headlessui/pull/3903,salemalem/headlessui:ci/add-npmscan-warn-mode,0ece8a1fb09a6f1999429cdc9c32c4250345e8cf,monitor_pr,Simple root lockfile story
+7,BabylonJS/Babylon.js,pr_opened,primary,master,package-lock.json,https://github.com/BabylonJS/Babylon.js/pull/18994,salemalem/Babylon.js:ci/add-npmscan-warn-mode,8b21c3487c3e735e58a6e105a05d2f3f27355c54,monitor_pr,High visibility and a straightforward root lockfile check
 7,apollographql/apollo-client,candidate_backup,backup,main,package-lock.json,,,,use_if_primary_blocked,Large workflow surface but still viable
 7,storybookjs/storybook,candidate_backup,backup,next,yarn.lock,,,,use_if_primary_blocked,Five open good first issues when checked
 7,n8n-io/n8n,candidate_backup,backup,master,pnpm-lock.yaml,,,,use_if_primary_blocked,Very large workflow surface and heavier operational complexity
