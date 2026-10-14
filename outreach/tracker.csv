@@ -86,4 +86,8 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 10,bbc/sqs-consumer,deprioritized_overlap,skip,main,pnpm-lock.yaml,,,,ignore_for_now,Already runs dependency-review.yml,not_contacted,,,2026-10-14
 10,ducktors/turborepo-remote-cache,deprioritized_overlap,skip,main,pnpm-lock.yaml,,,,ignore_for_now,Already runs dependency-review.yml,not_contacted,,,2026-10-14
 10,altair-graphql/altair,skipped_inactive_external,skip,master,pnpm-lock.yaml,,,,ignore_for_now,No external PRs merged since Jul; also runs dependency-review.yml,not_contacted,,,2026-10-14
-10,sitespeedio/sitespeed.io,skipped_inactive_external,skip,main,npm-shrinkwrap.json,,,,ignore_for_now,No external PRs merged since Jul,not_contacted,,,2026-10-14
+10,sitespeedio/sitespeed.io,skipped_inactive_external,skip,main,npm-shrinkwrap.json,,,,ignore_for_now,No external PRs merged since Jul,not_contacted,,,2026-10-1411,vercel/next.js,not_contacted,primary,canary,pnpm-lock.yaml,,,,,,,,,2026-10-15
+11,webpack/webpack,pr_opened,primary,main,yarn.lock,https://github.com/webpack/webpack/pull/22688,salemalem/webpack:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
+11,prettier/prettier,pr_opened,primary,main,yarn.lock,https://github.com/prettier/prettier/pull/20291,salemalem/prettier:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
+11,serverless/serverless,pr_opened,primary,main,package-lock.json,https://github.com/serverless/serverless/pull/13980,salemalem/serverless:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
+11,louislam/uptime-kuma,pr_opened,primary,master,package-lock.json,https://github.com/louislam/uptime-kuma/pull/7973,salemalem/uptime-kuma:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
