@@ -92,11 +92,11 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 11,serverless/serverless,pr_opened,primary,main,package-lock.json,https://github.com/serverless/serverless/pull/13980,salemalem/serverless:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
 11,louislam/uptime-kuma,pr_opened,primary,master,package-lock.json,https://github.com/louislam/uptime-kuma/pull/7973,salemalem/uptime-kuma:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
 
-12,affaan-m/ECC,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,react/react,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,DietrichGebert/ponytail,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,airbnb/javascript,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,vercel/next.js,not_contacted,primary,canary,,,,,,,,,,2026-10-15
+12,affaan-m/ECC,pr_opened,primary,main,,https://github.com/affaan-m/ECC/pull/3582,salemalem/ECC:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
+12,react/react,pr_opened,primary,main,,https://github.com/react/react/pull/37854,salemalem/react:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
+12,DietrichGebert/ponytail,skipped,primary,main,,,,,,,,,no supported lockfile found,2026-10-15
+12,airbnb/javascript,skipped,primary,master,,,,,,,,,no supported lockfile found,2026-10-15
+12,vercel/next.js,failed,primary,canary,,,,,,,,,PR creation failed or already exists,2026-10-15
 12,Chalarangelo/30-seconds-of-code,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,nodejs/node,not_contacted,primary,main,,,,,,,,,,2026-10-15
 12,mrdoob/three.js,not_contacted,primary,dev,,,,,,,,,,2026-10-15
