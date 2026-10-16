@@ -86,7 +86,7 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 10,bbc/sqs-consumer,deprioritized_overlap,skip,main,pnpm-lock.yaml,,,,ignore_for_now,Already runs dependency-review.yml,not_contacted,,,2026-10-14
 10,ducktors/turborepo-remote-cache,deprioritized_overlap,skip,main,pnpm-lock.yaml,,,,ignore_for_now,Already runs dependency-review.yml,not_contacted,,,2026-10-14
 10,altair-graphql/altair,skipped_inactive_external,skip,master,pnpm-lock.yaml,,,,ignore_for_now,No external PRs merged since Jul; also runs dependency-review.yml,not_contacted,,,2026-10-15
-10,sitespeedio/sitespeed.io,skipped_inactive_external,skip,main,npm-shrinkwrap.json,,,,ignore_for_now,No external PRs merged since Jul,not_contacted,,,2026-10-15,vercel/next.js,not_contacted,primary,canary,pnpm-lock.yaml,,,,,,,,,2026-10-15
+10,sitespeedio/sitespeed.io,skipped_inactive_external,skip,main,npm-shrinkwrap.json,,,,ignore_for_now,No external PRs merged since Jul,not_contacted,,,2026-10-15
 11,webpack/webpack,pr_opened,primary,main,yarn.lock,https://github.com/webpack/webpack/pull/22688,salemalem/webpack:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,stale,,"Open, no maintainer reply (only bots/CI)",2026-10-15
 11,prettier/prettier,pr_closed,primary,main,yarn.lock,https://github.com/prettier/prettier/pull/20291,salemalem/prettier:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,closed_no_comment,,Closed without human maintainer comment,2026-10-15
 11,serverless/serverless,pr_closed,primary,main,package-lock.json,https://github.com/serverless/serverless/pull/13980,salemalem/serverless:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,closed_no_comment,,Closed without human maintainer comment,2026-10-15
@@ -107,13 +107,13 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 12,pbakaus/impeccable,skipped,primary,main,,,,,,,,,no supported lockfile found,2026-10-15
 12,anuraghazra/github-readme-stats,pr_opened,primary,master,,https://github.com/anuraghazra/github-readme-stats/pull/4936,salemalem/github-readme-stats:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
 12,typicode/json-server,pr_opened,primary,main,,https://github.com/typicode/json-server/pull/1778,salemalem/json-server:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,,,,2026-10-15
-12,career-ops-hq/career-ops,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,juliangarnier/anime,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,hakimel/reveal.js,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,byoungd/up,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,gorhill/uBlock,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,Mintplex-Labs/anything-llm,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,gsd-build/get-shit-done,not_contacted,primary,main,,,,,,,,,,2026-10-15
+12,career-ops-hq/career-ops,skipped,primary,main,,,,,,,,,No lockfile,2026-10-15
+12,juliangarnier/anime,failed,primary,master,,,,,,,,,Fork timeout,2026-10-15
+12,hakimel/reveal.js,failed,primary,master,,,,,,,,,Automation error,2026-10-15
+12,byoungd/up,failed,primary,main,,,,,,,,,Automation error,2026-10-15
+12,gorhill/uBlock,failed,primary,master,,,,,,,,,Automation error,2026-10-15
+12,Mintplex-Labs/anything-llm,failed,primary,master,,,,,,,,,Automation error,2026-10-15
+12,gsd-build/get-shit-done,failed,primary,main,,,,,,,,,Automation error,2026-10-15
 12,jgraph/drawio-desktop,not_contacted,primary,dev,,,,,,,,,,2026-10-15
 12,resume/resume.github.com,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,lodash/lodash,not_contacted,primary,main,,,,,,,,,,2026-10-15
