@@ -91,7 +91,6 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 11,prettier/prettier,pr_closed,primary,main,yarn.lock,https://github.com/prettier/prettier/pull/20291,salemalem/prettier:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,closed_no_comment,,Closed without human maintainer comment,2026-10-15
 11,serverless/serverless,pr_closed,primary,main,package-lock.json,https://github.com/serverless/serverless/pull/13980,salemalem/serverless:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,closed_no_comment,,Closed without human maintainer comment,2026-10-15
 11,louislam/uptime-kuma,pr_closed,primary,master,package-lock.json,https://github.com/louislam/uptime-kuma/pull/7973,salemalem/uptime-kuma:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,closed_no_comment,,Closed without human maintainer comment,2026-10-15
-
 12,affaan-m/ECC,pr_opened,primary,main,,https://github.com/affaan-m/ECC/pull/3582,salemalem/ECC:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,stale,,"Open, no maintainer reply (only bots/CI)",2026-10-15
 12,react/react,pr_opened,primary,main,,https://github.com/react/react/pull/37854,salemalem/react:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,stale,,"Open, no maintainer reply (only bots/CI)",2026-10-15
 12,DietrichGebert/ponytail,skipped,primary,main,,,,,,,,,no supported lockfile found,2026-10-15
@@ -114,46 +113,46 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 12,gorhill/uBlock,failed,primary,master,,,,,,,,,Automation error,2026-10-15
 12,Mintplex-Labs/anything-llm,failed,primary,master,,,,,,,,,Automation error,2026-10-15
 12,gsd-build/get-shit-done,failed,primary,main,,,,,,,,,Automation error,2026-10-15
-12,jgraph/drawio-desktop,not_contacted,primary,dev,,,,,,,,,,2026-10-15
+12,jgraph/drawio-desktop,failed,primary,dev,,,,,,,,,gh pr: pull request create failed: GraphQL: salemalem does not have the correct permissions to execute `CreatePullRequest` (createPullRequest),2026-10-16
 12,resume/resume.github.com,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,lodash/lodash,not_contacted,primary,main,,,,,,,,,,2026-10-15
+12,lodash/lodash,pr_opened,primary,main,package-lock.json,https://github.com/lodash/lodash/pull/6297,salemalem/lodash:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,PR template filled by hand,2026-10-16
 12,atom/atom,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,adam-p/markdown-here,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,jquery/jquery,not_contacted,primary,main,,,,,,,,,,2026-10-15
+12,jquery/jquery,skipped_policy,primary,main,,,,,,,not_contacted,,CONTRIBUTING bans unsolicited/tool-driven PRs; repeat submissions may lead to a ban,2026-10-16
 12,angular/angular.js,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,h5bp/html5-boilerplate,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,bilawalsidhu/gods-eye-view,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,gatsbyjs/gatsby,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,azl397985856/leetcode,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,mozilla/pdf.js,not_contacted,primary,master,,,,,,,,,,2026-10-15
+12,h5bp/html5-boilerplate,deprioritized_overlap,primary,main,,,,,,,not_contacted,,already runs dependency-review.yml on PRs,2026-10-16
+12,bilawalsidhu/gods-eye-view,pr_opened,primary,main,package-lock.json,https://github.com/bilawalsidhu/gods-eye-view/pull/1177,salemalem/gods-eye-view:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
+12,gatsbyjs/gatsby,pr_opened,primary,master,yarn.lock,https://github.com/gatsbyjs/gatsby/pull/39701,salemalem/gatsby:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,PR template filled by hand,2026-10-16
+12,azl397985856/leetcode,pr_opened,primary,master,yarn.lock,https://github.com/azl397985856/leetcode/pull/625,salemalem/leetcode:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
+12,mozilla/pdf.js,pr_opened,primary,master,package-lock.json,https://github.com/mozilla/pdf.js/pull/22202,salemalem/pdf.js:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
 12,chinese-poetry/chinese-poetry,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,Semantic-Org/Semantic-UI,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,NARKOZ/hacker-scripts,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,bigskysoftware/htmx,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,DavidHDev/react-bits,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,algorithm-visualizer/algorithm-visualizer,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,iamkun/dayjs,not_contacted,primary,dev,,,,,,,,,,2026-10-15
+12,bigskysoftware/htmx,needs_issue_first,primary,master,,,,,,,not_contacted,,no feature PRs without a maintainer-approved issue,2026-10-16
+12,DavidHDev/react-bits,pr_opened,primary,main,package-lock.json,https://github.com/DavidHDev/react-bits/pull/1108,salemalem/react-bits:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
+12,algorithm-visualizer/algorithm-visualizer,pr_opened,primary,master,package-lock.json,https://github.com/algorithm-visualizer/algorithm-visualizer/pull/808,salemalem/algorithm-visualizer:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
+12,iamkun/dayjs,pr_opened,primary,dev,package-lock.json,https://github.com/iamkun/dayjs/pull/3274,salemalem/dayjs:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
 12,moment/moment,not_contacted,primary,develop,,,,,,,,,,2026-10-15
-12,microsoft/monaco-editor,not_contacted,primary,main,,,,,,,,,,2026-10-15
+12,microsoft/monaco-editor,pr_opened,primary,main,package-lock.json,https://github.com/microsoft/monaco-editor/pull/5537,salemalem/monaco-editor:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
 12,google/zx,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,Leaflet/Leaflet,not_contacted,primary,main,,,,,,,,,,2026-10-15
+12,Leaflet/Leaflet,pr_opened,primary,main,package-lock.json,https://github.com/Leaflet/Leaflet/pull/10428,salemalem/Leaflet:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
 12,GitSquared/edex-ui,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,meteor/meteor,not_contacted,primary,devel,,,,,,,,,,2026-10-15
 12,NaiboWang/EasySpider,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,parcel-bundler/parcel,not_contacted,primary,v2,,,,,,,,,,2026-10-15
+12,parcel-bundler/parcel,pr_opened,primary,v2,yarn.lock,https://github.com/parcel-bundler/parcel/pull/10374,salemalem/parcel:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,PR template filled by hand,2026-10-16
 12,Unitech/pm2,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,saadeghi/daisyui,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,dcloudio/uni-app,not_contacted,primary,uni-app-x,,,,,,,,,,2026-10-15
-12,yarnpkg/yarn,not_contacted,primary,master,,,,,,,,,,2026-10-15
+12,yarnpkg/yarn,skipped_policy,primary,master,,,,,,,not_contacted,,Yarn 1.x only accepts critical security fixes,2026-10-16
 12,nwjs/nw.js,not_contacted,primary,main,,,,,,,,,,2026-10-15
 12,remoteintech/remote-jobs,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,phaserjs/phaser,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,drawdb-io/drawdb,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,preactjs/preact,not_contacted,primary,main,,,,,,,,,,2026-10-15
-12,Dogfalo/materialize,not_contacted,primary,v1-dev,,,,,,,,,,2026-10-15
-12,naptha/tesseract.js,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,impress/impress.js,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,denysdovhan/wtfjs,not_contacted,primary,master,,,,,,,,,,2026-10-15
+12,phaserjs/phaser,pr_opened,primary,master,package-lock.json,https://github.com/phaserjs/phaser/pull/7400,salemalem/phaser:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,PR template filled by hand,2026-10-16
+12,drawdb-io/drawdb,pr_opened,primary,main,package-lock.json,https://github.com/drawdb-io/drawdb/pull/1174,salemalem/drawdb:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
+12,preactjs/preact,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/preactjs/preact/pull/5310,salemalem/preact:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
+12,Dogfalo/materialize,pr_opened,primary,v1-dev,package-lock.json,https://github.com/Dogfalo/materialize/pull/6708,salemalem/materialize:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,PR template filled by hand,2026-10-16
+12,naptha/tesseract.js,pr_opened,primary,master,package-lock.json,https://github.com/naptha/tesseract.js/pull/1083,salemalem/tesseract.js:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
+12,impress/impress.js,pr_opened,primary,master,package-lock.json,https://github.com/impress/impress.js/pull/898,salemalem/impress.js:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16
+12,denysdovhan/wtfjs,pr_opened,primary,master,package-lock.json,https://github.com/denysdovhan/wtfjs/pull/361,salemalem/wtfjs:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,PR template filled by hand,2026-10-16
 12,markedjs/marked,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,songquanpeng/one-api,not_contacted,primary,main,,,,,,,,,,2026-10-15
 12,gchq/CyberChef,not_contacted,primary,master,,,,,,,,,,2026-10-15
