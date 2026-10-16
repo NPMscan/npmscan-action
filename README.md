@@ -229,4 +229,8 @@ packages per run are checked in depth. See the [privacy policy](https://npmscan.
 - Want to change something? See [CONTRIBUTING.md](CONTRIBUTING.md).
 - Found a vulnerability? Please report it privately. See [SECURITY.md](SECURITY.md).
 
+The action itself is `action.yml` plus `scripts/`. The `outreach/` folder holds maintainer notes and tooling
+(see [outreach/README.md](outreach/README.md)). It isn't part of the action, and its Node dev dependencies are
+never installed or run in your workflow.
+
 [MIT License](LICENSE) · Made by [BlockHacks.io](https://blockhacks.io) · Powered by [npmscan.com](https://npmscan.com)

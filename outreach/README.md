@@ -28,6 +28,23 @@ This `/outreach` folder serves as the central hub for all outreach activities:
 - `tracker.csv` - The master tracker for all repositories evaluated, contacted, and monitored.
 - `wave-N-targets.md` - Research and notes for repositories targeted in a specific wave.
 - `wave-N-prs.md` - Records and links for the PRs opened during a specific wave.
+- `scripts/` - Automation for opening PRs from the tracker (TypeScript, runs on Node 22.18+ with no build step).
+
+## Opening PRs
+
+```sh
+node outreach/scripts/process-prs.ts --wave 12 --limit 5 --dry-run   # preflight only, no forks/pushes/tracker writes
+node outreach/scripts/process-prs.ts --wave 12 --limit 5             # open PRs and record results in tracker.csv
+```
+
+Flags: `--repo owner/name` targets one row, `--retry-failed` also picks up `failed` rows. Set `VERBOSE=1` to print each command.
+
+For every `not_contacted` row the script checks the repo isn't archived, clones the fork (blobless, under `/tmp/npmscan-outreach`), then runs preflight before touching anything:
+- **Lockfile**: picks `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json` or `npm-shrinkwrap.json` at the root; bun-only repos become `skipped_unsupported_lockfile`.
+- **Contribution policy**: scans CONTRIBUTING / AI policy / PR template files. AI policy → `blocked_policy`, issue-first → `needs_issue_first`, DCO, CLA or any PR template → `needs_user_decision` (fill these by hand).
+- **API check**: posts the lockfile to the npmscan dependency-diff API so formats it can't parse are skipped instead of shipping a broken check.
+
+Rows that pass get `.github/workflows/npmscan.yml` (with `file:` set to the repo's lockfile), a force-pushed `ci/add-npmscan-warn-mode` branch, and a PR using `scripts/templates/pr-body.md`. An already-open PR from the same branch is recorded instead of duplicated.
 
 ## Tracking & Follow-up
 - We use a "wave" approach, batching our outreach into groups of repositories.
