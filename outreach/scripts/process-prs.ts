@@ -6,8 +6,11 @@
  * (lockfile, contribution policies, npmscan API parse check), then add the
  * workflow, push and open the PR. Every outcome is written back to tracker.csv.
  *
- *   node outreach/scripts/process-prs.ts [--wave 12] [--limit 5] [--repo owner/name] [--retry-failed] [--dry-run]
- *   node outreach/scripts/process-prs.ts --repo owner/name --body path/to/body.md
+ *   node outreach/scripts/process-prs.ts --agent <model> [--wave 12] [--limit 5] [--repo owner/name] [--retry-failed] [--dry-run]
+ *   node outreach/scripts/process-prs.ts --agent <model> --repo owner/name --body path/to/body.md
+ *
+ * --agent (or NPMSCAN_AGENT) names the model doing the run and is written to
+ * each row; it's not needed for --dry-run.
  *
  * --body opens one PR with a hand-written body (for repos with a PR template,
  * CLA or other policy a person has reviewed). It skips the contribution-policy
@@ -21,7 +24,7 @@ import { config } from './lib/config.ts';
 import { Checkout } from './lib/git.ts';
 import { createPr, currentUser, ensureFork, findOpenPr, repoInfo } from './lib/github.ts';
 import { preflight } from './lib/preflight.ts';
-import { Tracker, type Row } from './lib/tracker.ts';
+import { resolveAgent, Tracker, type Row } from './lib/tracker.ts';
 import { WORKFLOW_PATH, writeWorkflow } from './lib/workflow.ts';
 
 const { values: args } = parseArgs({
@@ -32,6 +35,7 @@ const { values: args } = parseArgs({
     'retry-failed': { type: 'boolean', default: false },
     'dry-run': { type: 'boolean', default: false },
     body: { type: 'string' },
+    agent: { type: 'string' },
   },
 });
 
@@ -91,7 +95,8 @@ async function processRow(tracker: Tracker, row: Row): Promise<string> {
 }
 
 async function main(): Promise<void> {
-  const tracker = new Tracker(config.trackerPath, { readOnly: dryRun });
+  const agent = dryRun ? '' : resolveAgent(args.agent);
+  const tracker = new Tracker(config.trackerPath, { readOnly: dryRun, agent });
   const limit = Number(args.limit);
 
   const queue = tracker.rows
@@ -104,7 +109,7 @@ async function main(): Promise<void> {
     console.log('Nothing to process.');
     return;
   }
-  console.log(`${dryRun ? '[dry run] ' : ''}Processing ${queue.length} repo(s) as ${currentUser()}\n`);
+  console.log(`${dryRun ? '[dry run] ' : ''}Processing ${queue.length} repo(s) as ${currentUser()}${agent ? ` (agent: ${agent})` : ''}\n`);
 
   let opened = 0;
   for (const [i, row] of queue.entries()) {

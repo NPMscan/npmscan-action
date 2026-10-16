@@ -2,7 +2,7 @@ import { readFileSync, rmSync, writeFileSync } from 'node:fs';
 
 export const COLUMNS = [
   'wave', 'repo', 'status', 'priority', 'default_branch', 'lockfile', 'pr_url', 'fork_branch',
-  'commit_sha', 'next_action', 'notes', 'outcome', 'maintainer', 'reason', 'last_checked',
+  'commit_sha', 'next_action', 'notes', 'outcome', 'maintainer', 'reason', 'last_checked', 'agent',
 ] as const;
 
 export type Column = (typeof COLUMNS)[number];
@@ -30,6 +30,23 @@ export const OUTCOMES = [
   'merged', 'rejected', 'rejected_spam', 'closed_no_comment', 'auto_closed_bot_flag',
   'blocked_pr_creation', 'archived',
 ] as const;
+
+/**
+ * Who did the work, e.g. claude-opus-5.5, gpt-5.1, gemini-2.5-pro, kimi-k2, or
+ * human. Comes from --agent or NPMSCAN_AGENT; every command that writes rows
+ * requires it.
+ */
+export function resolveAgent(flag: string | undefined): string {
+  const agent = (flag ?? process.env.NPMSCAN_AGENT ?? '').trim().toLowerCase();
+  const example = 'e.g. --agent claude-opus-5.5, gpt-5.1, gemini-2.5-pro, kimi-k2, or human';
+  if (!agent) throw new Error(`Say which model you are: pass --agent or set NPMSCAN_AGENT (${example})`);
+  if (!/^[a-z][a-z0-9.+-]{1,40}$/.test(agent) || GENERIC_AGENTS.has(agent)) {
+    throw new Error(`--agent '${agent}' is not a model name (${example})`);
+  }
+  return agent;
+}
+
+const GENERIC_AGENTS = new Set(['ai', 'agent', 'llm', 'bot', 'assistant', 'model', 'unknown', 'me']);
 
 const isStatus = (v: string) => (STATUSES as readonly string[]).includes(v);
 const isOutcome = (v: string) => (OUTCOMES as readonly string[]).includes(v);
@@ -68,15 +85,24 @@ export class Tracker {
   readonly rows: Row[];
   private readonly path: string;
   private readonly readOnly: boolean;
+  private readonly agent: string;
 
-  /** Takes a lock unless readOnly, so two runs can't overwrite each other's rows. */
-  constructor(path: string, { readOnly = false } = {}) {
+  /**
+   * Takes a lock unless readOnly, so two runs can't overwrite each other's rows.
+   * agent is stamped on every row written unless update() gets { stamp: false }
+   * (refresh.ts does that for rows whose state didn't change).
+   */
+  constructor(path: string, { readOnly = false, agent = '' } = {}) {
     this.path = path;
     this.readOnly = readOnly;
-    const [header, ...records] = parseCsv(readFileSync(path, 'utf-8'));
-    if (header?.join(',') !== COLUMNS.join(',')) {
+    this.agent = agent;
+    const [header, ...parsed] = parseCsv(readFileSync(path, 'utf-8'));
+    // Trackers from before the agent column get an empty one.
+    const legacy = header?.join(',') === COLUMNS.slice(0, -1).join(',');
+    if (!legacy && header?.join(',') !== COLUMNS.join(',')) {
       throw new Error(`Unexpected tracker header in ${path}: ${header?.join(',')}`);
     }
+    const records = legacy ? parsed.map((r) => [...r, '']) : parsed;
     // Refuse to load malformed rows: saving would silently drop or shift fields.
     const bad = records.findIndex((r) => r.length !== COLUMNS.length);
     if (bad !== -1) {
@@ -91,11 +117,16 @@ export class Tracker {
     return this.rows.find((r) => r.repo.toLowerCase() === repo.toLowerCase());
   }
 
-  update(row: Row, changes: Partial<Row>): void {
+  update(row: Row, changes: Partial<Row>, { stamp = true } = {}): void {
     if (this.readOnly) throw new Error('Tracker was opened read-only');
     validate({ ...row, ...changes }, row.repo);
-    Object.assign(row, changes, { last_checked: today() });
+    Object.assign(row, changes, { last_checked: today() }, stamp ? { agent: this.requireAgent() } : {});
     this.save();
+  }
+
+  private requireAgent(): string {
+    if (!this.agent) throw new Error('Tracker opened without an agent; pass resolveAgent(...) to the constructor');
+    return this.agent;
   }
 
   add(values: Partial<Row> & Pick<Row, 'wave' | 'repo'>): Row {
@@ -104,6 +135,7 @@ export class Tracker {
     const row = { ...Object.fromEntries(COLUMNS.map((c) => [c, ''])), status: 'not_contacted', ...values } as Row;
     validate(row, row.repo);
     row.last_checked = today();
+    row.agent = this.requireAgent();
     this.rows.push(row);
     this.save();
     return row;

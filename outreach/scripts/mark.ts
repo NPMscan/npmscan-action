@@ -3,15 +3,16 @@
  * Records a decision in tracker.csv without hand-editing it: a skip, a hold,
  * a maintainer reply, or a new candidate repo.
  *
- *   node outreach/scripts/mark.ts --repo owner/name --status skipped_policy --reason "bans bot PRs"
- *   node outreach/scripts/mark.ts --repo owner/name --outcome engaged --maintainer alice --reason "asked for docs link"
- *   node outreach/scripts/mark.ts --repo owner/name --add --wave 13 [--priority primary] [--notes "..."]
+ *   node outreach/scripts/mark.ts --agent <model> --repo owner/name --status skipped_policy --reason "bans bot PRs"
+ *   node outreach/scripts/mark.ts --agent <model> --repo owner/name --outcome engaged --maintainer alice --reason "asked for docs link"
+ *   node outreach/scripts/mark.ts --agent <model> --repo owner/name --add --wave 13 [--priority primary] [--notes "..."]
  *
  * Values for --status and --outcome are checked against lib/tracker.ts.
+ * --agent (or NPMSCAN_AGENT) names the model making the change.
  */
 import { parseArgs } from 'node:util';
 import { config } from './lib/config.ts';
-import { COLUMNS, Tracker, type Row } from './lib/tracker.ts';
+import { COLUMNS, resolveAgent, Tracker, type Row } from './lib/tracker.ts';
 
 const { values: args } = parseArgs({
   options: {
@@ -26,6 +27,7 @@ const { values: args } = parseArgs({
     maintainer: { type: 'string' },
     'next-action': { type: 'string' },
     'pr-url': { type: 'string' },
+    agent: { type: 'string' },
   },
 });
 
@@ -44,7 +46,7 @@ set('next_action', args['next-action']);
 set('pr_url', args['pr-url']);
 set('priority', args.priority);
 
-const tracker = new Tracker(config.trackerPath);
+const tracker = new Tracker(config.trackerPath, { agent: resolveAgent(args.agent) });
 let row: Row;
 if (args.add) {
   if (!args.wave) throw new Error('--add needs --wave');

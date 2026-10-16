@@ -6,6 +6,14 @@ Run everything from the **repo root**. The scripts find the tracker relative to 
 
 Prerequisites: `gh` logged in as the outreach account (`gh auth status`), and SSH push access to that account's forks.
 
+**Identify yourself first.** Every command that writes the tracker needs the model name, and records it in the `agent` column:
+
+```bash
+export NPMSCAN_AGENT=claude-opus-5.5   # or gpt-5.1, gemini-2.5-pro, kimi-k2, ... ; "human" when a person runs it
+```
+
+`--agent <model>` on a single command does the same. The value must be a real lowercase model ID: generic names like `ai` or `agent` are rejected. Only `--dry-run` runs don't need it.
+
 ## Commands
 
 | I want to... | Run |
@@ -25,12 +33,13 @@ Prerequisites: `gh` logged in as the outreach account (`gh auth status`), and SS
 ### Typical session
 
 ```bash
+export NPMSCAN_AGENT=<your-model>                                  # 0. who is working
 node outreach/scripts/refresh.ts                                   # 1. who replied? (prints "Waiting on our reply")
 node outreach/scripts/process-prs.ts --wave 12 --limit 20 --dry-run # 2. preview
 # 3. show the user the ready / held lists, agree which to open
 node outreach/scripts/process-prs.ts --wave 12 --limit 20          # 4. one real run, in the background
 node outreach/scripts/mark.ts --repo x/y --status skipped_policy --reason "..."   # 5. record decisions on held repos
-git add outreach/tracker.csv && git commit -m "chore(outreach): record wave 12 PRs"  # 6. only if asked
+git add outreach/tracker.csv && git commit -m "chore(outreach): record wave 12 PRs" -m "Agent: <your-model>"  # 6. only if asked
 ```
 
 ## What `process-prs.ts` does per repo
@@ -68,7 +77,7 @@ The regexes in preflight are a first filter, not a full policy review. Before wr
 
 ## What `refresh.ts` does
 
-For every row with a `pr_url` it fetches the PR, issue comments, reviews and inline review comments, 8 PRs at a time. Bots (`type == Bot` or a `[bot]` login, e.g. CodeRabbit, Greptile, Socket) are ignored. Then it sets:
+For every row with a `pr_url` it fetches the PR, issue comments, reviews and inline review comments, 8 PRs at a time. Bots (`type == Bot` or a `[bot]` login, e.g. CodeRabbit, Greptile, Socket) are ignored. So are people with no role in the repo (`author_association` NONE), which filters out watchers' email auto-replies. Only OWNER, MEMBER, COLLABORATOR or CONTRIBUTOR comments count as a maintainer reply. Then it sets:
 
 | PR state | status | outcome | next_action |
 |---|---|---|---|
@@ -78,7 +87,7 @@ For every row with a `pr_url` it fetches the PR, issue comments, reviews and inl
 | open, a human commented last | `pr_opened` | `engaged` | `reply_to_maintainer` |
 | open, we commented last | `pr_opened` | `awaiting_maintainer` | `monitor_pr` |
 
-`blocked_requirement` (e.g. waiting on a CLA) is kept while the PR is open. `maintainer` is the last human who isn't us. `reason` and `notes` are never touched: after reading a maintainer's reply, write the gist there with `mark.ts --reason "..."`.
+`blocked_requirement` (e.g. waiting on a CLA) is kept while the PR is open. `maintainer` is the last human who isn't us. `reason` and `notes` are never touched, and `agent` is only set on rows whose state changed: after reading a maintainer's reply, write the gist there with `mark.ts --reason "..."`.
 
 ## Tracker
 
@@ -98,6 +107,7 @@ For every row with a `pr_url` it fetches the PR, issue comments, reviews and inl
 | `maintainer` | Last human maintainer who replied |
 | `reason` | Why it was skipped, or what the maintainer said |
 | `last_checked` | Set automatically on every write |
+| `agent` | Model that last worked on the row (`claude-opus-5.5`, `gpt-5.1`, `gemini-2.5-pro`, `human`, ...). Set automatically from `--agent` / `NPMSCAN_AGENT`; empty on rows from before October 17, 2026 |
 
 Allowed **status** and **outcome** values are defined in `STATUSES` / `OUTCOMES` in [`lib/tracker.ts`](lib/tracker.ts). Loading or writing anything else throws. Use the most specific existing value, and only add a new one there if nothing fits.
 
@@ -111,7 +121,7 @@ While a script writes, it holds `tracker.csv.lock` (gitignored). A second writer
 | [`refresh.ts`](refresh.ts) | Live PR state → tracker |
 | [`mark.ts`](mark.ts) | Manual tracker edits and new rows |
 | [`lib/config.ts`](lib/config.ts) | Branch name, pinned action SHA, PR title/commit message, paths, timeouts, supported lockfiles |
-| [`lib/tracker.ts`](lib/tracker.ts) | CSV parse/write, allowed values, lock. **The only code that writes `tracker.csv`** |
+| [`lib/tracker.ts`](lib/tracker.ts) | CSV parse/write, allowed values, `resolveAgent`, lock. **The only code that writes `tracker.csv`** |
 | [`lib/preflight.ts`](lib/preflight.ts) | Lockfile detection, policy regexes, npmscan API parse check |
 | [`lib/github.ts`](lib/github.ts) | `gh` wrappers: repo info, fork, find/create PR |
 | [`lib/git.ts`](lib/git.ts) | Clone/fetch/branch/commit/push in `/tmp/npmscan-outreach` |
@@ -121,6 +131,7 @@ While a script writes, it holds `tracker.csv.lock` (gitignored). A second writer
 
 - **New capability → new flag or a new top-level `.ts` CLI here** that reuses `lib/`, plus a row in the Commands table above. Don't add a parallel script in another language or another folder.
 - Run commands through `run`/`runAsync` (argument arrays, no shell strings). Go through `Tracker` for CSV access.
+- A new command that writes rows takes an `agent` option and passes `resolveAgent(args.agent)` to `new Tracker(...)`. Pass `{ stamp: false }` to `update` only when the row didn't really change (as `refresh.ts` does).
 - Keep to Node built-ins (`node:fs`, `node:child_process`, `fetch`). TypeScript must be erasable syntax only (no `enum`, no `namespace`); `tsconfig.json` enforces this.
 - After a new action release, bump `actionSha` in `lib/config.ts`.
 - `npm run typecheck` must pass. Test changes with `--dry-run` or a single `--repo` before a batch.

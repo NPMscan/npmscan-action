@@ -7,7 +7,7 @@ This folder holds exactly three things:
 | Path | What |
 |---|---|
 | `README.md` | This file: strategy and lessons |
-| [`tracker.csv`](tracker.csv) | Every repo we've evaluated or contacted, and what happened. The only record |
+| [`tracker.csv`](tracker.csv) | Every repo we've evaluated or contacted, what happened, and which agent (Claude, GPT, Gemini, Kimi, a human, ...) did the work. The only record |
 | [`scripts/`](scripts/README.md) | The CLIs that open PRs, refresh state and edit the tracker. **How-to lives there** |
 
 Don't add per-wave markdown, notes or JSON files here. Everything goes into `tracker.csv` through the scripts, and anything temporary goes in `/tmp/npmscan-outreach/`. AI assistants: read [`../AGENTS.md`](../AGENTS.md) first.

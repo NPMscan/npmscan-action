@@ -14,6 +14,12 @@ Never mix the two in one change. Outreach code never goes in `scripts/`, and act
 
 ## Rules for every task
 
+- **Say which model you are, everywhere you leave a trace:**
+  - **Tracker:** run `export NPMSCAN_AGENT=<model>` before any outreach script, or pass `--agent <model>`. The scripts refuse to write without it and stamp the `agent` column of every row you change.
+  - **Commits:** end every commit message with an `Agent: <model>` trailer (on top of any `Co-Authored-By` line your tool adds).
+  - **Chat:** name your model in your summary to the user.
+
+  Use your real model ID in lowercase, e.g. `claude-opus-5.5`, `gpt-5.1`, `gemini-2.5-pro`, `kimi-k2`; a person running scripts uses `human`. Never write a generic name (`ai`, `agent`, `llm`) or another model's name, and never change the `agent` value on rows you didn't touch.
 - **Don't add files nobody asked for.** No plans, notes, summaries, `wave-N-*.md`, `TODO.md`, reports or JSON dumps in the repo. Put scratch files in `/tmp/npmscan-outreach/` or your own temp dir, and give your summary in chat.
 - **Use the tools that exist.** If a script can do the job, run it. If it can't, extend it in the same language (see below). Never write a throwaway script that does the same job a second way.
 - **Commit only when asked.** One topic per commit, Conventional Commit style (`fix(outreach): ...`, `feat: ...`, `chore(outreach): ...`). Never push to `main` without being asked, and never force-push it.
@@ -31,25 +37,26 @@ Never mix the two in one change. Outreach code never goes in `scripts/`, and act
 `outreach/` contains exactly `README.md`, `tracker.csv` and `scripts/`. Don't add anything else there.
 
 1. **TypeScript only.** Scripts are `.ts` files that Node ≥ 22.18 runs directly. There is no build step, and no `.js`, `.mjs`, `.py` or shell scripts. Don't add npm dependencies. Run `npm run typecheck` in `outreach/scripts/` after any change.
-2. **Never edit `tracker.csv` by hand**: no sed, awk, Python, spreadsheet export or your own CSV writer. Hand edits have corrupted rows before (see commit `4e918c0`). Go through the scripts:
+2. **Set `NPMSCAN_AGENT` first** (see above). Every tracker write records who made it.
+3. **Never edit `tracker.csv` by hand**: no sed, awk, Python, spreadsheet export or your own CSV writer. Hand edits have corrupted rows before (see commit `4e918c0`). Go through the scripts:
    - open PRs → `process-prs.ts`
    - record a skip, hold, reply or new repo → `mark.ts`
    - update live PR state → `refresh.ts`
 
    They validate statuses and outcomes, and they take a lock so two agents can't overwrite each other.
-3. **Fast path for "open some PRs":** run one dry run (`--wave N --limit K --dry-run`), show the user the result, then run the same command without `--dry-run` **once**, in the background. Don't fork, clone, commit or `gh pr create` by hand, and don't do repos one at a time unless a repo needs a hand-written body.
-4. **Fast path for "check the PRs":** run `refresh.ts`. Don't run `gh pr view` per repo.
-5. **Respect the holds.** The automation stops at `blocked_policy`, `needs_issue_first` and `needs_user_decision` for a reason: an AI policy, issue-first rules, a CLA/DCO or a PR template. Report these to the user. Only open such a PR after the user says so, and then use `process-prs.ts --repo X --body file.md` with a body that follows the repo's template.
-6. **PR bodies stay honest.**
+4. **Fast path for "open some PRs":** run one dry run (`--wave N --limit K --dry-run`), show the user the result, then run the same command without `--dry-run` **once**, in the background. Don't fork, clone, commit or `gh pr create` by hand, and don't do repos one at a time unless a repo needs a hand-written body.
+5. **Fast path for "check the PRs":** run `refresh.ts`. Don't run `gh pr view` per repo.
+6. **Respect the holds.** The automation stops at `blocked_policy`, `needs_issue_first` and `needs_user_decision` for a reason: an AI policy, issue-first rules, a CLA/DCO or a PR template. Report these to the user. Only open such a PR after the user says so, and then use `process-prs.ts --repo X --body file.md` with a body that follows the repo's template.
+7. **PR bodies stay honest.**
    - Always keep the disclosure that the author maintains npmscan.
    - Never tick a checklist box that isn't true (tests added, issue linked, docs updated). Leave it unticked with "n/a".
    - Don't name incidents or features that you haven't checked against the action's [`README.md`](README.md).
-7. **Skip a repo, don't push through, when its contribution docs:**
+8. **Skip a repo, don't push through, when its contribution docs:**
    - ban AI-generated or unsolicited PRs
    - only accept security fixes
    - require an approved issue first
    - already run a PR-time dependency review (e.g. `actions/dependency-review-action`)
 
    Record why with `mark.ts`.
-8. **Never push to an upstream repo.** Pushes only go to the `salemalem/<repo>` fork. If a push or PR creation fails, record it (`failed` / `blocked_pr_creation`) and move on. Don't retry in a loop.
-9. If a script is wrong or missing a feature, **fix it in `outreach/scripts/`** (see that README's "Changing the scripts") and say so. Don't work around it.
+9. **Never push to an upstream repo.** Pushes only go to the `salemalem/<repo>` fork. If a push or PR creation fails, record it (`failed` / `blocked_pr_creation`) and move on. Don't retry in a loop.
+10. If a script is wrong or missing a feature, **fix it in `outreach/scripts/`** (see that README's "Changing the scripts") and say so. Don't work around it.
