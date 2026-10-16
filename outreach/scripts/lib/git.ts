@@ -23,6 +23,8 @@ export class Checkout {
       run('git', ['clone', '--filter=blob:none', '--no-checkout', `git@github.com:${fork}.git`, path]);
     }
     const git = (...args: string[]) => run('git', args, { cwd: path });
+    // A dry run clones upstream as origin; repoint it so pushes always go to the fork.
+    git('remote', 'set-url', 'origin', `git@github.com:${fork}.git`);
 
     if (run('git', ['remote', 'get-url', 'upstream'], { cwd: path, allowFailure: true }) === null) {
       git('remote', 'add', 'upstream', `https://github.com/${repo}.git`);
