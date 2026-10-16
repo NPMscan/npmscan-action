@@ -16,3 +16,6 @@ npm-debug.log*
 .DS_Store
 .vscode/
 .idea/
+
+# Outreach tracker lock (held while a script runs)
+outreach/tracker.csv.lock

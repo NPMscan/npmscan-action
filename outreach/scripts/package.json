@@ -5,6 +5,8 @@
   "engines": { "node": ">=22.18" },
   "scripts": {
     "process-prs": "node process-prs.ts",
+    "refresh": "node refresh.ts",
+    "mark": "node mark.ts",
     "typecheck": "tsc"
   },
   "devDependencies": {

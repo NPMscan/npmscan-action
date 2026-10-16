@@ -1,4 +1,5 @@
-import { execFileSync } from 'node:child_process';
+import { execFile, execFileSync } from 'node:child_process';
+import { promisify } from 'node:util';
 import { config } from './config.ts';
 
 export interface RunOptions {
@@ -25,6 +26,23 @@ export function run(cmd: string, args: string[], { cwd, allowFailure = false }: 
     }).trim();
   } catch (err) {
     if (allowFailure) return null;
+    throw new CommandError(cmd, args, err);
+  }
+}
+
+const execFileAsync = promisify(execFile);
+
+/** Async run() for commands that can go in parallel (read-only gh API calls). */
+export async function runAsync(cmd: string, args: string[]): Promise<string> {
+  if (process.env.VERBOSE) console.log(`  $ ${cmd} ${args.join(' ')}`);
+  try {
+    const { stdout } = await execFileAsync(cmd, args, {
+      encoding: 'utf-8',
+      timeout: config.commandTimeoutMs,
+      maxBuffer: 64 * 1024 * 1024,
+    });
+    return stdout.trim();
+  } catch (err) {
     throw new CommandError(cmd, args, err);
   }
 }

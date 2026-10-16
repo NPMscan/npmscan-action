@@ -118,7 +118,7 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 12,lodash/lodash,pr_opened,primary,main,package-lock.json,https://github.com/lodash/lodash/pull/6297,salemalem/lodash:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,PR template filled by hand,2026-10-16
 12,atom/atom,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,adam-p/markdown-here,not_contacted,primary,master,,,,,,,,,,2026-10-15
-12,jquery/jquery,skipped_policy,primary,main,,,,,,,not_contacted,,CONTRIBUTING bans unsolicited/tool-driven PRs; repeat submissions may lead to a ban,2026-10-16
+12,jquery/jquery,skipped_policy,primary,main,,,,,,CONTRIBUTING: no auto-generated PRs,not_contacted,,CONTRIBUTING bans unsolicited/tool-driven PRs; repeat submissions may lead to a ban,2026-10-16
 12,angular/angular.js,not_contacted,primary,master,,,,,,,,,,2026-10-15
 12,h5bp/html5-boilerplate,deprioritized_overlap,primary,main,,,,,,,not_contacted,,already runs dependency-review.yml on PRs,2026-10-16
 12,bilawalsidhu/gods-eye-view,pr_opened,primary,main,package-lock.json,https://github.com/bilawalsidhu/gods-eye-view/pull/1177,salemalem/gods-eye-view:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-16

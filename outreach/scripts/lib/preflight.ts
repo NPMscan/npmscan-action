@@ -37,7 +37,11 @@ const POLICY_RULES: { pattern: RegExp; status: string; reason: string }[] = [
   { pattern: /\bCLA\b|Contributor License Agreement/i, status: 'needs_user_decision', reason: 'requires a CLA' },
 ];
 
-export async function preflight(checkout: Checkout): Promise<Preflight> {
+/**
+ * skipPolicy: someone has already read the contribution docs and written a PR
+ * body to match (process-prs --body), so only the lockfile checks run.
+ */
+export async function preflight(checkout: Checkout, { skipPolicy = false } = {}): Promise<Preflight> {
   const files = checkout.files();
   const root = new Set(files.filter((f) => !f.includes('/')));
 
@@ -51,14 +55,16 @@ export async function preflight(checkout: Checkout): Promise<Preflight> {
       : hold('skipped_no_supported_lockfile', 'no supported lockfile at repo root');
   }
 
-  const policyFiles = files.filter((f) => POLICY_FILE.test(f) || PR_TEMPLATE_DIR.test(f));
-  const policyText = policyFiles.map((f) => checkout.read(f)).join('\n');
-  for (const rule of POLICY_RULES) {
-    if (rule.pattern.test(policyText)) return hold(rule.status, rule.reason, { lockfile });
-  }
-  const template = policyFiles.find((f) => /pull_request_template/i.test(f));
-  if (template) {
-    return hold('needs_user_decision', `PR template to fill by hand: ${template}`, { lockfile });
+  if (!skipPolicy) {
+    const policyFiles = files.filter((f) => POLICY_FILE.test(f) || PR_TEMPLATE_DIR.test(f));
+    const policyText = policyFiles.map((f) => checkout.read(f)).join('\n');
+    for (const rule of POLICY_RULES) {
+      if (rule.pattern.test(policyText)) return hold(rule.status, rule.reason, { lockfile });
+    }
+    const template = policyFiles.find((f) => /pull_request_template/i.test(f));
+    if (template) {
+      return hold('needs_user_decision', `PR template to fill by hand: ${template}`, { lockfile });
+    }
   }
 
   const apiError = await checkLockfileParses(lockfile, checkout.read(lockfile));
