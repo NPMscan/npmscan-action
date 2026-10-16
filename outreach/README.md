@@ -1,53 +1,39 @@
-# npmscan-action Outreach Strategy
+# Outreach
 
-This directory tracks all outreach efforts for the `npmscan-action` project. The goal of this outreach is to gain traction by integrating `npmscan-action` into high-visibility, high-traffic TypeScript/Node.js repositories, thereby demonstrating its value as a PR-time supply-chain security check.
+Opening PRs that add `npmscan-action` (in warn mode) to popular JS/TS repos, and tracking how maintainers respond.
 
-## Core Pitch
-`npmscan` is positioned as a **PR-time supply-chain security check** that detects:
-- **New or modified install scripts** (e.g., `postinstall`, `preinstall`).
-- **Tarball swaps / checksum mismatches**.
-- **Lockfile overrides** that might pull in malicious dependencies.
+This folder holds exactly three things:
 
-## Key Constraints & Guidelines
-To minimize friction and maximize the likelihood of maintainers accepting our Pull Requests, we strictly adhere to the following rules:
+| Path | What |
+|---|---|
+| `README.md` | This file: strategy and lessons |
+| [`tracker.csv`](tracker.csv) | Every repo we've evaluated or contacted, and what happened. The only record |
+| [`scripts/`](scripts/README.md) | The CLIs that open PRs, refresh state and edit the tracker. **How-to lives there** |
 
-1. **Non-Blocking (Warn Only):**
-   Always configure the action with `mode: warn` and `fail-on-error: false`. This ensures we do not break a repository's CI pipeline, reducing the risk of immediate rejection.
-2. **Immutable Action Versioning:**
-   Pin the `NPMscan/npmscan-action` to a specific immutable commit SHA (e.g., `de14168f65640a4ed1f0e82ad3ad8c80483d360d`) rather than a floating tag like `@v1`. This builds trust by preventing unexpected changes in the action's behavior.
-3. **Standalone Workflow:**
-   Implement the check as a standalone workflow file (e.g., `.github/workflows/npmscan.yml`) rather than modifying existing, potentially complex CI files.
-4. **Target Selection:**
-   Prioritize high-traffic, visible TypeScript/Node.js repositories. Skip repositories using `bun.lock` for now, as `npmscan-action` does not yet officially support Bun lockfiles.
-5. **Clean Local Environment:**
-   Use SSH for all Git remotes to match the local environment settings and avoid authentication prompts. Keep temporary tracking info (e.g., local clones) outside the repository (e.g., `/tmp/npmscan-outreach`) to maintain project cleanliness.
+Don't add per-wave markdown, notes or JSON files here. Everything goes into `tracker.csv` through the scripts, and anything temporary goes in `/tmp/npmscan-outreach/`. AI assistants: read [`../AGENTS.md`](../AGENTS.md) first.
 
-## Organization
-This `/outreach` folder serves as the central hub for all outreach activities:
-- `README.md` - This strategy guide and index.
-- `tracker.csv` - The master tracker for all repositories evaluated, contacted, and monitored.
-- `wave-N-targets.md` - Research and notes for repositories targeted in a specific wave.
-- `wave-N-prs.md` - Records and links for the PRs opened during a specific wave.
-- `scripts/` - Automation for opening PRs from the tracker (TypeScript, runs on Node 22.18+ with no build step).
+## What a PR looks like
 
-## Opening PRs
+- One new file, `.github/workflows/npmscan.yml`, that runs on `pull_request`. No existing workflow is touched.
+- `mode: warn` and `fail-on-error: false`, so it can never break the repo's CI.
+- The action is pinned to a full commit SHA, and `actions/checkout@v4` is used to match what most repos already run.
+- The body explains what's checked (install scripts, tarball swaps, override changes, vulnerabilities) and **always discloses that the author maintains npmscan**.
 
-```sh
-node outreach/scripts/process-prs.ts --wave 12 --limit 5 --dry-run   # preflight only, no forks/pushes/tracker writes
-node outreach/scripts/process-prs.ts --wave 12 --limit 5             # open PRs and record results in tracker.csv
-```
+## Which repos to pick
 
-Flags: `--repo owner/name` targets one row, `--retry-failed` also picks up `failed` rows. Set `VERBOSE=1` to print each command.
+Lessons from waves 1–12 (as of October 2026: ~80 PRs, 0 merged):
 
-For every `not_contacted` row the script checks the repo isn't archived, clones the fork (blobless, under `/tmp/npmscan-outreach`), then runs preflight before touching anything:
-- **Lockfile**: picks `pnpm-lock.yaml`, `yarn.lock`, `package-lock.json` or `npm-shrinkwrap.json` at the root; bun-only repos become `skipped_unsupported_lockfile`.
-- **Contribution policy**: scans CONTRIBUTING / AI policy / PR template files. AI policy → `blocked_policy`, issue-first → `needs_issue_first`, DCO, CLA or any PR template → `needs_user_decision` (fill these by hand).
-- **API check**: posts the lockfile to the npmscan dependency-diff API so formats it can't parse are skipped instead of shipping a broken check.
+- **Cold PRs to big repos mostly get closed.** Reasons given: "we don't want another third-party action in CI", "we have our own tooling", or flagged as spam/bot. Vite and Vitest auto-closed them because the account was flagged by agentscan. Faker labelled one spam and asked for disclosure.
+- **Warm leads do better.** Pick repos with an open issue asking for supply-chain scanning, or repos hit by an npm incident. For those, open an issue first that shows a concrete finding from the repo's own lockfile, and only then a PR.
+- **Skip outright:**
+  - archived repos
+  - bun-only lockfiles
+  - repos that already run a PR-time dependency review (e.g. `dependency-review.yml`)
+  - repos whose contribution docs ban AI or unsolicited PRs (e.g. jQuery, OpenTelemetry), require human-written first PRs, or only accept security fixes (Yarn classic)
+  - repos that restrict PR creation to collaborators
+- **Fill PR templates honestly.** Answer the maintainers' "why?" questions promptly. A few tailored PRs beat a batch of identical ones.
+- Small batches with the built-in delay. Never burst.
 
-Rows that pass get `.github/workflows/npmscan.yml` (with `file:` set to the repo's lockfile), a force-pushed `ci/add-npmscan-warn-mode` branch, and a PR using `scripts/templates/pr-body.md`. An already-open PR from the same branch is recorded instead of duplicated.
+## Follow-up
 
-## Tracking & Follow-up
-- We use a "wave" approach, batching our outreach into groups of repositories.
-- PRs are actively monitored for maintainer feedback.
-- If a maintainer replies, we engage promptly to address their concerns, focusing on the security benefits and the non-intrusive nature of the `warn` mode.
-- Repositories that reject the PR or have strict AI/Bot policies are documented in `tracker.csv` to avoid duplicate efforts in the future.
+Run `node outreach/scripts/refresh.ts` to update every PR's state. It lists the PRs where a maintainer replied and we owe an answer. Reply in the PR, then record the gist with `mark.ts --repo x/y --reason "..."` (and `--outcome rejected` or similar when it's final).
