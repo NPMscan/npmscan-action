@@ -157,7 +157,7 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 12,songquanpeng/one-api,skipped_no_supported_lockfile,primary,main,,,,,,,,,no supported lockfile at repo root,2026-10-17,claude-opus-5.5
 12,gchq/CyberChef,blocked_policy,primary,master,package-lock.json,,,,,,,,contribution docs mention an AI policy,2026-10-17,claude-opus-5.5
 12,carbon-app/carbon,needs_user_decision,primary,main,yarn.lock,,,,,,,,PR template to fill by hand: .github/PULL_REQUEST_TEMPLATE.md,2026-10-17,claude-opus-5.5
-12,koajs/koa,pr_opened,primary,master,package-lock.json,https://github.com/koajs/koa/pull/2017,salemalem/koa:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-17,claude-opus-5.5
+12,koajs/koa,pr_closed,primary,master,package-lock.json,https://github.com/koajs/koa/pull/2017,salemalem/koa:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,none,Closed by yowainwright: no differentiator vs more recognized tools. CodeRabbit flagged as promotional spam.,rejected,yowainwright,,2026-10-17,claude-opus-5.5
 12,maboloshi/github-chinese,skipped_no_supported_lockfile,primary,gh-pages,,,,,,,,,no supported lockfile at repo root,2026-10-17,claude-opus-5.5
 12,alvarotrigo/fullPage.js,skipped_no_supported_lockfile,primary,master,,,,,,,,,no supported lockfile at repo root,2026-10-17,claude-opus-5.5
 12,typicode/husky,pr_opened,primary,main,package-lock.json,https://github.com/typicode/husky/pull/1649,salemalem/husky:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-17,claude-opus-5.5
@@ -168,7 +168,7 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 12,openai/codex-plugin-cc,pr_opened,primary,main,package-lock.json,https://github.com/openai/codex-plugin-cc/pull/821,salemalem/codex-plugin-cc:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-17,claude-opus-5.5
 12,zenorocha/clipboard.js,needs_user_decision,primary,master,package-lock.json,,,,,,,,PR template to fill by hand: .github/PULL_REQUEST_TEMPLATE.md,2026-10-17,claude-opus-5.5
 12,atlassian/react-beautiful-dnd,blocked_pr_creation,primary,master,,,,,,,archived,,repository is archived,2026-10-17,claude-opus-5.5
-12,lutzroeder/netron,pr_opened,primary,main,package-lock.json,https://github.com/lutzroeder/netron/pull/1612,salemalem/netron:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,monitor_pr,,awaiting_review,,,2026-10-17,claude-opus-5.5
+12,lutzroeder/netron,pr_closed,primary,main,package-lock.json,https://github.com/lutzroeder/netron/pull/1612,salemalem/netron:ci/add-npmscan-warn-mode,de14168f65640a4ed1f0e82ad3ad8c80483d360d,none,,closed_no_comment,,,2026-10-17,claude-opus-5.5
 12,gethomepage/homepage,blocked_policy,primary,dev,pnpm-lock.yaml,,,,,,,,contribution docs mention an AI policy,2026-10-17,claude-opus-5.5
 12,adobe/brackets,blocked_pr_creation,primary,master,,,,,,,archived,,repository is archived,2026-10-17,claude-opus-5.5
 12,gulpjs/gulp,skipped_no_supported_lockfile,primary,master,,,,,,,,,no supported lockfile at repo root,2026-10-17,claude-opus-5.5
@@ -191,3 +191,23 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 12,aosabook/500lines,skipped_no_supported_lockfile,primary,master,,,,,,,,,no supported lockfile at repo root,2026-10-17,claude-opus-5.5
 12,vuejs/vue-cli,needs_user_decision,primary,dev,yarn.lock,,,,,,,,PR template to fill by hand: .github/PULL_REQUEST_TEMPLATE.md,2026-10-17,claude-opus-5.5
 12,react-boilerplate/react-boilerplate,needs_user_decision,primary,master,package-lock.json,,,,,,,,PR template to fill by hand: .github/PULL_REQUEST_TEMPLATE.md,2026-10-17,claude-opus-5.5
+13,badgen/badgen.net,not_contacted,primary,,,,,,,"Warm lead: open issue ""support Socket.dev Security github checks"" https://github.com/badgen/badgen.net/issues/804",,,,2026-10-17,claude-opus-5.5
+13,hugerte/hugerte,not_contacted,primary,,,,,,,"Warm lead: open issue ""Supply chain attack mitigation: no cooldown period for newly released dependency versions"" https://github.com/hugerte/hugerte/issues/252",,,,2026-10-17,claude-opus-5.5
+13,jupyterlab/jupyterlab,not_contacted,primary,,,,,,,"Warm lead: open issue ""`jlpm` and recent NPM supply chain attacks"" https://github.com/jupyterlab/jupyterlab/issues/17913",,,,2026-10-17,claude-opus-5.5
+13,stoplightio/spectral,not_contacted,primary,,,,,,,"Warm lead: open issue ""Is spectral impacted by npmjs  worm?"" https://github.com/stoplightio/spectral/issues/2851",,,,2026-10-17,claude-opus-5.5
+13,tahowallet/extension,not_contacted,primary,,,,,,,"Warm lead: open issue ""Use `socket.dev` to help audit PRs for dependency changes"" https://github.com/tahowallet/extension/issues/2470",,,,2026-10-17,claude-opus-5.5
+13,tediousjs/tedious,not_contacted,primary,,,,,,,"Warm lead: open issue ""[FEATURE REQUEST] Supply Chain Security Analisys"" https://github.com/tediousjs/tedious/issues/1628",,,,2026-10-17,claude-opus-5.5
+13,prebid/Prebid.js,not_contacted,primary,,,,,,,"Warm lead: open issue ""Vulnerability in eslint-plugin-prebid 0.0.1 - Malicious Code Detected"" https://github.com/prebid/Prebid.js/issues/11396",,,,2026-10-17,claude-opus-5.5
+13,ethereumjs/ethereumjs-monorepo,not_contacted,primary,,,,,,,"Warm lead: open issue ""Use NPM provenance to improve supply chain security"" https://github.com/ethereumjs/ethereumjs-monorepo/issues/2676",,,,2026-10-17,claude-opus-5.5
+13,apptension/saas-boilerplate,not_contacted,primary,,,,,,,"Warm lead: open issue ""[Task]: Enforce a 7-day minimum release age on dependency installs"" https://github.com/apptension/saas-boilerplate/issues/729",,,,2026-10-17,claude-opus-5.5
+13,medyo/hackertab.dev,not_contacted,primary,,,,,,,"Warm lead: open issue ""[Supply Chain Security] New technology"" https://github.com/medyo/hackertab.dev/issues/287",,,,2026-10-17,claude-opus-5.5
+13,a2ui-project/a2ui,not_contacted,primary,,,,,,,"Warm lead: open issue ""[BUG]: Lockfile Bypass in Release Script Exposes Publisher to Supply Chain Attacks"" https://github.com/a2ui-project/a2ui/issues/2581",,,,2026-10-17,claude-opus-5.5
+13,openwallet-foundation/bifold-wallet,not_contacted,primary,,,,,,,"Warm lead: open issue ""Active npm Supply Chain Attack with Data Destruction Capabilities"" https://github.com/openwallet-foundation/bifold-wallet/issues/1727",,,,2026-10-17,claude-opus-5.5
+13,SandeepVashishtha/Eventra,not_contacted,primary,,,,,,,"Warm lead: open issue ""Add automated security and dependency scanning to CI"" https://github.com/SandeepVashishtha/Eventra/issues/10892",,,,2026-10-17,claude-opus-5.5
+13,walletbeat/walletbeat,not_contacted,primary,,,,,,,"Warm lead: open issue ""Supply chain security: Add dependency age gate"" https://github.com/walletbeat/walletbeat/issues/1191",,,,2026-10-17,claude-opus-5.5
+13,awslabs/visual-asset-management-system,not_contacted,primary,,,,,,,"Warm lead: open issue ""web/customInstalls viewer installs are not governed by min-release-age"" https://github.com/awslabs/visual-asset-management-system/issues/334",,,,2026-10-17,claude-opus-5.5
+13,pingdotgg/t3code,not_contacted,primary,,,,,,,"Warm lead: open issue ""[Bug]: ACP Registry npx installs fail when the pinned version is newer than npm's release-age policy"" https://github.com/pingdotgg/t3code/issues/19855",,,,2026-10-17,claude-opus-5.5
+13,vercel-labs/skills,not_contacted,primary,,,,,,,"Warm lead: open issue ""Security: malicious package roin-orca/skills in the ecosystem (SSRF + self-propagation + XSS)"" https://github.com/vercel-labs/skills/issues/921",,,,2026-10-17,claude-opus-5.5
+13,sinonjs/sinon,not_contacted,primary,,,,,,,"Warm lead: open issue ""Consider Adopting NPM Trusted Publishing"" https://github.com/sinonjs/sinon/issues/2665",,,,2026-10-17,claude-opus-5.5
+13,microsoftgraph/msgraph-sdk-javascript,not_contacted,primary,,,,,,,"Warm lead: open issue ""Consider Adopting NPM Trusted Publishing"" https://github.com/microsoftgraph/msgraph-sdk-javascript/issues/1978",,,,2026-10-17,claude-opus-5.5
+13,yargs/cliui,not_contacted,primary,,,,,,,"Warm lead: open issue ""Consider adopting npm trusted publishing"" https://github.com/yargs/cliui/issues/182",,,,2026-10-17,claude-opus-5.5
