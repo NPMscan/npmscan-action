@@ -19,17 +19,30 @@ export function repoInfo(repo: string): RepoInfo {
 
 /** Creates the fork if needed and returns its "owner/name". */
 export function ensureFork(repo: string): string {
-  const fork = `${currentUser()}/${repo.split('/')[1]}`;
-  const parentOf = () =>
+  const [owner, name] = repo.split('/');
+  const parentOf = (fork: string) =>
     run('gh', ['repo', 'view', fork, '--json', 'parent', '--jq', '.parent.owner.login + "/" + .parent.name'], {
       allowFailure: true,
     });
 
-  if (parentOf() === null) run('gh', ['repo', 'fork', repo, '--clone=false', '--default-branch-only']);
-  const parent = parentOf();
-  if (parent?.toLowerCase() !== repo.toLowerCase()) {
-    throw new Error(`${fork} is not a fork of ${repo} (parent: ${parent ?? 'none'})`);
+  // Same-named repos from different owners (airbnb/javascript, TheAlgorithms/JavaScript)
+  // can't share a fork name, so fall back to "<owner>-<name>".
+  let fork = '';
+  for (const candidate of [`${currentUser()}/${name}`, `${currentUser()}/${owner}-${name}`]) {
+    let parent = parentOf(candidate);
+    if (parent === null) {
+      const forkName = candidate.split('/')[1];
+      run('gh', ['repo', 'fork', repo, '--clone=false', '--default-branch-only', '--fork-name', forkName]);
+      parent = parentOf(candidate);
+    }
+    if (parent?.toLowerCase() === repo.toLowerCase()) {
+      fork = candidate;
+      break;
+    }
   }
+  if (!fork) throw new Error(`no fork of ${repo} under ${currentUser()} (names taken by other repos)`);
+  // The clone is shallow, so the fork must already hold upstream's tip for the push to go through.
+  run('gh', ['repo', 'sync', fork], { allowFailure: true });
   return fork;
 }
 

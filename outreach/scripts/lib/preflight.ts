@@ -55,6 +55,11 @@ export async function preflight(checkout: Checkout, { skipPolicy = false } = {})
       : hold('skipped_no_supported_lockfile', 'no supported lockfile at repo root');
   }
 
+  // A PR-time dependency review already covers what npmscan-action does.
+  const workflows = files.filter((f) => /^\.github\/workflows\/[^/]+\.ya?ml$/.test(f));
+  const reviewer = workflows.find((f) => /actions\/dependency-review-action/.test(checkout.read(f)));
+  if (reviewer) return hold('deprioritized_overlap', `already runs dependency-review-action (${reviewer})`, { lockfile });
+
   if (!skipPolicy) {
     const policyFiles = files.filter((f) => POLICY_FILE.test(f) || PR_TEMPLATE_DIR.test(f));
     const policyText = policyFiles.map((f) => checkout.read(f)).join('\n');

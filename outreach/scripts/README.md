@@ -54,6 +54,7 @@ It takes `not_contacted` rows in tracker order (plus `failed` with `--retry-fail
    |---|---|
    | Already has `.github/workflows/npmscan.yml` | `skipped` |
    | No root `pnpm-lock.yaml` / `yarn.lock` / `package-lock.json` / `npm-shrinkwrap.json` | `skipped_no_supported_lockfile`, or `skipped_unsupported_lockfile` if bun-only |
+   | A workflow already uses `actions/dependency-review-action` | `deprioritized_overlap` |
    | CONTRIBUTING / AI policy / PR template mentions AI tools | `blocked_policy` (don't contact) |
    | ...asks for an issue first | `needs_issue_first` |
    | ...requires DCO or a CLA | `needs_user_decision` |

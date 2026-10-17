@@ -6,6 +6,7 @@ export interface RunOptions {
   cwd?: string;
   /** Return null instead of throwing when the command exits non-zero. */
   allowFailure?: boolean;
+  timeoutMs?: number;
 }
 
 /**
@@ -14,14 +15,14 @@ export interface RunOptions {
  */
 export function run(cmd: string, args: string[], opts: RunOptions & { allowFailure: true }): string | null;
 export function run(cmd: string, args: string[], opts?: RunOptions): string;
-export function run(cmd: string, args: string[], { cwd, allowFailure = false }: RunOptions = {}): string | null {
+export function run(cmd: string, args: string[], { cwd, allowFailure = false, timeoutMs = config.commandTimeoutMs }: RunOptions = {}): string | null {
   if (process.env.VERBOSE) console.log(`  $ ${cmd} ${args.join(' ')}`);
   try {
     return execFileSync(cmd, args, {
       cwd,
       encoding: 'utf-8',
       stdio: ['ignore', 'pipe', 'pipe'],
-      timeout: config.commandTimeoutMs,
+      timeout: timeoutMs,
       maxBuffer: 64 * 1024 * 1024, // `git show` of a large lockfile
     }).trim();
   } catch (err) {

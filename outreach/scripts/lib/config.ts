@@ -17,6 +17,8 @@ export const config = {
   maxLockfileBytes: 8 * 1024 * 1024,
 
   commandTimeoutMs: 5 * 60_000,
+  // Shallow clones finish in seconds; a stalled SSH transfer should fail fast, not eat 5 minutes.
+  gitTimeoutMs: 2 * 60_000,
   delayBetweenReposMs: 5_000,
 } as const;
 
