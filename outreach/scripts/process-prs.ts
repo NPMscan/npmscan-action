@@ -14,7 +14,8 @@
  *
  * --body opens one PR with a hand-written body (for repos with a PR template,
  * CLA or other policy a person has reviewed). It skips the contribution-policy
- * checks and also accepts rows held as needs_user_decision.
+ * checks and also accepts rows held as needs_user_decision, blocked_policy or
+ * needs_issue_first, so only use it after the user has approved that repo.
  */
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -47,7 +48,7 @@ if (args.body && !existsSync(bodyPath)) throw new Error(`--body file not found: 
 const pending = new Set([
   'not_contacted',
   ...(args['retry-failed'] ? ['failed'] : []),
-  ...(args.body ? ['needs_user_decision', 'failed'] : []),
+  ...(args.body ? ['needs_user_decision', 'blocked_policy', 'needs_issue_first', 'failed'] : []),
 ]);
 
 async function processRow(tracker: Tracker, row: Row): Promise<string> {

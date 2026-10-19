@@ -44,7 +44,7 @@ git add outreach/tracker.csv && git commit -m "chore(outreach): record wave 12 P
 
 ## What `process-prs.ts` does per repo
 
-It takes `not_contacted` rows in tracker order (plus `failed` with `--retry-failed`; with `--body`, also `needs_user_decision`):
+It takes `not_contacted` rows in tracker order (plus `failed` with `--retry-failed`; with `--body`, also `needs_user_decision`, `blocked_policy` and `needs_issue_first`, once the user has approved that repo):
 
 1. **Archived?** If so, record `blocked_pr_creation` / `archived`.
 2. **Fork and clone.** `gh repo fork` to the outreach account, then a blobless clone into `/tmp/npmscan-outreach/<owner>__<repo>` with upstream's default branch fetched. `origin` is always reset to the fork. A dry run reads upstream and never forks.
