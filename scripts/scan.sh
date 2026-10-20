@@ -8,6 +8,9 @@ HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 API_URL="${NPMSCAN_API_URL:-https://npmscan.com/api/analysis/dependency-diff}"
 USER_AGENT="npmscan-action/1"
 MAX_BYTES=8388608 # API limit per file
+# Each attempt gets 2 minutes and no retry starts after 150s, so a hung API
+# gives up in about 4.5 minutes, well inside a 10-minute job timeout.
+CURL_TIMEOUTS=(--max-time 120 --retry 2 --retry-delay 15 --retry-max-time 150)
 
 config_error() { echo "::error title=npmscan configuration::$1"; exit 1; }
 lower() { printf '%s' "$1" | tr '[:upper:]' '[:lower:]'; }
@@ -96,7 +99,7 @@ add_entry() { # file status isNew reason [result.json]
 call_api() {
   local code
   code=$(jq -n --rawfile before "$1" --rawfile after "$2" '{before: $before, after: $after}' \
-    | curl -sS --retry 2 --retry-delay 30 --max-time 300 \
+    | curl -sS "${CURL_TIMEOUTS[@]}" \
         -o "$3" -w '%{http_code}' -X POST "$API_URL" \
         -H 'Content-Type: application/json' -H "User-Agent: $USER_AGENT" \
         --data-binary @- 2>"$3.err") || true

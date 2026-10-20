@@ -221,6 +221,12 @@ assert_not_contains "$OUTPUT" "flagged-count"
 assert_contains "$OUT" "::warning title=npmscan scan failed::package.json: npmscan API returned HTTP 503"
 assert_contains "$COMMENT" "not blocking (\`fail-on-error: false\`)"
 
+t "API calls have a bounded total time, so a hung API can't outlast the job timeout"
+run_scan FAKE_RESPONSE="$FIX/clean.json"
+ARGS=$(cat "$LOG/curl.args")
+assert_contains "$ARGS" "--max-time 120"
+assert_contains "$ARGS" "--retry 2 --retry-delay 15 --retry-max-time 150"
+
 t "network failure with fail-on-error: true fails"
 run_scan FAKE_CODE=000 INPUT_FAIL_ON_ERROR=true
 assert_eq "$CODE" 1 "exit code"

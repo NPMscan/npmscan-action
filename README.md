@@ -108,7 +108,7 @@ Known malware blocks even with `fail-on-severity: none`: these advisories are of
 | `fail-on-severity` | `low` | Lowest severity that blocks: `low`, `moderate`, `high`, `critical`, or `none`. Known malware blocks regardless. |
 | `fail-on-install-script` | `true` | Block on new install scripts (see the table above) |
 | `fail-on-source-change` | `true` | Block on repointed or swapped tarballs and changed overrides |
-| `fail-on-error` | `false` | Fail when the scan itself can't run (npmscan.com unreachable, file over 8 MB). By default this is a warning, so an outage never blocks your merges. |
+| `fail-on-error` | `false` | Fail when the scan itself can't run (npmscan.com unreachable, file over 8 MB). By default this is a warning, so an outage never blocks your merges. If the API hangs, the action gives up within about 5 minutes per file, so keep `timeout-minutes` at 10 or more. Otherwise a timed-out job fails the check anyway. |
 | `github-token` | `${{ github.token }}` | Token used to post the PR comment |
 | `fail-on-flagged` | `true` | Deprecated: `false` is the same as `mode: warn` |
 

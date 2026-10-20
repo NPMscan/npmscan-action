@@ -3,6 +3,7 @@
 # prints $FAKE_CODE (default 200) like -w '%{http_code}'. FAKE_CODE=000 fails
 # like a network error.
 out=""
+printf '%s\n' "$*" > "$STUB_LOG/curl.args"
 while [ $# -gt 0 ]; do
   if [ "$1" = -o ]; then out=$2; shift; fi
   shift
