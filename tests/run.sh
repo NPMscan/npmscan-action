@@ -331,6 +331,44 @@ t "fork PR with a read-only token gets a fork hint"
 run_scan FAKE_RESPONSE="$FIX/clean.json" GH_FAIL_WRITE=1 HEAD_REPO=someone/app
 assert_contains "$OUT" "PRs from forks get a read-only token"
 
+t "comment: on-findings posts nothing on a clean diff, report still in the summary"
+new_repo package.json '{"dependencies":{"ms":"2.1.3"}}'
+head_commit package.json '{"dependencies":{"ms":"2.1.2"}}'
+run_scan FAKE_RESPONSE="$FIX/clean.json" INPUT_COMMENT=on-findings
+assert_eq "$CODE" 0 "exit code"
+assert_not_contains "$GHLOG" "-X POST"
+assert_contains "$SUMMARY" "No risky dependency changes found" "job summary"
+
+t "comment: on-findings updates an earlier comment once the PR is clean"
+run_scan FAKE_RESPONSE="$FIX/clean.json" INPUT_COMMENT=on-findings \
+  GH_COMMENTS='[{"id":41,"body":"<!-- npmscan-action:package.json -->\n## old findings"}]'
+assert_contains "$GHLOG" "-X PATCH repos/acme/app/issues/comments/41"
+assert_contains "$COMMENT" "No risky dependency changes found"
+
+t "comment: on-findings on a clean fork PR gives no read-only-token warning"
+run_scan FAKE_RESPONSE="$FIX/clean.json" INPUT_COMMENT=on-findings GH_FAIL_WRITE=1 HEAD_REPO=someone/app
+assert_eq "$CODE" 0 "exit code"
+assert_not_contains "$OUT" "Could not post the PR comment"
+
+t "comment: on-findings comments when the scan fails"
+run_scan FAKE_CODE=503 FAKE_RESPONSE="$FIX/clean.json" INPUT_COMMENT=on-findings
+assert_contains "$GHLOG" "-X POST repos/acme/app/issues/7/comments"
+assert_contains "$COMMENT" "Scan failed"
+
+t "comment: on-findings comments when something is flagged"
+new_repo package.json '{"dependencies":{"lodash":"4.17.21"}}'
+head_commit package.json '{"dependencies":{"lodash":"4.17.15"}}'
+run_scan FAKE_RESPONSE="$FIX/vulnerable.json" INPUT_COMMENT=on-findings
+assert_contains "$GHLOG" "-X POST repos/acme/app/issues/7/comments"
+assert_contains "$COMMENT" "lodash"
+
+t "comment: never posts nothing, even with findings, and keeps the summary"
+run_scan FAKE_RESPONSE="$FIX/vulnerable.json" INPUT_COMMENT=never
+assert_not_contains "$GHLOG" "-X POST"
+assert_not_contains "$GHLOG" "PATCH"
+assert_contains "$SUMMARY" "lodash" "job summary"
+assert_eq "$CODE" 1 "findings still block"
+
 t "a lockfile entry pointing at another package's tarball blocks as a source change"
 # Real API response: left-pad@1.3.0 added with resolved = minimist-0.0.8.tgz.
 # identityMismatch is true but sourceIntegrityChanged is null (nothing to
@@ -382,6 +420,9 @@ run_scan INPUT_FAIL_ON_SEVERITY=severe
 assert_eq "$CODE" 1 "bad severity"
 run_scan INPUT_FAIL_ON_ERROR=maybe
 assert_eq "$CODE" 1 "bad boolean"
+run_scan INPUT_COMMENT=sometimes
+assert_eq "$CODE" 1 "bad comment"
+assert_contains "$OUT" "Input 'comment' must be always, on-findings or never"
 run_scan INPUT_FILE=../outside/package.json
 assert_contains "$OUT" "must be relative to the repository root"
 run_scan PR=

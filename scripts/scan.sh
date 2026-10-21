@@ -47,6 +47,11 @@ esac
 parse_bool fail-on-install-script "${INPUT_FAIL_ON_INSTALL_SCRIPT:-true}"; FAIL_INSTALL=$REPLY
 parse_bool fail-on-source-change "${INPUT_FAIL_ON_SOURCE_CHANGE:-true}"; FAIL_SOURCE=$REPLY
 parse_bool fail-on-error "${INPUT_FAIL_ON_ERROR:-false}"; FAIL_ON_ERROR=$REPLY
+COMMENT_MODE=$(lower "$(trim "${INPUT_COMMENT:-always}")")
+case "$COMMENT_MODE" in
+  always|on-findings|never) ;;
+  *) config_error "Input 'comment' must be always, on-findings or never, got '$COMMENT_MODE'" ;;
+esac
 
 RAW_FILES=${INPUT_FILES:-}
 if [ -z "$(trim "$RAW_FILES")" ]; then RAW_FILES=${INPUT_FILE:-package-lock.json}; fi
@@ -265,12 +270,24 @@ upsert_comment() { # body.md create-if-missing
 
 if [ "$SCANNED" -eq 0 ] && [ "$ERRORS" -eq 0 ]; then
   # Nothing to report, but an earlier push may have left a comment with findings.
-  upsert_comment "$WORK/comment.md" false
+  if [ "$COMMENT_MODE" != never ]; then upsert_comment "$WORK/comment.md" false; fi
   exit 0
 fi
 
 if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then cat "$WORK/comment.md" >> "$GITHUB_STEP_SUMMARY"; fi
-upsert_comment "$WORK/comment.md" true
+# on-findings still edits an earlier comment on a clean run, so old findings
+# never stay on the PR after they're fixed.
+case "$COMMENT_MODE" in
+  always) upsert_comment "$WORK/comment.md" true ;;
+  on-findings)
+    if [ "$FLAGGED" -gt 0 ] || [ "$ERRORS" -gt 0 ]; then
+      upsert_comment "$WORK/comment.md" true
+    else
+      upsert_comment "$WORK/comment.md" false
+    fi
+    ;;
+  never) ;;
+esac
 
 # --- Exit status ------------------------------------------------------------
 

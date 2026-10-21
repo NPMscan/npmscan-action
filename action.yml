@@ -30,6 +30,9 @@ inputs:
   fail-on-flagged:
     description: "Deprecated — use `mode`. Setting this to false is the same as `mode: warn`."
     default: 'true'
+  comment:
+    description: "When to post the PR comment: `always`, `on-findings` (only when something is flagged or the scan fails; an earlier comment is still updated so it never goes stale) or `never`. The full report always goes to the job summary."
+    default: always
   github-token:
     description: Token used to post the PR comment
     default: ${{ github.token }}
@@ -59,6 +62,7 @@ runs:
         INPUT_FAIL_ON_SOURCE_CHANGE: ${{ inputs.fail-on-source-change }}
         INPUT_FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
         INPUT_FAIL_ON_FLAGGED: ${{ inputs.fail-on-flagged }}
+        INPUT_COMMENT: ${{ inputs.comment }}
         GH_TOKEN: ${{ inputs.github-token }}
         PR: ${{ github.event.pull_request.number }}
         BASE_SHA: ${{ github.event.pull_request.base.sha }}

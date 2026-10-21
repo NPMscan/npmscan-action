@@ -91,6 +91,11 @@ Ordinary upgrades (new version, new tarball from the same registry) are not flag
 A dependency's `prepare` script is not counted: npm never runs it when the package is installed from the registry.
 Known malware blocks even with `fail-on-severity: none`: these advisories are often rated only HIGH, and no threshold should let one through.
 
+**Scan `package.json` next to your lockfile.** The lockfile lists every installed package, but only `package.json`
+has your own install scripts, and with npm and Yarn only it has your `overrides` / `resolutions`. A lockfile-only
+scan misses a PR that adds a root `postinstall` or repoints an override. pnpm copies overrides into
+`pnpm-lock.yaml`, so there it misses only the root scripts. See [Quiet on clean PRs](#quiet-on-clean-prs).
+
 ## Why npmscan
 
 - **Private repos are free.** GitHub's own Dependency Review action only runs on private repositories that have [GitHub Code Security or Advanced Security](https://docs.github.com/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-dependency-review). npmscan needs neither.
@@ -108,7 +113,8 @@ Known malware blocks even with `fail-on-severity: none`: these advisories are of
 | `fail-on-severity` | `low` | Lowest severity that blocks: `low`, `moderate`, `high`, `critical`, or `none`. Known malware blocks regardless. |
 | `fail-on-install-script` | `true` | Block on new install scripts (see the table above) |
 | `fail-on-source-change` | `true` | Block on repointed or swapped tarballs and changed overrides |
-| `fail-on-error` | `false` | Fail when the scan itself can't run (npmscan.com unreachable, file over 8 MB). By default this is a warning, so an outage never blocks your merges. If the API hangs, the action gives up within about 5 minutes per file, so keep `timeout-minutes` at 10 or more. Otherwise a timed-out job fails the check anyway. |
+| `fail-on-error` | `false` | Fail when the scan itself can't run (npmscan.com unreachable, file over 8 MB). By default this is a warning, so an outage never blocks your merges. If the API hangs, the action gives up within about 5 minutes per file, so give the job at least 5 minutes per scanned file plus some slack (10 for one file, 20 for three). Otherwise a timed-out job fails the check anyway. |
+| `comment` | `always` | When to post the PR comment: `always`, `on-findings` (only when something is flagged or the scan fails) or `never`. With `on-findings`, an earlier comment is still updated, so fixed findings don't linger. The report always goes to the job summary. |
 | `github-token` | `${{ github.token }}` | Token used to post the PR comment |
 | `fail-on-flagged` | `true` | Deprecated: `false` is the same as `mode: warn` |
 
@@ -131,6 +137,25 @@ Known malware blocks even with `fail-on-severity: none`: these advisories are of
 ```
 
 The comment marks what *would* have blocked. Switch to `mode: block` when you trust it.
+
+### Quiet on clean PRs
+
+```yaml
+on:
+  pull_request:
+    paths: [package.json, package-lock.json]
+# ...
+      - uses: npmscan/npmscan-action@v1
+        with:
+          files: |
+            package.json
+            package-lock.json
+          comment: on-findings
+```
+
+PRs with nothing to report get no comment, just the report in the job summary. A finding or a failed scan
+still comments, and a later clean push updates that comment. Useful when `package.json` changes often for
+reasons that have nothing to do with dependencies.
 
 ### Only block serious vulnerabilities
 
