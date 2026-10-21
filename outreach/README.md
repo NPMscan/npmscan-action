@@ -35,6 +35,24 @@ Lessons from waves 1–12 (as of October 2026: ~80 PRs, 0 merged):
 - **Fill PR templates honestly.** Answer the maintainers' "why?" questions promptly. A few tailored PRs beat a batch of identical ones.
 - Small batches with the built-in delay. Never burst.
 
+## Finding new repos
+
+- **Don't search only in English.** Many active JS/TS projects track issues in Chinese, Russian, Japanese, Korean, Portuguese, Spanish and other languages, and English-only searches have mostly surfaced big, already-contacted repos. Search issues in several languages, for example:
+
+  | Language | Example queries |
+  |---|---|
+  | Chinese | `npm 供应链攻击`, `npm 恶意包`, `依赖投毒`, `依赖 安全扫描 npm` |
+  | Russian / Ukrainian | `вредоносный пакет npm`, `npm атака цепочки поставок`, `npm атака ланцюга постачання` |
+  | Japanese | `npm サプライチェーン攻撃`, `npm 悪意のあるパッケージ` |
+  | Korean | `npm 공급망 공격`, `npm 악성 패키지` |
+  | Portuguese / Spanish | `pacote malicioso npm`, `paquete malicioso npm`, `ataque cadena de suministro npm` |
+  | Any | incident names such as `Shai-Hulud` |
+
+- The best source so far is incident reports in any language: issue titles like `"Malicious files on the default branch"`, `"Malicious release"`, `"is compromised"` or `被投毒`. Most other non-English hits are bot reports or personal repos, so keep only JS/TS repos with roughly 150+ stars and a push in the last three months.
+- `gh search issues "<query>" --state open --limit 30 --json repository,title,url,createdAt`. Search allows about 30 requests a minute, so pause a few seconds between queries.
+- Read the issue before calling it warm: many hits are about something else (news feeds, trusted publishing, release age). Then run the usual checks (lockfile, contribution docs, existing scanning) and add the repo with `mark.ts --add --wave N --notes "..."`, linking the issue in the notes.
+- If the maintainers write in another language, write the PR body or issue in that language too (keep the npmscan disclosure).
+
 ## Follow-up
 
 Run `node outreach/scripts/refresh.ts` to update every PR's state. It lists the PRs where a maintainer replied and we owe an answer. Reply in the PR, then record the gist with `mark.ts --repo x/y --reason "..."` (and `--outcome rejected` or similar when it's final).
