@@ -9,7 +9,8 @@ export const config = {
   workDir: process.env.OUTREACH_WORK_DIR ?? '/tmp/npmscan-outreach',
 
   branch: 'ci/add-npmscan-warn-mode',
-  actionSha: 'de14168f65640a4ed1f0e82ad3ad8c80483d360d',
+  actionSha: '83cb7d67204f8f2d1f76454ee9abf19c480dec26',
+  actionTag: 'v1.4.0', // shown next to the SHA in the workflow; bump both together
   commitMessage: 'ci: add npmscan-action for dependency security',
   prTitle: 'ci: add npmscan dependency security check',
 

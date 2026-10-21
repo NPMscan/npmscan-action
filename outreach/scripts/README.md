@@ -23,6 +23,7 @@ export NPMSCAN_AGENT=claude-opus-5.5   # or gpt-5.1, gemini-2.5-pro, kimi-k2, ..
 | Open PRs for specific repos | `node outreach/scripts/process-prs.ts --repo owner/name` (once per repo) |
 | Retry rows that errored (timeouts, etc.) | add `--retry-failed` |
 | Open one PR with a hand-written body (template / CLA repos the user approved) | `node outreach/scripts/process-prs.ts --repo owner/name --body /tmp/npmscan-outreach/name.md` |
+| ...for a repo that requires DCO sign-off (only after the user agreed to sign off) | add `--signoff` |
 | Update every PR's live state and list replies we owe | `node outreach/scripts/refresh.ts` (add `--dry-run` to preview, `--wave` / `--repo` to narrow) |
 | Record a skip / hold / maintainer reply | `node outreach/scripts/mark.ts --repo owner/name --status skipped_policy --reason "bans bot PRs"` |
 | Add a new candidate repo | `node outreach/scripts/mark.ts --repo owner/name --add --wave 13 [--notes "why this repo"]` |
@@ -134,5 +135,5 @@ While a script writes, it holds `tracker.csv.lock` (gitignored). A second writer
 - Run commands through `run`/`runAsync` (argument arrays, no shell strings). Go through `Tracker` for CSV access.
 - A new command that writes rows takes an `agent` option and passes `resolveAgent(args.agent)` to `new Tracker(...)`. Pass `{ stamp: false }` to `update` only when the row didn't really change (as `refresh.ts` does).
 - Keep to Node built-ins (`node:fs`, `node:child_process`, `fetch`). TypeScript must be erasable syntax only (no `enum`, no `namespace`); `tsconfig.json` enforces this.
-- After a new action release, bump `actionSha` in `lib/config.ts`.
+- After a new action release, bump `actionSha` and `actionTag` in `lib/config.ts`.
 - `npm run typecheck` must pass. Test changes with `--dry-run` or a single `--repo` before a batch.

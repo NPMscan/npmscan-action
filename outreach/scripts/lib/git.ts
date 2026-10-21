@@ -54,9 +54,10 @@ export class Checkout {
     this.git('clean', '-fdx');
   }
 
-  commitAndPush(file: string): void {
-    this.git('add', file);
-    this.git('commit', '-m', config.commitMessage);
+  commitAndPush(file: string, { signoff = false } = {}): void {
+    // --force: some repos ignore dotfiles (tedious has `.*` in .gitignore) and track .github/ anyway.
+    this.git('add', '--force', file);
+    this.git('commit', ...(signoff ? ['--signoff'] : []), '-m', config.commitMessage);
     this.git('push', '--force', '-u', 'origin', config.branch);
   }
 }

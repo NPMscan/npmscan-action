@@ -14,9 +14,10 @@ Don't add per-wave markdown, notes or JSON files here. Everything goes into `tra
 
 ## What a PR looks like
 
-- One new file, `.github/workflows/npmscan.yml`, that runs on `pull_request`. No existing workflow is touched.
-- `mode: warn` and `fail-on-error: false`, so it can never break the repo's CI.
-- The action is pinned to a full commit SHA, and `actions/checkout@v4` is used to match what most repos already run.
+- One new file, `.github/workflows/npmscan.yml`, that runs on `pull_request` only when `package.json`, the lockfile or the workflow itself changes (so it runs once on our PR and reviewers see it work). No existing workflow is touched.
+- `mode: warn` and `fail-on-error: false`, so it can never break the repo's CI. `comment: on-findings` keeps clean PRs quiet, and `timeout-minutes: 15` covers the action's own API time cap.
+- Scans the lockfile and `package.json` (root install scripts and overrides live only there).
+- Least privilege: workflow-level `permissions: {}`, job-level `contents: read` + `pull-requests: write`, checkout with `persist-credentials: false`. The action and `actions/checkout` are both pinned to full commit SHAs.
 - The body explains what's checked (install scripts, tarball swaps, override changes, vulnerabilities) and **always discloses that the author maintains npmscan**.
 
 ## Which repos to pick

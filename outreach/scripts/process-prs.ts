@@ -7,7 +7,7 @@
  * workflow, push and open the PR. Every outcome is written back to tracker.csv.
  *
  *   node outreach/scripts/process-prs.ts --agent <model> [--wave 12] [--limit 5] [--repo owner/name] [--retry-failed] [--dry-run]
- *   node outreach/scripts/process-prs.ts --agent <model> --repo owner/name --body path/to/body.md
+ *   node outreach/scripts/process-prs.ts --agent <model> --repo owner/name --body path/to/body.md [--signoff]
  *
  * --agent (or NPMSCAN_AGENT) names the model doing the run and is written to
  * each row; it's not needed for --dry-run.
@@ -16,6 +16,9 @@
  * CLA or other policy a person has reviewed). It skips the contribution-policy
  * checks and also accepts rows held as needs_user_decision, blocked_policy or
  * needs_issue_first, so only use it after the user has approved that repo.
+ *
+ * --signoff adds a DCO Signed-off-by line to the commit. It certifies the
+ * contribution in the user's name, so only pass it when the user agreed to it.
  */
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -37,6 +40,7 @@ const { values: args } = parseArgs({
     'dry-run': { type: 'boolean', default: false },
     body: { type: 'string' },
     agent: { type: 'string' },
+    signoff: { type: 'boolean', default: false },
   },
 });
 
@@ -77,7 +81,7 @@ async function processRow(tracker: Tracker, row: Row): Promise<string> {
   if (!existing) {
     checkout.resetBranch();
     writeWorkflow(checkout.path, check.lockfile);
-    checkout.commitAndPush(WORKFLOW_PATH);
+    checkout.commitAndPush(WORKFLOW_PATH, { signoff: args.signoff });
   }
   const prUrl = existing ?? createPr(repo, info.defaultBranch, bodyPath);
 
