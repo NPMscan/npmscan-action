@@ -1,3 +1,4 @@
+import { setTimeout as sleep } from 'node:timers/promises';
 import { config, LOCKFILES, UNSUPPORTED_LOCKFILES, type Lockfile } from './config.ts';
 import type { Checkout } from './git.ts';
 import type { Row } from './tracker.ts';
@@ -80,19 +81,32 @@ export async function preflight(checkout: Checkout, { skipPolicy = false } = {})
   return { ok: true, lockfile };
 }
 
-/** Sends the lockfile as a fresh addition to the API, as the action would. Returns an error or null. */
+/**
+ * Sends the lockfile as a fresh addition to the API, as the action would.
+ * Returns the API's rejection (the lockfile isn't supported) or null.
+ * A network error, 429 or 5xx says nothing about the lockfile, so it's retried
+ * once and then thrown: process-prs records the row as `failed` (rerun with
+ * --retry-failed) instead of as an unsupported lockfile.
+ */
 async function checkLockfileParses(lockfile: Lockfile, content: string): Promise<string | null> {
   if (Buffer.byteLength(content) > config.maxLockfileBytes) return `${lockfile} exceeds the 8 MiB limit`;
-  try {
-    const res = await fetch(config.apiUrl, {
-      method: 'POST',
-      headers: { 'content-type': 'application/json', 'user-agent': 'npmscan-outreach' },
-      body: JSON.stringify({ before: LOCKFILES[lockfile], after: content }),
-      signal: AbortSignal.timeout(config.commandTimeoutMs),
-    });
-    if (res.ok) return null;
-    return `HTTP ${res.status} ${(await res.text()).slice(0, 120)}`;
-  } catch (err) {
-    return (err as Error).message;
+  for (let attempt = 1; ; attempt++) {
+    let unavailable: string;
+    try {
+      const res = await fetch(config.apiUrl, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'user-agent': 'npmscan-outreach' },
+        body: JSON.stringify({ before: LOCKFILES[lockfile], after: content }),
+        signal: AbortSignal.timeout(config.commandTimeoutMs),
+      });
+      if (res.ok) return null;
+      const detail = `HTTP ${res.status} ${(await res.text()).slice(0, 120)}`;
+      if (res.status !== 429 && res.status < 500) return detail;
+      unavailable = detail;
+    } catch (err) {
+      unavailable = (err as Error).message;
+    }
+    if (attempt >= 2) throw new Error(`npmscan API unavailable, lockfile not checked: ${unavailable}`);
+    await sleep(5_000);
   }
 }

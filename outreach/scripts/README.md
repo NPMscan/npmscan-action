@@ -61,6 +61,7 @@ It takes `not_contacted` rows in tracker order (plus `failed` with `--retry-fail
    | ...requires DCO or a CLA | `needs_user_decision` |
    | Has any PR template | `needs_user_decision` (fill it by hand, then use `--body`) |
    | npmscan API rejects the lockfile | `skipped_unsupported_lockfile` (don't ship a broken check) |
+   | npmscan API unreachable, 429 or 5xx (after one retry) | `failed`, so `--retry-failed` picks it up later. It says nothing about the lockfile |
 
    `--body` skips the four policy rows, but the lockfile and API checks always run.
 
