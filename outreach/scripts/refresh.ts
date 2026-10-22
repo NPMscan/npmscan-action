@@ -36,7 +36,7 @@ interface Activity { login: string; type: string; association: string; at: strin
 // Comments from accounts with no tie to the repo (association NONE) are mostly
 // email auto-replies from watchers ("your mail was received"), not maintainers.
 const REPO_ROLES = new Set(['OWNER', 'MEMBER', 'COLLABORATOR', 'CONTRIBUTOR']);
-interface PrState { state: string; merged: boolean; createdAt: string; activity: Activity[] }
+interface PrState { state: string; merged: boolean; mergedBy: string | null; createdAt: string; activity: Activity[] }
 
 async function fetchPr(url: string): Promise<PrState> {
   const m = url.match(/^https:\/\/github\.com\/([^/]+\/[^/]+)\/pull\/(\d+)/);
@@ -44,7 +44,7 @@ async function fetchPr(url: string): Promise<PrState> {
   const [, repo, n] = m;
   const who = '{login: .user.login, type: .user.type, association: .author_association, at: (.submitted_at // .created_at)}';
   const [pr, comments, reviews, inline] = await Promise.all([
-    runAsync('gh', ['api', `repos/${repo}/pulls/${n}`, '--jq', '{state, merged: (.merged_at != null), createdAt: .created_at}']),
+    runAsync('gh', ['api', `repos/${repo}/pulls/${n}`, '--jq', '{state, merged: (.merged_at != null), mergedBy: .merged_by.login, createdAt: .created_at}']),
     runAsync('gh', ['api', '--paginate', `repos/${repo}/issues/${n}/comments`, '--jq', `.[] | ${who}`]),
     runAsync('gh', ['api', '--paginate', `repos/${repo}/pulls/${n}/reviews`, '--jq', `.[] | ${who}`]),
     runAsync('gh', ['api', '--paginate', `repos/${repo}/pulls/${n}/comments`, '--jq', `.[] | ${who}`]),
@@ -62,7 +62,8 @@ function classify(row: Row, pr: PrState, me: string): Partial<Row> {
   const maintainers = people.filter((a) => !isMe(a));
   const last = people.at(-1);
   // Review bots (CodeRabbit, Greptile, Socket, ...) never count as a reply.
-  const maintainer = maintainers.at(-1)?.login ?? '';
+  // A silent merge still names who merged it; otherwise keep any name already recorded.
+  const maintainer = maintainers.at(-1)?.login || pr.mergedBy || row.maintainer;
 
   if (pr.merged) return { status: 'pr_merged', outcome: 'merged', maintainer, next_action: 'none' };
   if (pr.state === 'closed') {
