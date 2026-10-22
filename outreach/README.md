@@ -46,9 +46,14 @@ Lessons from waves 1–12 (as of October 2026: ~80 PRs, 0 merged):
   | Japanese | `npm サプライチェーン攻撃`, `npm 悪意のあるパッケージ` |
   | Korean | `npm 공급망 공격`, `npm 악성 패키지` |
   | Portuguese / Spanish | `pacote malicioso npm`, `paquete malicioso npm`, `ataque cadena de suministro npm` |
-  | Any | incident names such as `Shai-Hulud` |
+  | Any | incident names such as `Shai-Hulud`, and the package names from incidents (`plain-crypto-js`, `color-convert@3.1.1`, `"@asyncapi/specs" compromised`), which find repos whose dependencies were hit whatever language they write in |
+
+  Searching the long tail (Hindi, Bengali, Tamil, Urdu, Polish, Czech, Hungarian, Romanian, Greek, the Nordic and Baltic languages, Arabic, Hebrew, Thai and others, October 2026) returned almost nothing from repos with traction: those developers file issues in English. Spend the effort on the languages in the table, plus French, German and Turkish.
+- **Search Discussions too.** Issue search doesn't cover them, and many "are we affected?" threads live there. Use GraphQL: `gh api graphql -f q='<query>' -f query='query($q:String!){search(query:$q,type:DISCUSSION,first:100){nodes{... on Discussion{title url repository{nameWithOwner}}}}}'`.
 
 - The best source so far is incident reports in any language: issue titles like `"Malicious files on the default branch"`, `"Malicious release"`, `"is compromised"` or `被投毒`. Most other non-English hits are bot reports or personal repos, so keep only JS/TS repos with roughly 150+ stars and a push in the last three months.
+- The second-best source is PRs that add protections: `minimumReleaseAge` / `min-release-age`, `ignore-scripts`, "harden against supply chain attacks", or replacing the compromised `actions-cool/*` actions. Those repos already cover release age or install scripts, so lead with what's left (same-version tarball and integrity swaps, override changes) or skip. Routine config PRs (moving `onlyBuiltDependencies`, Renovate tweaks) aren't a signal.
+- Add `language:TypeScript` / `language:JavaScript` / `language:Vue` to busy queries; issue search filters by the repo's language. Rank what's left by how many recently merged PRs came from outside contributors: repos that never merge outside PRs won't merge ours.
 - `gh search issues "<query>" --state open --limit 30 --json repository,title,url,createdAt`. Search allows about 30 requests a minute, so pause a few seconds between queries.
 - Read the issue before calling it warm: many hits are about something else (news feeds, trusted publishing, release age). Then run the usual checks (lockfile, contribution docs, existing scanning) and add the repo with `mark.ts --add --wave N --notes "..."`, linking the issue in the notes.
 - If the maintainers write in another language, write the PR body or issue in that language too (keep the npmscan disclosure).
