@@ -90,6 +90,8 @@ For every row with a `pr_url` it fetches the PR, issue comments, reviews and inl
 | open, a human commented last | `pr_opened` | `engaged` | `reply_to_maintainer` |
 | open, we commented last | `pr_opened` | `awaiting_maintainer` | `monitor_pr` |
 
+It also lists open PRs where the repo's own bot (a bot with a repo role, e.g. `medusa-os-bot`) posted in the last 7 days. Review and deploy bots (CodeRabbit, Greptile, Vercel, ...) are left out by name in `NOISY_BOTS`. Repo bots enforce rules with deadlines ("link an issue or this closes in 8 hours"), so read each one the same day and do what it asks: replying doesn't satisfy it. The list doesn't change the tracker.
+
 `blocked_requirement` (e.g. waiting on a CLA) is kept while the PR is open. `maintainer` is the last human who isn't us, else whoever merged the PR, else the name already in the row. `reason` and `notes` are never touched, and `agent` is only set on rows whose state changed: after reading a maintainer's reply, write the gist there with `mark.ts --reason "..."`.
 
 ## Tracker

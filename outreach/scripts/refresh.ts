@@ -53,10 +53,30 @@ async function fetchPr(url: string): Promise<PrState> {
   return { ...JSON.parse(pr), activity: [...lines(comments), ...lines(reviews), ...lines(inline)] };
 }
 
+const isBot = (a: Activity) => a.type === 'Bot' || a.login.endsWith('[bot]');
+// Review, deploy and changelog bots that sometimes carry a repo role but never set rules.
+const NOISY_BOTS = /^(coderabbitai|greptile-apps|cubic-dev-ai|depthfirst-app|vercel|netlify|changeset-bot|codecov|socket-security|sonarqubecloud|copilot-pull-request-reviewer|gemini-code-assist|sourcery-ai|qodo-merge-pro|ellipsis-dev)(\[bot\])?$/i;
+
+/**
+ * The repo's own bot (association CONTRIBUTOR/MEMBER, e.g. medusa-os-bot) can
+ * set rules and deadlines ("link an issue or this closes in 8 hours"). Review
+ * bots usually have association NONE. Returns that bot's latest post on an open
+ * PR if it's from the last STALE_AFTER_DAYS days. Our own reply doesn't clear
+ * it: on medusa we answered "will do" and the PR still closed at the deadline.
+ */
+function recentRepoBot(pr: PrState): Activity | undefined {
+  if (pr.state !== 'open') return undefined;
+  const since = new Date(Date.now() - STALE_AFTER_DAYS * 86_400_000).toISOString();
+  return pr.activity
+    .filter((a) => isBot(a) && !NOISY_BOTS.test(a.login) && REPO_ROLES.has(a.association) && a.at > since)
+    .sort((a, b) => a.at.localeCompare(b.at))
+    .at(-1);
+}
+
 function classify(row: Row, pr: PrState, me: string): Partial<Row> {
   const isMe = (a: Activity) => a.login.toLowerCase() === me.toLowerCase();
   const people = pr.activity
-    .filter((a) => a.type !== 'Bot' && !a.login.endsWith('[bot]'))
+    .filter((a) => !isBot(a))
     .filter((a) => isMe(a) || REPO_ROLES.has(a.association))
     .sort((a, b) => a.at.localeCompare(b.at));
   const maintainers = people.filter((a) => !isMe(a));
@@ -116,6 +136,7 @@ async function main(): Promise<void> {
   const results = await pool(rows, CONCURRENCY, (r) => fetchPr(r.pr_url));
 
   const needReply: string[] = [];
+  const repoBots: string[] = [];
   const counts = new Map<string, number>();
   for (const [i, row] of rows.entries()) {
     const result = results[i];
@@ -129,11 +150,16 @@ async function main(): Promise<void> {
     const outcome = changes.outcome ?? row.outcome;
     counts.set(outcome || '∅', (counts.get(outcome || '∅') ?? 0) + 1);
     if (changes.next_action === 'reply_to_maintainer') needReply.push(`${row.pr_url} (${changes.maintainer})`);
+    const bot = recentRepoBot(result.value);
+    if (bot) repoBots.push(`${row.pr_url} (${bot.login}, ${bot.at.slice(0, 16).replace('T', ' ')} UTC)`);
     if (!dryRun) tracker.update(row, changes, { stamp: diff.length > 0 });
   }
 
   console.log(`\nOutcomes: ${[...counts].map(([k, v]) => `${k} ${v}`).join(', ')}`);
   if (needReply.length) console.log(`\nWaiting on our reply:\n${needReply.map((u) => `  ${u}`).join('\n')}`);
+  if (repoBots.length) {
+    console.log(`\nRepo bot posted in the last ${STALE_AFTER_DAYS} days (read it, even if we replied: it may set a rule or a deadline):\n${repoBots.map((u) => `  ${u}`).join('\n')}`);
+  }
 }
 
 main().catch((err) => {
