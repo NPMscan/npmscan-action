@@ -2,6 +2,12 @@
 
 Opening PRs that add `npmscan-action` (in warn mode) to popular JS/TS repos, and tracking how maintainers respond.
 
+Scope is narrow on purpose: the GitHub Action only.
+
+- Listings for the MCP server and plugin (AI tool directories, MCP registries, awesome-MCP lists, forms, email) live in `npmscan-related/npmscan-mcp-plugin/outreach`.
+- Listings of the npmscan.com website in awesome-lists live in `npmscan/outreach`.
+- Don't add or update rows here for either of those, even when a mention-watch email or a GitHub notification reports them. If a repo fits one of the other trackers better, tell the user instead.
+
 This folder holds exactly three things:
 
 | Path | What |
