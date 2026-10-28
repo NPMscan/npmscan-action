@@ -373,31 +373,31 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 16,samuelcorsan/reforma-digital,needs_user_decision,backup,,,,,,open_issue_first,"Request (es): proposal to add pnpm minimumReleaseAge (7 days) against malicious packages (issue #20, 2026-10). Spanish civic tech; low outside merges; write in Spanish.",,,PR template to fill by hand: .github/pull_request_template.md,2026-10-21,trae
 13,dexie/Dexie.js,not_contacted,primary,,,,,,,is compromised hit,,,,2026-10-24,gpt-4o
 13,vbenjs/vben-admin-thin-next,not_contacted,primary,,,,,,,is compromised hit,,,,2026-10-24,gpt-4o
-17,achiyaAmrusi/scipas,not_contacted,primary,,,,,,,Request: Pin GitHub Actions in release and tests workflows to commit SHAs,,,,2026-10-28,gemini-2.5-pro
-17,andresBR8/patchconi,not_contacted,primary,,,,,,,"Request: Sign agent releases, not only checksum them",,,,2026-10-28,gemini-2.5-pro
-17,glunk-works/bounty-infra,not_contacted,primary,,,,,,,Request: Add Dependabot cooldown to every update entry,,,,2026-10-28,gemini-2.5-pro
-17,TamuGeoInnovation/Tamu.GeoInnovation.js.monorepo,not_contacted,primary,,,,,,,Request: Scan dependencies for malware by behaviour,,,,2026-10-28,gemini-2.5-pro
-17,justprosound/artifact-keeper,not_contacted,primary,,,,,,,Request: feat(blocklist): soft yank mode,,,,2026-10-28,gemini-2.5-pro
-17,Growth-Circle/cadis,not_contacted,primary,,,,,,,Issue: download() follows redirects without limit,,,,2026-10-28,gemini-2.5-pro
-17,kaisers-io/refs,not_contacted,primary,,,,,,,Issue: supply chain: enable pnpm trustPolicy,,,,2026-10-28,gemini-2.5-pro
-17,rcss-labs/stackstead,not_contacted,primary,,,,,,,Issue: Enforce independent release authenticity,,,,2026-10-28,gemini-2.5-pro
-17,tingly-dev/tingly-box,not_contacted,primary,,,,,,,Issue: Apply updates from the update panel for npm global installs,,,,2026-10-28,gemini-2.5-pro
-17,tuna-os/iso-builder,not_contacted,primary,,,,,,,Issue: CI: Unpinned GitHub Actions use mutable version tags,,,,2026-10-28,gemini-2.5-pro
-17,gmeligio/gx,not_contacted,primary,,,,,,,Issue: rank findings by the secrets and token scope,,,,2026-10-28,gemini-2.5-pro
-17,Kakrl/MakeShift,not_contacted,primary,,,,,,,Issue: security: review frontend dependency updates,,,,2026-10-28,gemini-2.5-pro
-17,magneticstain/plexer-cli,not_contacted,primary,,,,,,,Issue: harden release job,,,,2026-10-28,gemini-2.5-pro
-17,stSoftwareAU/VibeCoder,not_contacted,primary,,,,,,,Issue: CI-fix's audit quarantine exemption,,,,2026-10-28,gemini-2.5-pro
-17,termux/termux-packages,not_contacted,primary,,,,,,,Issue: ssh-agent dies unless security is compromised,,,,2026-10-28,gemini-2.5-pro
-17,abi/secret-llama,not_contacted,primary,,,,,,,Issue: URGENT: Your site (secretllama.com) is compromised,,,,2026-10-28,gemini-2.5-pro
-17,garysassano/cloudflare-examples,not_contacted,primary,,,,,,,Issue: Drop the minimumReleaseAge exclusions,,,,2026-10-28,gemini-2.5-pro
-17,suxess-it/kubriX,not_contacted,primary,,,,,,,Issue: renovate minimumReleaseAge VS fast security patches,,,,2026-10-28,gemini-2.5-pro
-17,gtbuchanan/tooling,not_contacted,primary,,,,,,,Issue: Keep minimumReleaseAge for digest updates,,,,2026-10-28,gemini-2.5-pro
-17,shadmanArko/dienst_pilot,not_contacted,primary,,,,,,,Issue: Remove the temporary pnpm minimumReleaseAge exclusions,,,,2026-10-28,gemini-2.5-pro
-17,tpsdev-ai/flair,not_contacted,primary,,,,,,,Issue: Renovate pin updates choose releases younger than our 7-day minimumReleaseAge,,,,2026-10-28,gemini-2.5-pro
-18,solara-associates/vaid,not_contacted,primary,,,,,,,"Issue: Supply chain: lockfiles, pip-audit, cargo-deny, SBOM",,,,2026-10-28,gemini-2.5-pro
-18,OracleDesk/OracleDesk-Frontend,not_contacted,primary,,,,,,,"Issue: Harden the supply chain: lockfile policy, provenance and dependency review",,,,2026-10-28,gemini-2.5-pro
-18,Psionic-labs/Vigil,not_contacted,primary,,,,,,,Issue: protection from supply chain attacks,,,,2026-10-28,gemini-2.5-pro
-18,Eyevinn/intercom-manager,not_contacted,primary,,,,,,,Issue: Pin GitHub Actions to commit SHAs to prevent supply chain attacks,,,,2026-10-28,gemini-2.5-pro
+17,achiyaAmrusi/scipas,skipped_no_supported_lockfile,primary,main,,,,,,Request: Pin GitHub Actions in release and tests workflows to commit SHAs,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,andresBR8/patchconi,blocked_policy,primary,main,pnpm-lock.yaml,,,,,"Request: Sign agent releases, not only checksum them",,,contribution docs mention an AI policy,2026-10-28,gemini-2.5-pro
+17,glunk-works/bounty-infra,skipped_no_supported_lockfile,primary,main,,,,,,Request: Add Dependabot cooldown to every update entry,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,TamuGeoInnovation/Tamu.GeoInnovation.js.monorepo,blocked_policy,primary,development,package-lock.json,,,,,Request: Scan dependencies for malware by behaviour,,,contribution docs mention an AI policy,2026-10-28,gemini-2.5-pro
+17,justprosound/artifact-keeper,skipped_no_supported_lockfile,primary,main,,,,,,Request: feat(blocklist): soft yank mode,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,Growth-Circle/cadis,skipped_no_supported_lockfile,primary,main,,,,,,Issue: download() follows redirects without limit,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,kaisers-io/refs,blocked_policy,primary,main,pnpm-lock.yaml,,,,,Issue: supply chain: enable pnpm trustPolicy,,,contribution docs mention an AI policy,2026-10-28,gemini-2.5-pro
+17,rcss-labs/stackstead,skipped_no_supported_lockfile,primary,main,,,,,,Issue: Enforce independent release authenticity,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,tingly-dev/tingly-box,skipped_no_supported_lockfile,primary,main,,,,,,Issue: Apply updates from the update panel for npm global installs,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,tuna-os/iso-builder,skipped_no_supported_lockfile,primary,main,,,,,,Issue: CI: Unpinned GitHub Actions use mutable version tags,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,gmeligio/gx,skipped_no_supported_lockfile,primary,main,,,,,,Issue: rank findings by the secrets and token scope,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,Kakrl/MakeShift,needs_user_decision,primary,main,package-lock.json,,,,,Issue: security: review frontend dependency updates,,,PR template to fill by hand: .github/pull_request_template.md,2026-10-28,gemini-2.5-pro
+17,magneticstain/plexer-cli,skipped_no_supported_lockfile,primary,main,,,,,,Issue: harden release job,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,stSoftwareAU/VibeCoder,skipped_no_supported_lockfile,primary,main,,,,,,Issue: CI-fix's audit quarantine exemption,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,termux/termux-packages,skipped_no_supported_lockfile,primary,master,,,,,,Issue: ssh-agent dies unless security is compromised,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,abi/secret-llama,pr_opened,primary,main,yarn.lock,https://github.com/abi/secret-llama/pull/40,salemalem/secret-llama:ci/add-npmscan-warn-mode,83cb7d67204f8f2d1f76454ee9abf19c480dec26,monitor_pr,Issue: URGENT: Your site (secretllama.com) is compromised,awaiting_review,,,2026-10-28,gemini-2.5-pro
+17,garysassano/cloudflare-examples,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/garysassano/cloudflare-examples/pull/9,salemalem/cloudflare-examples:ci/add-npmscan-warn-mode,83cb7d67204f8f2d1f76454ee9abf19c480dec26,monitor_pr,Issue: Drop the minimumReleaseAge exclusions,awaiting_review,,,2026-10-28,gemini-2.5-pro
+17,suxess-it/kubriX,skipped_no_supported_lockfile,primary,main,,,,,,Issue: renovate minimumReleaseAge VS fast security patches,,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+17,gtbuchanan/tooling,deprioritized_overlap,primary,main,pnpm-lock.yaml,,,,,Issue: Keep minimumReleaseAge for digest updates,,,already runs dependency-review-action (.github/workflows/dependency-review.yml),2026-10-28,gemini-2.5-pro
+17,shadmanArko/dienst_pilot,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/shadmanArko/dienst_pilot/pull/22,salemalem/dienst_pilot:ci/add-npmscan-warn-mode,83cb7d67204f8f2d1f76454ee9abf19c480dec26,monitor_pr,Issue: Remove the temporary pnpm minimumReleaseAge exclusions,awaiting_review,,,2026-10-28,gemini-2.5-pro
+17,tpsdev-ai/flair,skipped_unsupported_lockfile,primary,main,bun.lock,,,,revisit_after_support,Issue: Renovate pin updates choose releases younger than our 7-day minimumReleaseAge,,,only bun.lock,2026-10-28,gemini-2.5-pro
+18,solara-associates/vaid,skipped_no_supported_lockfile,primary,main,,,,,,"Issue: Supply chain: lockfiles, pip-audit, cargo-deny, SBOM",,,no supported lockfile at repo root,2026-10-28,gemini-2.5-pro
+18,OracleDesk/OracleDesk-Frontend,needs_user_decision,primary,develop,package-lock.json,,,,,"Issue: Harden the supply chain: lockfile policy, provenance and dependency review",,,PR template to fill by hand: .github/PULL_REQUEST_TEMPLATE.md,2026-10-28,gemini-2.5-pro
+18,Psionic-labs/Vigil,pr_opened,primary,main,pnpm-lock.yaml,https://github.com/Psionic-labs/Vigil/pull/97,salemalem/Vigil:ci/add-npmscan-warn-mode,83cb7d67204f8f2d1f76454ee9abf19c480dec26,monitor_pr,Issue: protection from supply chain attacks,awaiting_review,,,2026-10-28,gemini-2.5-pro
+18,Eyevinn/intercom-manager,pr_opened,primary,main,package-lock.json,https://github.com/Eyevinn/intercom-manager/pull/423,salemalem/intercom-manager:ci/add-npmscan-warn-mode,83cb7d67204f8f2d1f76454ee9abf19c480dec26,monitor_pr,Issue: Pin GitHub Actions to commit SHAs to prevent supply chain attacks,awaiting_review,,,2026-10-28,gemini-2.5-pro
 18,can1357/oh-my-pi,not_contacted,primary,,,,,,,Issue: Update prompt debounce and version cooldown to reduce supply chain attack blast radius,,,,2026-10-28,gemini-2.5-pro
 18,Filipo11021/nodejs-password-hashing,not_contacted,primary,,,,,,,Issue: Mitigating supply chain attacks,,,,2026-10-28,gemini-2.5-pro
 18,Eyevinn/intercom-frontend,not_contacted,primary,,,,,,,Issue: Pin GitHub Actions workflow steps to full commit SHAs,,,,2026-10-28,gemini-2.5-pro
