@@ -435,3 +435,23 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 19,rainb0w-clwn/node-cache-manager-fs-binary-ts,not_contacted,primary,,,,,,,Issue: Malicious files on the default branch,,,,2026-10-28,claude-3.5-sonnet
 19,tonngw/awesome-github-repos,not_contacted,primary,,,,,,,Issue: Malicious files on the default branch,,,,2026-10-28,claude-3.5-sonnet
 19,Drakon-Systems-Ltd/ShieldCortex,not_contacted,primary,,,,,,,Issue: Agent configuration watch: alert on unexpected changes to agent settings,,,,2026-10-28,claude-3.5-sonnet
+20,miclip/oath-lang,not_contacted,primary,,,,,,,"Issue: What publication grants the registry operator, and how a private registry differs",,,,2026-10-28,claude-3.5-sonnet
+20,markcoleman/tarnished-api,not_contacted,primary,,,,,,,Issue: Automate Software Supply Chain Security Checks with SLSA Provenance,,,,2026-10-28,claude-3.5-sonnet
+20,MasterTuto/ksat,not_contacted,primary,,,,,,,Issue: EGOS Comprehensive Architectural & Domain Audit,,,,2026-10-28,claude-3.5-sonnet
+20,hanmiyoo10-alt/-,not_contacted,primary,,,,,,,Issue: VALIDATOR-HARDENING-SKILL-01 — adversarial fail-closed validator review skill,,,,2026-10-28,claude-3.5-sonnet
+20,Ent-Org/new-mona-gallery,not_contacted,primary,,,,,,,Issue: Security Architecture Review - Initial Assessment,,,,2026-10-28,claude-3.5-sonnet
+20,DavidBanda314/superset,not_contacted,primary,,,,,,,Issue: local plugin name collides with a malware advisory on npm (dependency confusion),,,,2026-10-28,claude-3.5-sonnet
+20,AikidoSec/safe-chain,not_contacted,primary,,,,,,,Issue: bun Proxy initializes after install completes - malicious packages not blocked,,,,2026-10-28,claude-3.5-sonnet
+20,openai/codex,not_contacted,primary,,,,,,,Issue: Desktop app: devcontainer-like sandbox environment,,,,2026-10-28,claude-3.5-sonnet
+20,peleduri/zero-day-pulse,not_contacted,primary,,,,,,,Issue: Zero Day Pulse - Active Vulnerability Tracker,,,,2026-10-28,claude-3.5-sonnet
+20,unrealthind/Clawberry,not_contacted,primary,,,,,,,Issue: Accessibility pass on the chat workspace,,,,2026-10-28,claude-3.5-sonnet
+20,arbindpd96/archkeeper,not_contacted,primary,,,,,,,Issue: rebuild dist in a clean job and compare hashes with the release tarball,,,,2026-10-28,claude-3.5-sonnet
+20,gycha0109-beep/Saju,not_contacted,primary,,,,,,,Issue: Shorten overlong research paths or add Windows-safe checkout policy,,,,2026-10-28,claude-3.5-sonnet
+20,schubergphilis/mcvs-node-action,not_contacted,primary,,,,,,,Issue: feat: support pnpm and a working-directory input,,,,2026-10-28,claude-3.5-sonnet
+20,funfair-tech/funfair-server-template,not_contacted,primary,,,,,,,Issue: ci: install npm dependencies with npm ci instead of npm install,,,,2026-10-28,claude-3.5-sonnet
+20,mdrakiburrahman/openivm-spark,not_contacted,primary,,,,,,,Issue: Tooling workspace assertion omits the existing target-directory exclusion,,,,2026-10-28,claude-3.5-sonnet
+20,murrayglenn75-beep/glenn-murray-portfolio,not_contacted,primary,,,,,,,Issue: Resolve production dependency audit before release,,,,2026-10-28,claude-3.5-sonnet
+20,Sharky0209/agent-runtime-lite,not_contacted,primary,,,,,,,Issue: First npm beta publication: owner authorization and trusted publisher bootstrap,,,,2026-10-28,claude-3.5-sonnet
+20,service-lasso/service-lasso,not_contacted,primary,,,,,,,Issue: fix(core): patch transitive undici advisory in MCP Inspector tooling,,,,2026-10-28,claude-3.5-sonnet
+20,scaledown-team/DietCode,not_contacted,primary,,,,,,,Issue: Run offline proxy tests in CI and fix ESM test execution,,,,2026-10-28,claude-3.5-sonnet
+20,ValentinTorassa/Open-Security-Labs,not_contacted,primary,,,,,,,Issue: Good first lab: install scripts de npm y --ignore-scripts,,,,2026-10-28,claude-3.5-sonnet
