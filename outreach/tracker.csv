@@ -415,3 +415,23 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 18,cosmos/cosmjs,not_contacted,primary,,,,,,,Issue: Defense against prototype pollution and supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
 18,Joystream/atlas,not_contacted,primary,,,,,,,Issue: Question: How to manage javascript supply chain attacks?,,,,2026-10-28,claude-3.5-sonnet
 18,refract-team/PocketUniverse,not_contacted,primary,,,,,,,Issue: Evaluate Adding LavaMoat to prevent supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
+19,sijinhui/script,not_contacted,primary,,,,,,,Issue: Your account is creating Shai-Hulud exfiltration repos,,,,2026-10-28,claude-3.5-sonnet
+19,Kimizhao/wechat-md-studio,not_contacted,primary,,,,,,,Issue: Your account is creating Shai-Hulud exfiltration repos,,,,2026-10-28,claude-3.5-sonnet
+19,NASA-PDS/operations,not_contacted,primary,,,,,,,Issue: Check for Shai-Hulud,,,,2026-10-28,claude-3.5-sonnet
+19,TroutSoftware/eu-tis,not_contacted,primary,,,,,,,Issue: [KC] Shai Hulud 2.0 Chain Drop,,,,2026-10-28,claude-3.5-sonnet
+19,IGNE-Agency/vite-react-template,not_contacted,primary,,,,,,,Issue: New Shai Hulud just dropped!,,,,2026-10-28,claude-3.5-sonnet
+19,OpenAuditor/openauditor,not_contacted,primary,,,,,,,Issue: Add 2025 supply chain case studies: tj-actions/changed-files and Shai-Hulud,,,,2026-10-28,claude-3.5-sonnet
+19,natanelia/comlink-worker-pool,not_contacted,primary,,,,,,,Issue: Complete post-merge Shai-Hulud security configuration,,,,2026-10-28,claude-3.5-sonnet
+19,smilne3/every-dollar-counts,not_contacted,primary,,,,,,,"Issue: Every npm ci runs dependency install scripts, the hook this month's npm worms use",,,,2026-10-28,claude-3.5-sonnet
+19,uw-ssec/rse-plugins,not_contacted,primary,,,,,,,"Issue: supply-chain-threat-awareness: review, update, and evaluate the skill",,,,2026-10-28,claude-3.5-sonnet
+19,Shrenath1903/Digital-Food-meanu-L-AMORE,not_contacted,primary,,,,,,,Issue: Looks like Mini Shai Hulud affected,,,,2026-10-28,claude-3.5-sonnet
+19,currentbits/mimir,not_contacted,primary,,,,,,,Issue: Pin tool-server packages to the version resolved when the server is added,,,,2026-10-28,claude-3.5-sonnet
+19,slopstopper/recursive-spine,not_contacted,primary,,,,,,,"Issue: spine-loop: move operator config to repository variables (portability, not privacy)",,,,2026-10-28,claude-3.5-sonnet
+19,m2ms/fragalysis-frontend,not_contacted,primary,,,,,,,Issue: Worm-proof our organisation and processes,,,,2026-10-28,claude-3.5-sonnet
+19,letya999/hermes-hub,not_contacted,primary,,,,,,,Issue: M27.3 Supply-chain install gate,,,,2026-10-28,claude-3.5-sonnet
+19,codejiangqihan/stars-list,not_contacted,primary,,,,,,,Issue: Malicious files on the default branch,,,,2026-10-28,claude-3.5-sonnet
+19,hosted-everything/daily-site,not_contacted,primary,,,,,,,Issue: Malicious files on the default branch,,,,2026-10-28,claude-3.5-sonnet
+19,apinizer/testnizer,not_contacted,primary,,,,,,,"Issue: CI supply-chain hardening: SHA-pinned actions, least-privilege workflow permissions",,,,2026-10-28,claude-3.5-sonnet
+19,rainb0w-clwn/node-cache-manager-fs-binary-ts,not_contacted,primary,,,,,,,Issue: Malicious files on the default branch,,,,2026-10-28,claude-3.5-sonnet
+19,tonngw/awesome-github-repos,not_contacted,primary,,,,,,,Issue: Malicious files on the default branch,,,,2026-10-28,claude-3.5-sonnet
+19,Drakon-Systems-Ltd/ShieldCortex,not_contacted,primary,,,,,,,Issue: Agent configuration watch: alert on unexpected changes to agent settings,,,,2026-10-28,claude-3.5-sonnet
