@@ -394,3 +394,24 @@ wave,repo,status,priority,default_branch,lockfile,pr_url,fork_branch,commit_sha,
 17,gtbuchanan/tooling,not_contacted,primary,,,,,,,Issue: Keep minimumReleaseAge for digest updates,,,,2026-10-28,claude-3.5-sonnet
 17,shadmanArko/dienst_pilot,not_contacted,primary,,,,,,,Issue: Remove the temporary pnpm minimumReleaseAge exclusions,,,,2026-10-28,claude-3.5-sonnet
 17,tpsdev-ai/flair,not_contacted,primary,,,,,,,Issue: Renovate pin updates choose releases younger than our 7-day minimumReleaseAge,,,,2026-10-28,claude-3.5-sonnet
+18,solara-associates/vaid,not_contacted,primary,,,,,,,"Issue: Supply chain: lockfiles, pip-audit, cargo-deny, SBOM",,,,2026-10-28,claude-3.5-sonnet
+18,OracleDesk/OracleDesk-Frontend,not_contacted,primary,,,,,,,"Issue: Harden the supply chain: lockfile policy, provenance and dependency review",,,,2026-10-28,claude-3.5-sonnet
+18,Psionic-labs/Vigil,not_contacted,primary,,,,,,,Issue: protection from supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
+18,Eyevinn/intercom-manager,not_contacted,primary,,,,,,,Issue: Pin GitHub Actions to commit SHAs to prevent supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
+18,can1357/oh-my-pi,not_contacted,primary,,,,,,,Issue: Update prompt debounce and version cooldown to reduce supply chain attack blast radius,,,,2026-10-28,claude-3.5-sonnet
+18,Filipo11021/nodejs-password-hashing,not_contacted,primary,,,,,,,Issue: Mitigating supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
+18,Eyevinn/intercom-frontend,not_contacted,primary,,,,,,,Issue: Pin GitHub Actions workflow steps to full commit SHAs,,,,2026-10-28,claude-3.5-sonnet
+18,ttag-org/ttag,not_contacted,primary,,,,,,,Issue: Protect against supply chain attacks by pinning package versions,,,,2026-10-28,claude-3.5-sonnet
+18,QuakyCZ/AITenisTracker,not_contacted,primary,,,,,,,Issue: Supply chain attack via untrusted tennis-helper git dependency,,,,2026-10-28,claude-3.5-sonnet
+18,TanStack/devtools,not_contacted,primary,,,,,,,Issue: unexpected ci failures prior to supply chain attack,,,,2026-10-28,claude-3.5-sonnet
+18,filllabs/dependi,not_contacted,primary,,,,,,,Issue: Add min-release-age= setting to help protect against supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
+18,ttag-org/ttag-cli,not_contacted,primary,,,,,,,Issue: Protect against supply chain attacks by pinning package versions,,,,2026-10-28,claude-3.5-sonnet
+18,google-github-actions/setup-gcloud,not_contacted,primary,,,,,,,Issue: make releases immutable for supply chain attack security,,,,2026-10-28,claude-3.5-sonnet
+18,CeyLabs/BitcoinDeepaBot-TMA,not_contacted,primary,,,,,,,Issue: Unpinned npm dependencies - supply chain attack risk,,,,2026-10-28,claude-3.5-sonnet
+18,zerodha/kiteconnectjs,not_contacted,primary,,,,,,,Issue: NPM Packages not pinned; vulnerable to supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
+18,Uniswap/interface,not_contacted,primary,,,,,,,Issue: investigate lavamoat for supply chain attack protection,,,,2026-10-28,claude-3.5-sonnet
+18,CeyLabs/BitcoinDeepa-Web-FE,not_contacted,primary,,,,,,,Issue: Unpinned npm dependencies - supply chain attack risk,,,,2026-10-28,claude-3.5-sonnet
+18,SETTLIX/settlix-oracle,not_contacted,primary,,,,,,,Issue: Oracle container image pulls from untrusted registry,,,,2026-10-28,claude-3.5-sonnet
+18,cosmos/cosmjs,not_contacted,primary,,,,,,,Issue: Defense against prototype pollution and supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
+18,Joystream/atlas,not_contacted,primary,,,,,,,Issue: Question: How to manage javascript supply chain attacks?,,,,2026-10-28,claude-3.5-sonnet
+18,refract-team/PocketUniverse,not_contacted,primary,,,,,,,Issue: Evaluate Adding LavaMoat to prevent supply chain attacks,,,,2026-10-28,claude-3.5-sonnet
