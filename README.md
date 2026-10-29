@@ -248,6 +248,16 @@ Requests share a public rate limit of 30 per minute per IP. Files can be up to 8
 packages per run are checked in depth. See the [privacy policy](https://npmscan.com/privacy) and
 [security policy](SECURITY.md).
 
+## Backlog
+
+Known gaps we want to close. Ideas and use cases are welcome in an
+[issue](https://github.com/NPMscan/npmscan-action/issues/new/choose).
+
+- **Releases published with a stolen token.** On 2026-10-11, a leaked maintainer token was used to publish a
+  malicious massCode v6.2.0 through its normal release pipeline
+  ([massCode#978](https://github.com/massCodeIO/massCode/issues/978)). npmscan only checks dependency changes
+  in a PR, so it would not have caught this.
+
 ## Contributing and security
 
 - Found a bug or a wrong result? [Open an issue](https://github.com/NPMscan/npmscan-action/issues/new/choose).
