@@ -7,6 +7,8 @@ export interface RunOptions {
   /** Return null instead of throwing when the command exits non-zero. */
   allowFailure?: boolean;
   timeoutMs?: number;
+  /** Replaces the inherited environment. */
+  env?: NodeJS.ProcessEnv;
 }
 
 /**
@@ -15,7 +17,7 @@ export interface RunOptions {
  */
 export function run(cmd: string, args: string[], opts: RunOptions & { allowFailure: true }): string | null;
 export function run(cmd: string, args: string[], opts?: RunOptions): string;
-export function run(cmd: string, args: string[], { cwd, allowFailure = false, timeoutMs = config.commandTimeoutMs }: RunOptions = {}): string | null {
+export function run(cmd: string, args: string[], { cwd, allowFailure = false, timeoutMs = config.commandTimeoutMs, env }: RunOptions = {}): string | null {
   if (process.env.VERBOSE) console.log(`  $ ${cmd} ${args.join(' ')}`);
   try {
     return execFileSync(cmd, args, {
@@ -24,6 +26,7 @@ export function run(cmd: string, args: string[], { cwd, allowFailure = false, ti
       stdio: ['ignore', 'pipe', 'pipe'],
       timeout: timeoutMs,
       maxBuffer: 64 * 1024 * 1024, // `git show` of a large lockfile
+      env,
     }).trim();
   } catch (err) {
     if (allowFailure) return null;

@@ -55,7 +55,7 @@ const pending = new Set([
   ...(args.body ? ['needs_user_decision', 'blocked_policy', 'needs_issue_first', 'failed'] : []),
 ]);
 
-async function processRow(tracker: Tracker, row: Row): Promise<string> {
+async function processRow(tracker: Tracker, row: Row, agent: string): Promise<string> {
   const record = (changes: Partial<Row>) => (dryRun ? undefined : tracker.update(row, changes));
   const { repo } = row;
 
@@ -81,7 +81,7 @@ async function processRow(tracker: Tracker, row: Row): Promise<string> {
   if (!existing) {
     checkout.resetBranch();
     writeWorkflow(checkout.path, check.lockfile);
-    checkout.commitAndPush(WORKFLOW_PATH, { signoff: args.signoff });
+    checkout.commitAndPush(WORKFLOW_PATH, { signoff: args.signoff, agent });
   }
   const prUrl = existing ?? createPr(repo, info.defaultBranch, bodyPath);
 
@@ -120,7 +120,7 @@ async function main(): Promise<void> {
   for (const [i, row] of queue.entries()) {
     let result: string;
     try {
-      result = await processRow(tracker, row);
+      result = await processRow(tracker, row, agent);
     } catch (err) {
       const message = (err as Error).message.replace(/\s+/g, ' ').slice(0, 200);
       if (!dryRun) tracker.update(row, { status: 'failed', reason: message });
