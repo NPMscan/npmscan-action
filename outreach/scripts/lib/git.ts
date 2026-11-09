@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync } from 'node:fs';
+import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { config } from './config.ts';
 import { run } from './shell.ts';
@@ -32,6 +32,11 @@ export class Checkout {
     // Owner in the dir name so same-named repos from different owners don't collide.
     const path = join(config.workDir, repo.replace('/', '__'));
 
+    // macOS purges old files under /tmp and can leave a .git without HEAD or config.
+    // Such a clone is useless, so drop it and clone again.
+    if (existsSync(path) && run('git', ['rev-parse', '--git-dir'], { cwd: path, allowFailure: true, timeoutMs: config.gitTimeoutMs }) === null) {
+      rmSync(path, { recursive: true, force: true });
+    }
     if (!existsSync(join(path, '.git'))) {
       // Shallow blobless clone: only the tip is read and one commit goes on top of it.
       run('git', ['clone', '--depth', '1', '--filter=blob:none', '--no-checkout', `git@github.com:${fork}.git`, path], gitOpts);
@@ -72,11 +77,11 @@ export class Checkout {
     this.git('clean', '-fdx');
   }
 
-  commitAndPush(file: string, { signoff = false, agent = '' } = {}): void {
+  commitAndPush(file: string, { signoff = false } = {}): void {
     // --force: some repos ignore dotfiles (tedious has `.*` in .gitignore) and track .github/ anyway.
     this.git('add', '--force', file);
-    const trailer = agent ? `\n\nAgent: ${agent}` : '';
-    this.git('commit', ...(signoff ? ['--signoff'] : []), '-m', `${config.commitMessage}${trailer}`);
+    // No AI or model trailer: this commit lands in someone else's public repo.
+    this.git('commit', ...(signoff ? ['--signoff'] : []), '-m', config.commitMessage);
     this.git('push', '--force', '-u', 'origin', config.branch);
   }
 }

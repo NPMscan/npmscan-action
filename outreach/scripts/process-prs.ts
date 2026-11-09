@@ -81,7 +81,7 @@ async function processRow(tracker: Tracker, row: Row, agent: string): Promise<st
   if (!existing) {
     checkout.resetBranch();
     writeWorkflow(checkout.path, check.lockfile);
-    checkout.commitAndPush(WORKFLOW_PATH, { signoff: args.signoff, agent });
+    checkout.commitAndPush(WORKFLOW_PATH, { signoff: args.signoff });
   }
   const prUrl = existing ?? createPr(repo, info.defaultBranch, bodyPath);
 

@@ -24,6 +24,8 @@ export NPMSCAN_AGENT=claude-opus-5.5   # or gpt-5.1, gemini-2.5-pro, kimi-k2, ..
 | Retry rows that errored (timeouts, etc.) | add `--retry-failed` |
 | Open one PR with a hand-written body (template / CLA repos the user approved) | `node outreach/scripts/process-prs.ts --repo owner/name --body /tmp/npmscan-outreach/name.md` |
 | ...for a repo that requires DCO sign-off (only after the user agreed to sign off) | add `--signoff` |
+| Move open PRs to the action pin in `lib/config.ts` (after a release) | `node outreach/scripts/bump-pin.ts [--repo owner/name] [--skip a/b,c/d] [--dry-run]` |
+| ...and open follow-up PRs on repos that already merged | `node outreach/scripts/bump-pin.ts --merged [--repo owner/name] [--dry-run]` |
 | Update every PR's live state and list replies we owe | `node outreach/scripts/refresh.ts` (add `--dry-run` to preview, `--wave` / `--repo` to narrow) |
 | Record a skip / hold / maintainer reply | `node outreach/scripts/mark.ts --repo owner/name --status skipped_policy --reason "bans bot PRs"` |
 | Add a new candidate repo | `node outreach/scripts/mark.ts --repo owner/name --add --wave 13 [--notes "why this repo"]` |
@@ -40,7 +42,7 @@ node outreach/scripts/process-prs.ts --wave 12 --limit 20 --dry-run # 2. preview
 # 3. show the user the ready / held lists, agree which to open
 node outreach/scripts/process-prs.ts --wave 12 --limit 20          # 4. one real run, in the background
 node outreach/scripts/mark.ts --repo x/y --status skipped_policy --reason "..."   # 5. record decisions on held repos
-git add outreach/tracker.csv && git commit -m "chore(outreach): record wave 12 PRs" -m "Agent: <your-model>"  # 6. only if asked
+git add outreach/tracker.csv && git commit -m "chore(outreach): record wave 12 PRs"  # 6. only if asked
 ```
 
 ## What `process-prs.ts` does per repo
@@ -124,6 +126,7 @@ While a script writes, it holds `tracker.csv.lock` (gitignored). A second writer
 |---|---|
 | [`process-prs.ts`](process-prs.ts) | Opens PRs (the per-repo pipeline above) |
 | [`refresh.ts`](refresh.ts) | Live PR state → tracker |
+| [`bump-pin.ts`](bump-pin.ts) | Moves the action pin in open PRs; follow-up PRs for merged repos |
 | [`mark.ts`](mark.ts) | Manual tracker edits and new rows |
 | [`lib/config.ts`](lib/config.ts) | Branch name, pinned action SHA, PR title/commit message, paths, timeouts, supported lockfiles |
 | [`lib/tracker.ts`](lib/tracker.ts) | CSV parse/write, allowed values, `resolveAgent`, lock. **The only code that writes `tracker.csv`** |

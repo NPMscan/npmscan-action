@@ -27,6 +27,7 @@ const { values: args } = parseArgs({
     maintainer: { type: 'string' },
     'next-action': { type: 'string' },
     'pr-url': { type: 'string' },
+    'commit-sha': { type: 'string' },
     agent: { type: 'string' },
   },
 });
@@ -44,6 +45,7 @@ set('notes', args.notes);
 set('maintainer', args.maintainer);
 set('next_action', args['next-action']);
 set('pr_url', args['pr-url']);
+set('commit_sha', args['commit-sha']);
 set('priority', args.priority);
 
 const tracker = new Tracker(config.trackerPath, { agent: resolveAgent(args.agent) });
