@@ -89,6 +89,13 @@ placeholder() {
   esac
 }
 
+# Dependency files are read from git, never from the checkout on disk, so a
+# PR can't swap one for a symlink to another file on the runner.
+git_mode() { # commit path -> git file mode, empty if the path isn't in that commit
+  git ls-tree "$1" -- "$2" 2>/dev/null | awk '{ print $1; exit }'
+}
+is_regular() { case "$1" in 100644|100755) return 0 ;; *) return 1 ;; esac; }
+
 add_entry() { # file status isNew reason [result.json]
   if [ -n "${5:-}" ]; then
     jq -c --arg file "$1" --arg status "$2" --argjson isNew "$3" --arg reason "$4" \
@@ -134,24 +141,30 @@ for file in "${FILES[@]}"; do
   i=$((i + 1))
   before="$WORK/$i.before" after="$WORK/$i.after" result="$WORK/$i.json"
 
+  head_mode=$(git_mode HEAD "$file")
   if [ -n "$BASE_ERROR" ]; then
-    if [ -f "$file" ]; then add_entry "$file" error false "$BASE_ERROR"; fi
+    if [ -n "$head_mode" ]; then add_entry "$file" error false "$BASE_ERROR"; fi
     continue
   fi
 
-  in_base=false
-  if git cat-file -e "$BASE_SHA:$file" 2>/dev/null; then in_base=true; fi
-  if [ ! -f "$file" ]; then
-    if [ "$in_base" = true ]; then add_entry "$file" skipped false "removed in this PR"
+  base_mode=$(git_mode "$BASE_SHA" "$file")
+  if [ -z "$head_mode" ]; then
+    if [ -n "$base_mode" ]; then add_entry "$file" skipped false "removed in this PR"
     else add_entry "$file" skipped false "not found"; fi
     echo "::notice::$file not found in this PR — nothing to scan"
     continue
   fi
+  # Only regular files are read. A symlink could point anywhere on the runner,
+  # so it is never followed, read or sent.
+  if ! is_regular "$head_mode" || { [ -n "$base_mode" ] && ! is_regular "$base_mode"; }; then
+    add_entry "$file" error false "not a regular file (symlink or submodule), so it was not read or sent"
+    continue
+  fi
 
   is_new=false
-  if [ "$in_base" = true ]; then git show "$BASE_SHA:$file" > "$before"
+  if [ -n "$base_mode" ]; then git cat-file blob "$BASE_SHA:$file" > "$before"
   else placeholder "$file" > "$before"; is_new=true; fi
-  cp "$file" "$after"
+  git cat-file blob "HEAD:$file" > "$after"
 
   if cmp -s "$before" "$after"; then
     add_entry "$file" skipped false "unchanged"
@@ -199,7 +212,7 @@ fi
 # with ^ must match at the start of the line. Falls back to the section line.
 find_line() {
   local file=$1 section=$2; shift 2
-  awk -v section="$section" -v needles="$(printf '%s\037' "$@")" '
+  git cat-file blob "HEAD:$file" 2>/dev/null | awk -v section="$section" -v needles="$(printf '%s\037' "$@")" '
     BEGIN { n = split(needles, ns, "\037"); armed = (section == "") }
     !armed { if ($0 ~ section) { armed = 1; sec = NR }; next }
     {
@@ -210,7 +223,7 @@ find_line() {
       }
     }
     END { if (!found && sec) print sec }
-  ' "$file" 2>/dev/null || true
+  ' 2>/dev/null || true
 }
 
 annotation_line() { # file kind name version

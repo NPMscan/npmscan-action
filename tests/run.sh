@@ -412,6 +412,52 @@ run_scan INPUT_FILE=package-lock.json FAKE_RESPONSE="$FIX/malware.json" INPUT_MO
 assert_eq "$CODE" 0 "mode: warn reports malware without failing"
 assert_contains "$OUTPUT" "blocking-count=1"
 
+api_calls() { if [ -f "$LOG/curl.calls" ]; then wc -l < "$LOG/curl.calls" | tr -d ' '; else echo 0; fi; }
+
+t "a dependency file swapped for a symlink is never read or sent"
+new_repo package.json '{"dependencies":{"ms":"2.1.2"}}'
+printf 'GH_TOKEN=npmscan-test-secret\n' > "$T/runner-secret"
+rm "$REPO/package.json" && ln -s "$T/runner-secret" "$REPO/package.json"
+head_commit
+run_scan FAKE_RESPONSE="$FIX/clean.json"
+assert_eq "$(api_calls)" 0 "API calls"
+assert_eq "$CODE" 0 "exit code (fail-on-error is off by default)"
+assert_contains "$OUTPUT" "error-count=1"
+assert_contains "$COMMENT" "not a regular file (symlink or submodule), so it was not read or sent"
+assert_not_contains "$OUT$COMMENT$SUMMARY" "npmscan-test-secret" "output"
+run_scan FAKE_RESPONSE="$FIX/clean.json" INPUT_FAIL_ON_ERROR=true
+assert_eq "$CODE" 1 "fail-on-error: true fails on a symlink"
+
+t "a symlink on the base branch is not read either"
+new_repo
+ln -s "$T/runner-secret" "$REPO/package.json"
+printf 'GH_TOKEN=npmscan-test-secret\n' > "$T/runner-secret"
+git -C "$REPO" add -A && git -C "$REPO" commit -q -m base
+BASE=$(git -C "$REPO" rev-parse HEAD)
+rm "$REPO/package.json"
+head_commit package.json '{"dependencies":{"ms":"2.1.2"}}'
+run_scan FAKE_RESPONSE="$FIX/clean.json"
+assert_eq "$(api_calls)" 0 "API calls"
+assert_contains "$OUTPUT" "error-count=1"
+
+t "a file under a symlinked directory is not found, not followed"
+new_repo package.json '{"dependencies":{"ms":"2.1.2"}}'
+mkdir -p "$T/outside" && printf '{"dependencies":{"ms":"2.1.3"},"secret":"npmscan-test-secret"}\n' > "$T/outside/package.json"
+ln -s "$T/outside" "$REPO/packages"
+head_commit
+run_scan FAKE_RESPONSE="$FIX/clean.json" INPUT_FILE=packages/package.json
+assert_eq "$(api_calls)" 0 "API calls"
+assert_contains "$OUT" "packages/package.json not found in this PR"
+
+t "the committed PR content is scanned, not uncommitted changes on disk"
+new_repo package.json '{"dependencies":{"ms":"2.1.2"}}'
+head_commit package.json '{"dependencies":{"ms":"2.1.3"}}'
+write_files package.json '{"dependencies":{"ms":"2.1.3"},"edited":"after checkout"}'
+run_scan FAKE_RESPONSE="$FIX/clean.json"
+assert_eq "$(api_calls)" 1 "API calls"
+assert_contains "$(jq -r .after "$LOG/request.json")" '"ms":"2.1.3"'
+assert_not_contains "$(jq -r .after "$LOG/request.json")" "after checkout" "request body"
+
 t "invalid inputs fail fast"
 run_scan INPUT_MODE=enforce
 assert_eq "$CODE" 1 "bad mode"

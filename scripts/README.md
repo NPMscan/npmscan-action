@@ -14,8 +14,9 @@ Outreach tooling doesn't belong here. It lives in [`outreach/scripts/`](../outre
 ```
 action.yml inputs ──env──▶ scan.sh
   1. parse INPUT_* (mode, fail-on-*, file/files) and fail fast on bad config
-  2. for each file: before = git show $BASE_SHA:file (or an empty placeholder if the PR adds it)
-                    after  = working tree
+  2. for each file: before = git cat-file blob $BASE_SHA:file (or an empty placeholder if the PR adds it)
+                    after  = git cat-file blob HEAD:file (never the working tree)
+                    error if either side isn't a regular file (symlink, submodule): nothing is read or sent
                     skip if unchanged, error if > 8 MB
                     POST {before, after} → https://npmscan.com/api/analysis/dependency-diff
                     append {file, status, isNew, reason, result} to entries.jsonl

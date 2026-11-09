@@ -240,6 +240,10 @@ updates:
 - **Only the dependency file being scanned**, as it is on the base branch and in the PR, is sent over HTTPS to
   `https://npmscan.com/api/analysis/dependency-diff`.
 - **Never** your source code, other files, environment variables, secrets, or the GitHub token.
+- **Read from git, not from disk.** Both versions come from the commits (`git cat-file`), so the scan sees exactly
+  what the PR commits, and later edits in the checkout are ignored. A dependency file that is a symlink or
+  submodule, or that sits under a symlinked directory, is never followed or sent: it is reported as a scan error
+  (or "not found"), so a PR can't point it at another file on the runner.
 - **Nothing is stored.** The files are used to compute the diff and then discarded.
 - To check vulnerabilities and install scripts, npmscan looks up the **package names and versions** from that
   diff on the public npm registry and OSV.dev. For private packages, this means their names reach those services.
