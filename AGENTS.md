@@ -16,7 +16,7 @@ Never mix the two in one change. Outreach code never goes in `scripts/`, and act
 
 - **Say which model you are, everywhere you leave a trace:**
   - **Tracker:** run `export NPMSCAN_AGENT=<model>` before any outreach script, or pass `--agent <model>`. The scripts refuse to write without it and stamp the `agent` column of every row you change.
-  - **Commits:** end every commit message with an `Agent: <model>` trailer (on top of any `Co-Authored-By` line your tool adds).
+  - **Commits:** never. No `Agent:`, `Co-Authored-By: <AI>` or "Generated with" line in any commit, PR, issue or comment, in this repo or anyone else's. Everything on GitHub is public, and the maintainer doesn't want AI mentioned there.
   - **Chat:** name your model in your summary to the user.
 
   Use your real model ID in lowercase, e.g. `claude-opus-5.5`, `gpt-5.1`, `gemini-2.5-pro`, `kimi-k2`; a person running scripts uses `human`. Never write a generic name (`ai`, `agent`, `llm`) or another model's name, and never change the `agent` value on rows you didn't touch.
