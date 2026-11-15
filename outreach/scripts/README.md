@@ -100,6 +100,8 @@ It also lists open PRs where the repo's own bot (a bot with a repo role, e.g. `m
 
 [`../tracker.csv`](../tracker.csv) is the single source of truth. There's one row per repo, and rows are never deleted.
 
+Repos that use the action without any outreach from us go in wave `organic` with status `adopted_organic` (`mark.ts --add --wave organic --repo X --status adopted_organic --notes "..."`). No script contacts them.
+
 | Column | Meaning |
 |---|---|
 | `wave` | Batch the repo was added in |

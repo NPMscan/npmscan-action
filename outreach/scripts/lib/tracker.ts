@@ -22,6 +22,8 @@ export const STATUSES = [
   'deprioritized_overlap',
   // The automation errored; retry with --retry-failed
   'failed',
+  // Uses the action without any outreach from us (wave "organic"); never contact through process-prs
+  'adopted_organic',
 ] as const;
 
 /** How the maintainers responded. Empty until there is something to say. */
